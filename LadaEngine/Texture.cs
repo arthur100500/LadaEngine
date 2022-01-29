@@ -9,18 +9,11 @@ namespace LadaEngine
     public class Texture : IDisposable
     {
         public int Handle { get; set; }
-
-        public void ChangeTextureData(Bitmap bmp)
-        {
-            GL.BindTexture(TextureTarget.Texture2D, Handle);
-            var data = bmp.LockBits(
-                new Rectangle(0, 0, bmp.Width, bmp.Height),
-                ImageLockMode.ReadOnly,
-                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, bmp.Width, bmp.Height, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-            bmp.UnlockBits(data);
-        }
-
+        /// <summary>
+        /// Create new Texture from bitmap class
+        /// </summary>
+        /// <param name="bmp"></param>
+        /// <returns></returns>
         public static Texture LoadFromBitmap(Bitmap bmp)
         {
             int handle = GL.GenTexture();
@@ -48,6 +41,11 @@ namespace LadaEngine
             bmp.UnlockBits(data);
             return new Texture(handle);
         }
+        /// <summary>
+        /// Create texture with an image from file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static Texture LoadFromFile(string path) 
         {
             // Generate handle
@@ -85,11 +83,18 @@ namespace LadaEngine
 
             return new Texture(handle);
         }
-
+        /// <summary>
+        /// Create texture from GL Handle
+        /// </summary>
+        /// <param name="glHandle"></param>
         public Texture(int glHandle)
         {
             Handle = glHandle;
         }
+        /// <summary>
+        /// Place texture in a slot
+        /// </summary>
+        /// <param name="unit"></param>
         public void Use(TextureUnit unit)
         {
             GL.ActiveTexture(unit);
@@ -98,8 +103,7 @@ namespace LadaEngine
 
         public void Dispose()
         {
-            Console.Write(1);
+            // To be implemented
         }
-
     }
 }

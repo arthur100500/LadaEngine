@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace LadaEngine
 {
+    /// <summary>
+    /// Adds light to a texture "light_map" once, then it can be used as a texture for baked light
+    /// </summary>
     public class BakedLight
     {
         public Texture light_map;
@@ -15,6 +18,11 @@ namespace LadaEngine
 
         // WARNING: This variable should not be very high, I am unsire if GPU can handle enourmous variables
         Pos resolution = new Pos(1024, 1024);
+        /// <summary>
+        /// Adds light to a texture
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="colors"></param>
         public void AddLight(float[] positions, float[] colors)
         {
             light_map.Use(TextureUnit.Texture0);
@@ -29,6 +37,9 @@ namespace LadaEngine
             GL.DispatchCompute(resolution.X, resolution.Y, 1);
             GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
         }
+        /// <summary>
+        /// Prepare the class components to work
+        /// </summary>
         public void Load()
         {
             CreateTexture();

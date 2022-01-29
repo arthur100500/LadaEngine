@@ -7,6 +7,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace LadaEngine
 {
+    [Obsolete("Class Quad is kinda depricated, use Sprite or Tilemap instead")]
     internal class Quad : IRenderable
     {
         private bool is_initialised = false;
@@ -23,7 +24,6 @@ namespace LadaEngine
         public Texture _texture;
         public bool supportsNormalMap = false;
         public Texture _normal_map = null;
-        public Texture _light_map = null;
 
         public int textureloc = -1;
         public bool zoomable = true;
@@ -69,8 +69,6 @@ namespace LadaEngine
         {
             _vertices = new_coordinates;
             zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
-
-
         }
 
         public void ReshapeWithCoords(float top_x, float top_y, float bottom_x, float bottom_y)
@@ -101,10 +99,11 @@ namespace LadaEngine
 
         public void Render()
         {
+            // Uninitialized quad has unpredictible render
             if (!is_initialised)
             {
                 is_initialised = true;
-                Misc.Log("QUAD " + Convert.ToString(_texture.Handle) + " WAS NOT INITED");
+                Misc.Log("QUAD " + Convert.ToString(_texture.Handle) + " WAS NOT INITALISED");
             }
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices,
                 BufferUsageHint.DynamicDraw);
@@ -145,8 +144,6 @@ namespace LadaEngine
             _shader.SetInt("texture0", 0);
             if (supportsNormalMap)
                 _shader.SetInt("texture1", 1);
-            if (!(_light_map is null))
-                _shader.SetInt("texture2", 2);
             var vertexLocation = _shader.GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertexLocation);
             GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);

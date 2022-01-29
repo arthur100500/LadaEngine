@@ -7,11 +7,13 @@ namespace LadaEngine
     public static class Misc
     {
         /// <summary>
-        /// Window height
+        /// Global window object
         /// </summary>
         public static Window window;
 
-
+        /// <summary>
+        /// Screen ratio
+        /// </summary>
         public static float screen_ratio = 0.6f / 0.8f;
         /// <summary>
         /// Prints float array
@@ -56,7 +58,10 @@ namespace LadaEngine
             if (x > 1.0f) return 1.0f;
             return x;
         }
-
+        /// <summary>
+        /// Currently prints message in the console
+        /// </summary>
+        /// <param name="message"></param>
         public static void Log(object message)
         {
             Console.WriteLine(message);

@@ -1,6 +1,8 @@
 ﻿namespace LadaEngine
 {
-    // Represents light source
+    /// <summary>
+    /// Class for storing light source, can be alternative to arrays with positions and colors in a baked light
+    /// </summary>
     public class LightSource
     {
         public float X;
@@ -12,7 +14,6 @@
 
         public LightSource(float x, float y, float z, float density, float[] color)
         {
-            // copy is sent but in this class no operations are made with this variable
             Color = color;
 
             X = x;

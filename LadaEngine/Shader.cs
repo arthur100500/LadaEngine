@@ -64,7 +64,13 @@ namespace LadaEngine
                 _uniformLocations.Add(key, location);
             }
         }
-
+        /// <summary>
+        /// Shader constructor from code strings
+        /// </summary>
+        /// <param name="shaderSourceVert">Code for vertex shader</param>
+        /// <param name="shaderSourceFrag">Code for fragment shader</param>
+        /// <param name="type">Use 0</param>
+        /// <exception cref="NotImplementedException"></exception>
         public Shader(string shaderSourceVert, string shaderSourceFrag, int type)
         {
             if (type != 0)
@@ -123,8 +129,8 @@ namespace LadaEngine
             }
             catch (Exception e)
             {
-                            }
-            return -1;
+                return -1;
+            }
         }
 
         private static void LinkProgram(int program)
@@ -169,7 +175,12 @@ namespace LadaEngine
                 Misc.Log(e.Message);
             }
         }
-
+        /// <summary>
+        /// Set an array of integers using uniform name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="count"></param>
+        /// <param name="data"></param>
         public void SetIntGroup(string name, int count, int[] data)
         {
             try
@@ -182,6 +193,12 @@ namespace LadaEngine
                 Misc.Log(e.Message);
             }
         }
+        /// <summary>
+        /// Set an array of integer using uniform location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="count"></param>
+        /// <param name="data"></param>
         public void SetIntGroup(int location, int count, int[] data)
         {
             try
@@ -309,12 +326,14 @@ namespace LadaEngine
                 Misc.Log(e.Message);
             }
         }
-
+        /// <summary>
+        /// Get all uniform locations
+        /// </summary>
         public void PrintUniformLocations()
         {
             foreach (var key in _uniformLocations.Keys)
             {
-                Console.WriteLine(Convert.ToString(_uniformLocations[key]) + " " + key);
+                Misc.Log(Convert.ToString(_uniformLocations[key]) + " " + key);
             }
         }
     }

@@ -49,14 +49,28 @@ namespace LadaEngine
             lightManager.Load();
             quad.Load();
         }
+        /// <summary>
+        /// Rotates sprite to an angle (in rad)
+        /// </summary>
+        /// <param name="angle"></param>
         public void Rotate(float angle)
         {
             quad.rotate(angle);
         }
+        /// <summary>
+        /// Reshape the sprite (-1 -1 1 1 coordinate system)
+        /// </summary>
+        /// <param name="top_x"></param>
+        /// <param name="top_y"></param>
+        /// <param name="bottom_x"></param>
+        /// <param name="bottom_y"></param>
         public void Reshape(float top_x, float top_y, float bottom_x, float bottom_y )
         {
             quad.ReshapeWithCoords(top_x, top_y, bottom_x, bottom_y);
         }
+        /// <summary>
+        /// Render the image (use load first)
+        /// </summary>
         public void Render()
         {
             if (normal_map != null)
@@ -66,7 +80,9 @@ namespace LadaEngine
 
             quad.Render();
         }
-
+        /// <summary>
+        /// Free the resources
+        /// </summary>
         public void Unload()
         {
             if (quad != null)
