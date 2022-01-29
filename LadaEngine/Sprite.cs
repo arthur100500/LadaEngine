@@ -48,6 +48,7 @@ namespace LadaEngine
             lightManager = new BakedLight();
             lightManager.Load();
             quad.Load();
+            quad._shader.SetInt("static_light", 2);
         }
         /// <summary>
         /// Rotates sprite to an angle (in rad)

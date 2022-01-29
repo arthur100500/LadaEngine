@@ -30,7 +30,7 @@ namespace LadaEngine
 
             GL.Uniform1(unilocs["normal_map"], 1);
             GL.Uniform1(unilocs["resolution_x"], resolution.X);
-            GL.Uniform1(unilocs["resolution_y"], resolution.X);
+            GL.Uniform1(unilocs["resolution_y"], resolution.Y);
             GL.Uniform4(unilocs["light_colors"], colors[0], colors[1], colors[2], colors[3]);
             GL.Uniform4(unilocs["light_position"], positions[0], positions[1], positions[2], positions[3]);
 

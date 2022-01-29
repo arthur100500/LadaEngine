@@ -157,9 +157,6 @@ namespace LadaEngine
 													result_light += vec4(FinalColor, 0.0);
 												}
 												result_light.a = color_in.a;
-
-
-
 												result_light.rgb += color_in.rgb * texture(static_light, texCoord).rgb;
 												return result_light;
 											}
