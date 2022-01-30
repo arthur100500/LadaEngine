@@ -45,6 +45,7 @@ namespace LadaEngine
             _shader = shader;
             _texture = texture;
             zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
+            ReshapeWithCoords(-coordinates[0], coordinates[1], -coordinates[10], coordinates[11]);
         }
 
         public Quad(float[] coordinates, Shader shader, Texture texture, Texture normalMap)
@@ -55,22 +56,8 @@ namespace LadaEngine
             _normal_map = normalMap;
             supportsNormalMap = true;
             zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
+            ReshapeWithCoords(-coordinates[0], coordinates[1], -coordinates[10], coordinates[11]);
         }
-
-        public Quad(float[] coordinates, Shader shader, int texture_loc)
-        {
-            _vertices = coordinates;
-            _shader = shader;
-            textureloc = texture_loc;
-            zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
-        }
-
-        public void ReshapeWithVertexarray(float[] new_coordinates)
-        {
-            _vertices = new_coordinates;
-            zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
-        }
-
         public void ReshapeWithCoords(float top_x, float top_y, float bottom_x, float bottom_y)
         {
             _vertices = new float[]
@@ -80,7 +67,6 @@ namespace LadaEngine
                 -bottom_x, bottom_y, 0f, 0.0f, 0.0f, // bottom left
                 -bottom_x, top_y, 0f, 0.0f, 1.0f // top left
             };
-
             // Rotation constants
             centre = new FPos((bottom_x + top_x) / 2, (bottom_y + top_y) / 2);
             rad = Misc.Len(centre, new FPos(bottom_x, bottom_y)); // This Rad should match all other rads because plane is rectangle shaped
@@ -90,9 +76,10 @@ namespace LadaEngine
             // AC (bottom x bottom y) - centre
             // vector starting from (0,0) presented with a pos
             FPos AC = new FPos(bottom_x - centre.X, bottom_y - centre.Y);
-            float between_angle = (float)Math.Acos((AB.X * AC.Y + AC.Y * AB.X) / 2 * rad);
-            this.rel_angles[1] = between_angle;
-            this.rel_angles[3] = between_angle + (float)Math.PI;
+            this.rel_angles[0] = (float)Math.Atan2(AB.X, AB.Y);
+            this.rel_angles[1] = (float)Math.Atan2(AC.X, AC.Y);
+            this.rel_angles[2] = (float)Math.Atan2(AB.X, AB.Y) + (float)Math.PI;
+            this.rel_angles[3] = (float)Math.Atan2(AC.X, AC.Y) + (float)Math.PI;
 
             zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
         }
@@ -303,6 +290,8 @@ namespace LadaEngine
         }
         public void rotate(float angle)
         {
+            
+            angle -= 3.14159265352f / 4f;
             _vertices[0] = centre.X + rad * (float)Math.Cos(angle + rel_angles[0]);
             _vertices[1] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[0]);
             _vertices[5] = centre.X + rad * (float)Math.Cos(angle + rel_angles[1]);
@@ -317,7 +306,7 @@ namespace LadaEngine
             _vertices[6] /= Misc.screen_ratio;
             _vertices[11] /= Misc.screen_ratio;
             _vertices[16] /= Misc.screen_ratio;
-            
+
             rotation_angle = angle;
         }
 
@@ -360,9 +349,28 @@ namespace LadaEngine
                 positions[i + 0] = (float)Math.Cos(angle) * dist + corrected_centre.X;
                 positions[i + 1] = 1 - ((float)Math.Sin(angle) * dist + corrected_centre.Y);
             }
+            _shader.SetVector4Group(_shader.GetUniformLocation("light_sources_colors[0]"), colors.Length, colors);
+            _shader.SetVector4Group(_shader.GetUniformLocation("light_sources[0]"), positions.Length, positions);
+        }
 
-            _shader.SetVector4Group(_shader.GetAttribLocation("light_sources_colors[0]"), colors.Length, colors);
-            _shader.SetVector4Group(_shader.GetAttribLocation("light_sources[0]"), positions.Length, positions);
+        public void ReshapeVertexArray(BaseObject obj, FPos cam)
+        {
+            centre = obj.centre;
+
+            rad = (float)Math.Sqrt(obj.width * obj.width + obj.height * obj.height);
+            //rad = Misc.Len(centre, new FPos(_vertices[10], _vertices[11])); // This Rad should match all other rads because plane is rectangle shaped
+            // AB (bottom x top y) - centre
+            // vector starting from (0,0) presented with a pos
+            FPos AB = new FPos(obj.width, obj.height);
+            // AC (bottom x bottom y) - centre
+            // vector starting from (0,0) presented with a pos
+            FPos AC = new FPos(obj.width, -obj.height);
+            this.rel_angles[0] = (float)Math.Atan2(AB.X, AB.Y);
+            this.rel_angles[1] = (float)Math.Atan2(AC.X, AC.Y);
+            this.rel_angles[2] = (float)Math.Atan2(AB.X, AB.Y) + (float)Math.PI;
+            this.rel_angles[3] = (float)Math.Atan2(AC.X, AC.Y) + (float)Math.PI;
+
+            rotate(rotation_angle);
         }
     }
 }

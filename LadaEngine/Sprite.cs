@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -117,6 +118,10 @@ namespace LadaEngine
         public void ClearStaticLight()
         {
             lightManager.ClearLights();
+        }
+        public void SetAmbient(float[] color)
+        {
+            quad._shader.SetVector4("ambient", new Vector4(color[0], color[1], color[2], color[3]));
         }
     }
 }

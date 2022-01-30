@@ -8,10 +8,10 @@ using OpenTK;
 namespace LadaEngine
 {
     // Tilemap used to draw plane that contains of textures given
-    public class Tilemap : IRenderable
+    public class Tilemap : BaseObject
     {
-        public int width;
-        public int height;
+        public int tm_width;
+        public int tm_height;
         public int[] map;
 
         private Quad quad;
@@ -25,8 +25,8 @@ namespace LadaEngine
         public int grid_width = 10;
         public Tilemap(Texture textureLocation, int[] map, int height, int width, int gridLength, int gridRowLength)
         {
-            this.height = height;
-            this.width = width;
+            this.tm_height = height;
+            this.tm_width = width;
             this.map = (int[])map.Clone();
             // shader is a default tilemap shader
             shader = StandartShaders.GenTilemapShader();
@@ -38,8 +38,8 @@ namespace LadaEngine
         }
         public Tilemap(string textureLocation, int[] map, int height, int width, int gridLength, int gridRowLength)
         {
-            this.height = height;
-            this.width = width;
+            this.tm_height = height;
+            this.tm_width = width;
             this.map = (int[])map.Clone();
             // shader is a default tilemap shader
             shader = StandartShaders.GenTilemapShader();
@@ -52,8 +52,8 @@ namespace LadaEngine
         // With normal map
         public Tilemap(string textureLocation, string normalMapLocation, int[] map, int height, int width, int gridLength, int gridRowLength)
         {
-            this.height = height;
-            this.width = width;
+            this.tm_height = height;
+            this.tm_width = width;
             this.map = (int[])map.Clone();
             // shader is a default tilemap shader
             shader = StandartShaders.GenTilemapShaderNMSL();
@@ -88,8 +88,8 @@ namespace LadaEngine
             try
             {
                 shader.SetIntGroup(shader.GetUniformLocation("map_array[0]"), map.Length, map);
-                shader.SetInt("width", width);
-                shader.SetInt("height", height);
+                shader.SetInt("width", tm_width);
+                shader.SetInt("height", tm_height);
                 shader.SetInt("texture_length", grid_length);
                 shader.SetInt("texture_width", grid_width);
                 shader.SetInt("static_light", 2);
@@ -102,7 +102,7 @@ namespace LadaEngine
 
 
         }
-        public void Render()
+        public override void Render()
         {
             if (lightManager != null)
             {
@@ -127,6 +127,23 @@ namespace LadaEngine
         public void SetLightSources(float[] positions, float[] colors)
         {
             quad.SetLightSources(positions, colors);
+        }
+        public void SetAmbient(float[] color)
+        {
+            quad._shader.SetVector4("ambient", new Vector4(color[0], color[1], color[2], color[3]));
+        }
+
+        public override void ReshapeVertexArray(FPos camera_position)
+        {
+            quad.ReshapeVertexArray(this, camera_position);
+        }
+        public void ClearStaticLight()
+        {
+            lightManager.ClearLights();
+        }
+        public void Rotate(float angle)
+        {
+            quad.rotate(angle);
         }
     }
 }

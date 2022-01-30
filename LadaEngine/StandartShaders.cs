@@ -93,8 +93,8 @@ namespace LadaEngine
 											  
 											  int type = map_array[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
 											  vec2 newTexCoord = vec2(texCoord.x * width, texCoord.y * height);
-											  newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
-								  			  newTexCoord.y = fract((type / texture_length + fract(newTexCoord.y)) / texture_width);
+												newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
+												newTexCoord.y = fract((texture_length - type / texture_length + fract(newTexCoord.y) - 1) / texture_width);
 
 											  vec3 nm_color = texture(normal_map, newTexCoord).rgb * 2.0 - 1.0;
 
@@ -308,8 +308,8 @@ void main()
 
 										int type = map_array[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
 										vec2 newTexCoord = vec2(texCoord.x * width, texCoord.y * height);
-										newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
-										newTexCoord.y = fract((type / texture_length + fract(newTexCoord.y)) / texture_width);
+												newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
+												newTexCoord.y = fract((texture_length - type / texture_length + fract(newTexCoord.y) - 1) / texture_width);
 	
 										outputColor = texture(texture0, newTexCoord);
 									}";
@@ -365,7 +365,7 @@ void main()
 												int type = map_array[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
 												vec2 newTexCoord = vec2(texCoord.x * width, texCoord.y * height);
 												newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
-												newTexCoord.y = fract((type / texture_length + fract(newTexCoord.y)) / texture_width);
+												newTexCoord.y = fract((texture_length - type / texture_length + fract(newTexCoord.y) - 1) / texture_width);
 
 												vec3 normal = texture(texture1, newTexCoord).rgb  * 2.0 - 1.0;
 
