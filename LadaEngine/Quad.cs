@@ -29,7 +29,7 @@ namespace LadaEngine
         public bool zoomable = true;
 
         private float[] rel_angles = new float[] { 0f, (float)Math.PI / 2, (float)Math.PI, 3 * (float)Math.PI / 2 };
-        private float rotation_angle = 3f * (float)Math.PI / 4f;
+        private float rotation_angle = 0;
         public FPos centre = new FPos(0f, 0f);
         private float rad = 1.41421356237f;
 
@@ -290,14 +290,13 @@ namespace LadaEngine
         }
         public void rotate(float angle)
         {
-            
-            angle -= 3.14159265352f / 4f;
-            _vertices[0] = centre.X + rad * (float)Math.Cos(angle + rel_angles[0]);
-            _vertices[1] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[0]);
+            angle = (float)Math.PI - angle;
+            _vertices[0] = centre.X + rad * (float)Math.Cos(angle + rel_angles[2]);
+            _vertices[1] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[2]);
             _vertices[5] = centre.X + rad * (float)Math.Cos(angle + rel_angles[1]);
             _vertices[6] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[1]);
-            _vertices[10] = centre.X + rad * (float)Math.Cos(angle + rel_angles[2]);
-            _vertices[11] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[2]);
+            _vertices[10] = centre.X + rad * (float)Math.Cos(angle + rel_angles[0]);
+            _vertices[11] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[0]);
             _vertices[15] = centre.X + rad * (float)Math.Cos(angle + rel_angles[3]);
             _vertices[16] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[3]);
 
@@ -343,11 +342,11 @@ namespace LadaEngine
                 float angle = (float)Math.Atan((corrected_centre.X - positions[i + 0]) / (corrected_centre.Y - positions[i + 1]));
                 if (corrected_centre.Y < positions[i + 1])
                     angle = 3.1415926535f + angle;
-                angle += 5 * 3.1415926535f / 4;
-                angle -= rotation_angle;
+                angle += rotation_angle;
+                angle = (float)Math.PI - angle;
 
-                positions[i + 0] = (float)Math.Cos(angle) * dist + corrected_centre.X;
-                positions[i + 1] = 1 - ((float)Math.Sin(angle) * dist + corrected_centre.Y);
+                positions[i + 0] = (float)Math.Sin(angle) * dist + corrected_centre.X;
+                positions[i + 1] = 1 - ((float)Math.Cos(angle) * dist + corrected_centre.Y);
             }
             _shader.SetVector4Group(_shader.GetUniformLocation("light_sources_colors[0]"), colors.Length, colors);
             _shader.SetVector4Group(_shader.GetUniformLocation("light_sources[0]"), positions.Length, positions);
@@ -358,12 +357,8 @@ namespace LadaEngine
             centre = obj.centre;
 
             rad = (float)Math.Sqrt(obj.width * obj.width + obj.height * obj.height);
-            //rad = Misc.Len(centre, new FPos(_vertices[10], _vertices[11])); // This Rad should match all other rads because plane is rectangle shaped
-            // AB (bottom x top y) - centre
-            // vector starting from (0,0) presented with a pos
+
             FPos AB = new FPos(obj.width, obj.height);
-            // AC (bottom x bottom y) - centre
-            // vector starting from (0,0) presented with a pos
             FPos AC = new FPos(obj.width, -obj.height);
             this.rel_angles[0] = (float)Math.Atan2(AB.X, AB.Y);
             this.rel_angles[1] = (float)Math.Atan2(AC.X, AC.Y);

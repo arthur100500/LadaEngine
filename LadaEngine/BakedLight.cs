@@ -37,8 +37,8 @@ namespace LadaEngine
             GL.Uniform1(unilocs["texture_length"], t.grid_length);
             GL.Uniform1(unilocs["texture_width"], t.grid_width);
             GL.Uniform1(unilocs["map_array[0]"], t.map.Length, t.map);
-            GL.Uniform1(unilocs["height"], t.height);
-            GL.Uniform1(unilocs["width"], t.width);
+            GL.Uniform1(unilocs["height"], t.tm_height);
+            GL.Uniform1(unilocs["width"], t.tm_width);
 
             GL.DispatchCompute(resolution.X, resolution.Y, 1);
             GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
