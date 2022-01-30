@@ -10,14 +10,39 @@ namespace LadaEngine
     /// <summary>
     /// Adds light to a texture "light_map" once, then it can be used as a texture for baked light
     /// </summary>
-    public class BakedLight
+    internal class BakedLight
     {
         public Texture light_map;
         int light_generator;
         Dictionary<string, int> unilocs = new Dictionary<string, int>();
 
         // WARNING: This variable should not be very high, I am unsire if GPU can handle enourmous variables
-        Pos resolution = new Pos(1024, 1024);
+        Pos resolution = new Pos(1920, 1080);
+        /// <summary>
+        /// Adds light to a texture (for tilemaps)
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="colors"></param>
+        public void AddLightTM(float[] positions, float[] colors, Tilemap t)
+        {
+            light_map.Use(TextureUnit.Texture0);
+            GL.UseProgram(light_generator);
+
+            GL.Uniform1(unilocs["normal_map"], 1);
+            GL.Uniform1(unilocs["resolution_x"], resolution.X);
+            GL.Uniform1(unilocs["resolution_y"], resolution.Y);
+            GL.Uniform4(unilocs["light_colors"], colors[0], colors[1], colors[2], colors[3]);
+            GL.Uniform4(unilocs["light_position"], positions[0], positions[1], positions[2], positions[3]);
+
+            GL.Uniform1(unilocs["texture_length"], t.grid_length);
+            GL.Uniform1(unilocs["texture_width"], t.grid_width);
+            GL.Uniform1(unilocs["map_array[0]"], t.map.Length, t.map);
+            GL.Uniform1(unilocs["height"], t.height);
+            GL.Uniform1(unilocs["width"], t.width);
+
+            GL.DispatchCompute(resolution.X, resolution.Y, 1);
+            GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
+        }
         /// <summary>
         /// Adds light to a texture
         /// </summary>
@@ -37,13 +62,27 @@ namespace LadaEngine
             GL.DispatchCompute(resolution.X, resolution.Y, 1);
             GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
         }
+
+        public void ClearLights()
+        {
+            light_map.Use(TextureUnit.Texture0);
+            GL.UseProgram(light_generator);
+
+            GL.Uniform1(unilocs["normal_map"], 1);
+            // This parameter triggers condition in a shader
+            GL.Uniform1(unilocs["resolution_x"], -1);
+            GL.Uniform1(unilocs["resolution_y"], resolution.Y);
+
+            GL.DispatchCompute(resolution.X, resolution.Y, 1);
+            GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
+        }
         /// <summary>
         /// Prepare the class components to work
         /// </summary>
-        public void Load()
+        public void Load(string shader_origin)
         {
             CreateTexture();
-            CreateShader();
+            CreateShader(shader_origin);
         }
 
 
@@ -69,10 +108,10 @@ namespace LadaEngine
             light_map = new Texture(glHandle);
         }
 
-        private void CreateShader()
+        private void CreateShader(string shader_origin)
         {
             int light_generator_shader = GL.CreateShader(ShaderType.ComputeShader);
-            GL.ShaderSource(light_generator_shader, StandartShaders.light_gen);
+            GL.ShaderSource(light_generator_shader, shader_origin);
 
             GL.CompileShader(light_generator_shader);
             GL.GetShader(light_generator_shader, ShaderParameter.CompileStatus, out var code);

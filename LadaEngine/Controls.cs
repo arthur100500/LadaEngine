@@ -10,6 +10,7 @@ namespace LadaEngine
     public class Controls
     {
         private static List<Key> keys_pressed = new List<Key>();
+        private static List<MouseButton> mouse_pressed = new List<MouseButton>();
 
         /// <summary>
         /// Global object MouseState mouse
@@ -44,8 +45,27 @@ namespace LadaEngine
                 keys_pressed.Add(key);
                 return true;
             }
-            if(keys_pressed.Contains(key) && !keyboard.IsKeyDown(key))
+            if (keys_pressed.Contains(key) && !keyboard.IsKeyDown(key))
                 keys_pressed.Remove(key);
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the button was only pressed once
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>If button was pressed once</returns>
+        public static bool MouseButtonPressedOnce(MouseButton btn)
+        {
+            // first time
+            if (!mouse_pressed.Contains(btn) && mouse.IsButtonDown(btn))
+            {
+                mouse_pressed.Add(btn);
+                return true;
+            }
+            if (mouse_pressed.Contains(btn) && !mouse.IsButtonDown(btn))
+                mouse_pressed.Remove(btn);
 
             return false;
         }

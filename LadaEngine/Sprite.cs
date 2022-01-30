@@ -46,7 +46,7 @@ namespace LadaEngine
             this.shader = shader;
             quad = new Quad((float[])Misc.fullscreenverticies.Clone(), shader, texture, normal_map);
             lightManager = new BakedLight();
-            lightManager.Load();
+            lightManager.Load(StandartShaders.light_gen);
             quad.Load();
             quad._shader.SetInt("static_light", 2);
         }
@@ -111,6 +111,12 @@ namespace LadaEngine
         {
             quad.SetLightSources(positions, colors);
         }
-
+        /// <summary>
+        /// Deletes all the light sources rendered to a sprite
+        /// </summary>
+        public void ClearStaticLight()
+        {
+            lightManager.ClearLights();
+        }
     }
 }

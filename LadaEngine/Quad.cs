@@ -110,13 +110,7 @@ namespace LadaEngine
 
             if (supportsNormalMap)
                 _normal_map.Use(TextureUnit.Texture1);
-            if (textureloc < 0)
-                _texture.Use(TextureUnit.Texture0);
-            else
-            {
-                GL.ActiveTexture(TextureUnit.Texture0);
-                GL.BindTexture(TextureTarget.Texture2D, textureloc);
-            }
+            _texture.Use(TextureUnit.Texture0);
 
             _shader.Use();
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
