@@ -13,6 +13,8 @@ namespace LadaEngine
         /// If NonGLBased is used, all objects will have some global coordinate, not bound to screen coordinate. Light will automatically account for width, height, rotation and position of the object
         /// </summary>
         public static CoordinateMode coordinate_mode = CoordinateMode.NonGLBased;
+
+        public static bool full_debug = true;
     }
 
 

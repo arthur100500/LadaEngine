@@ -301,10 +301,10 @@ namespace LadaEngine
             _vertices[16] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[3]);
 
 
-            _vertices[1] /= Misc.screen_ratio;
-            _vertices[6] /= Misc.screen_ratio;
-            _vertices[11] /= Misc.screen_ratio;
-            _vertices[16] /= Misc.screen_ratio;
+            //_vertices[1] /= Misc.screen_ratio;
+            //_vertices[6] /= Misc.screen_ratio;
+            //_vertices[11] /= Misc.screen_ratio;
+            //_vertices[16] /= Misc.screen_ratio;
 
             rotation_angle = angle;
         }

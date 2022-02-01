@@ -11,13 +11,16 @@ namespace LadaEngine
 
 		internal static string light_gen = @"#version 430
 											layout(local_size_x = 1, local_size_y = 1) in;
-											layout(rgba32f, location = 0) uniform image2D light_map;
+											layout(rgba32f, location = 0, binding = 0) uniform image2D light_map;
 											uniform sampler2D normal_map;
 											uniform vec4 light_colors;
 											uniform vec4 light_position;
 
 											uniform int resolution_x;
 											uniform int resolution_y;
+											
+											uniform vec2 texture_size;
+											uniform float texture_rotation;
 
 											vec4 count_light(vec4 color_in, vec3 normal_in, vec2 texCoord){
 												vec4 result_light = vec4(vec3(0.0), 1.0);
@@ -26,6 +29,9 @@ namespace LadaEngine
 												float dist;
 
 												vec3 LightDir = vec3(light_position.xy - texCoord.xy, light_position.z);
+												// For rot mult by sin and cos
+												LightDir.x = LightDir.x / texture_size.x;
+												LightDir.y = LightDir.y / texture_size.y;
 												float D = length(LightDir);
 												vec3 N = normalize(normal_in.rgb / (1.0 + light_position.z));
 												vec3 L = normalize(LightDir);
@@ -48,10 +54,9 @@ namespace LadaEngine
 
 											  imageStore(light_map, pixel_coords, count_light(vec4(1.0), nm_color, texCoord) + imageLoad(light_map, pixel_coords));
 											}";
-
 		internal static string tm_light_gen = @"#version 430
 											layout(local_size_x = 1, local_size_y = 1) in;
-											layout(rgba32f, location = 0) uniform image2D light_map;
+											layout(rgba32f, location = 0, binding = 0) uniform image2D light_map;
 											uniform sampler2D normal_map;
 											uniform vec4 light_colors;
 											uniform vec4 light_position;
@@ -65,6 +70,9 @@ namespace LadaEngine
 											uniform int texture_length;
 											uniform int texture_width;
 
+											uniform vec2 texture_size;
+											uniform float texture_rotation;
+
 											vec4 count_light(vec4 color_in, vec3 normal_in, vec2 texCoord){
 												vec4 result_light = vec4(vec3(0.0), 1.0);
 												float dx;
@@ -72,6 +80,9 @@ namespace LadaEngine
 												float dist;
 
 												vec3 LightDir = vec3(light_position.xy - texCoord.xy, light_position.z);
+												// For rot mult by sin and cos
+												LightDir.x = LightDir.x / texture_size.x;
+												LightDir.y = LightDir.y / texture_size.y;
 												float D = length(LightDir);
 												vec3 N = normalize(normal_in.rgb / (1.0 + light_position.z));
 												vec3 L = normalize(LightDir);
@@ -131,6 +142,9 @@ namespace LadaEngine
 											uniform vec4[200] light_sources;
 											uniform vec4[200] light_sources_colors; 
 
+											uniform vec2 texture_size;
+											uniform float texture_rotation;
+
 											uniform vec4 ambient;
 
 											vec4 count_light(vec4 color_in, vec3 normal_in){
@@ -143,7 +157,8 @@ namespace LadaEngine
 													if (light_sources[i].w < 0.001) break;
 		
 													vec3 LightDir = vec3(light_sources[i].xy - texCoord.xy, light_sources[i].z);
-		
+													LightDir.x = LightDir.x / texture_size.x;
+													LightDir.y = LightDir.y / texture_size.y;
 													float D = length(LightDir);
 													vec3 N = normalize(normal_in.rgb / (1.0 + light_sources[i].z));
 													vec3 L = normalize(LightDir);
@@ -187,6 +202,9 @@ namespace LadaEngine
 											uniform vec4[200] light_sources;
 											uniform vec4[200] light_sources_colors; 
 
+											uniform vec2 texture_size;
+											uniform float texture_rotation;
+
 											uniform vec4 ambient;
 
 											vec4 count_light(vec4 color_in, vec3 normal_in){
@@ -195,9 +213,12 @@ namespace LadaEngine
 												float dy;
 												float dist;
 												for (int i = 0; i < 200; i++){
+
 													// w - density
 													if (light_sources[i].w < 0.001) break;	
 													vec3 LightDir = vec3(light_sources[i].xy - texCoord.xy, light_sources[i].z);
+													LightDir.x = LightDir.x / texture_size.x;
+													LightDir.y = LightDir.y / texture_size.y;
 													float D = length(LightDir);
 													vec3 N = normalize(normal_in.rgb / (1.0 + light_sources[i].z));
 													vec3 L = normalize(LightDir);
@@ -226,6 +247,7 @@ namespace LadaEngine
 	
 												outputColor = count_light(diffuse, normal);
 											}";
+		// ADD WIDTH HERE
 		private static string tm_normal_frag = @"#version 330
 
 out vec4 outputColor;
@@ -332,6 +354,9 @@ void main()
 											uniform int texture_length;
 											uniform int texture_width;
 
+											uniform vec2 texture_size;
+											uniform float texture_rotation;
+
 											uniform vec4 ambient;
 
 											vec4 count_light(vec4 color_in, vec3 normal_in){
@@ -343,6 +368,8 @@ void main()
 													// w - density
 													if (light_sources[i].w < 0.001) break;	
 													vec3 LightDir = vec3(light_sources[i].xy - texCoord.xy, light_sources[i].z);
+													LightDir.x = LightDir.x / texture_size.x;
+													LightDir.y = LightDir.y / texture_size.y;
 													float D = length(LightDir);
 													vec3 N = normalize(normal_in.rgb / (1.0 + light_sources[i].z));
 													vec3 L = normalize(LightDir);

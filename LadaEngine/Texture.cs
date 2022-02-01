@@ -89,6 +89,8 @@ namespace LadaEngine
         /// <param name="glHandle"></param>
         public Texture(int glHandle)
         {
+            if (GlobalOptions.full_debug)
+                Misc.Log("Texture " + Convert.ToString(Handle) + " created");
             Handle = glHandle;
         }
         /// <summary>
@@ -99,7 +101,9 @@ namespace LadaEngine
         {
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
-        }
+            if (GlobalOptions.full_debug)
+                Misc.Log("Texture " + Convert.ToString(Handle) + " loaded to slot " + Convert.ToString((int)unit - 33984));
+;        }
 
         public void Dispose()
         {

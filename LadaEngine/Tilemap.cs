@@ -19,7 +19,7 @@ namespace LadaEngine
         public Texture textures;
         public Texture normalMap;
 
-        private BakedLight lightManager;
+        public BakedLight lightManager;
 
         public int grid_length = 10;
         public int grid_width = 10;
@@ -77,6 +77,9 @@ namespace LadaEngine
             lightManager.Load(StandartShaders.tm_light_gen);
             quad.Load();
             UpdateMap();
+
+            if (GlobalOptions.full_debug)
+                Misc.Log("Tilemap loaded");
         }
 
 
@@ -92,7 +95,12 @@ namespace LadaEngine
                 shader.SetInt("height", tm_height);
                 shader.SetInt("texture_length", grid_length);
                 shader.SetInt("texture_width", grid_width);
-                shader.SetInt("static_light", 2);
+                if (lightManager != null)
+                {
+                    shader.SetInt("static_light", 2);
+                    shader.SetVector2("texture_size", new Vector2(width, height));
+                    shader.SetFloat("texture_rotation", rotation);
+                }
             }
             catch (Exception ex)
             {
@@ -104,11 +112,15 @@ namespace LadaEngine
         }
         public override void Render()
         {
+            if (GlobalOptions.full_debug)
+                Misc.Log("\n\n --- Tilemap render begin ---");
             if (lightManager != null)
             {
                 lightManager.light_map.Use(OpenTK.Graphics.OpenGL.TextureUnit.Texture2);
             }
             quad.Render();
+            if (GlobalOptions.full_debug)
+                Misc.Log(" --- Tilemap render end ---");
         }
         /// <summary>
         /// Adds static light to a pre-rendered texture
@@ -143,6 +155,7 @@ namespace LadaEngine
         }
         public void Rotate(float angle)
         {
+            rotation = angle;
             quad.rotate(angle);
         }
     }

@@ -10,7 +10,7 @@ namespace LadaEngine
     /// <summary>
     /// Wrapper clas to the Quad class
     /// </summary>
-    public class Sprite
+    public class Sprite : BaseObject
     {
         // Important
         private Quad quad;
@@ -20,7 +20,7 @@ namespace LadaEngine
         Texture texture = null;
         Texture normal_map = null;
 
-        BakedLight lightManager = null;
+        public BakedLight lightManager = null;
 
         /// <summary>
         /// Constructor for standart sprite, no dynamic light, no static light
@@ -57,6 +57,7 @@ namespace LadaEngine
         /// <param name="angle"></param>
         public void Rotate(float angle)
         {
+            rotation = angle;
             quad.rotate(angle);
         }
         /// <summary>
@@ -73,14 +74,16 @@ namespace LadaEngine
         /// <summary>
         /// Render the image (use load first)
         /// </summary>
-        public void Render()
+        public override void Render()
         {
-            if (normal_map != null)
-                normal_map.Use(OpenTK.Graphics.OpenGL.TextureUnit.Texture1);
+            if (GlobalOptions.full_debug)
+                Misc.Log("\n\n --- Sprite render begin ---");
             if (lightManager != null)
                 lightManager.light_map.Use(OpenTK.Graphics.OpenGL.TextureUnit.Texture2);
 
             quad.Render();
+            if (GlobalOptions.full_debug)
+                Misc.Log("--- Sprite render end --- \n\n");
         }
         /// <summary>
         /// Free the resources
@@ -96,14 +99,14 @@ namespace LadaEngine
         /// </summary>
         public void AddStaticLight(LightSource light)
         {
-            lightManager.AddLight(new float[] { light.X, light.Y, light.Z, light.Density }, light.Color);
+            lightManager.AddLight(new float[] { light.X, light.Y, light.Z, light.Density }, light.Color, this);
         }
         /// <summary>
         /// Adds static light to a pre-rendered texture
         /// </summary>
         public void AddStaticLight(float[] positions, float[]colors)
         {
-            lightManager.AddLight(positions, colors);
+            lightManager.AddLight(positions, colors, this);
         }
         /// <summary>
         /// Adds dynamic light (should be done once per frame)
@@ -122,6 +125,10 @@ namespace LadaEngine
         public void SetAmbient(float[] color)
         {
             quad._shader.SetVector4("ambient", new Vector4(color[0], color[1], color[2], color[3]));
+        }
+        public override void ReshapeVertexArray(FPos camera_position)
+        {
+            quad.ReshapeVertexArray(this, camera_position);
         }
     }
 }
