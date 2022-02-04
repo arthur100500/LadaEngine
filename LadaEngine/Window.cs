@@ -84,8 +84,8 @@ namespace LadaEngine
             Controls.mouse = MouseState;
             Controls.keyboard = KeyboardState;
 
-            Controls.cursor_position.X = 2 * (-Location.X + Controls.mouse.X - 8) / (float)Misc.window.Size.X;
-            Controls.cursor_position.Y = 2 * (-Location.Y + Controls.mouse.Y - 30) / (float)Misc.window.Size.Y;
+            Controls.cursor_position.X = 2 * (Controls.mouse.X) / (float)Misc.window.Size.X;
+            Controls.cursor_position.Y = 2 * (Controls.mouse.Y) / (float)Misc.window.Size.Y;
 
             Controls.control_direction.X = (Controls.keyboard.IsKeyDown(Keys.D) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Keys.A) ? 1 : 0);
             Controls.control_direction.Y = (Controls.keyboard.IsKeyDown(Keys.W) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Keys.S) ? 1 : 0);

@@ -9,108 +9,110 @@ namespace LadaEngine
 	public class StandartShaders
 	{
 
-		internal static string light_gen = @"#version 430
-											layout(local_size_x = 1, local_size_y = 1) in;
-											layout(rgba32f, location = 0) uniform image2D light_map;
-											uniform sampler2D normal_map;
-											uniform vec4 light_colors;
-											uniform vec4 light_position;
+		internal static string light_gen = @"
+#version 430
+layout(local_size_x = 1, local_size_y = 1) in;
+layout(rgba32f, location = 0) uniform image2D light_map;
+uniform sampler2D normal_map;
+uniform vec4 light_colors;
+uniform vec4 light_position;
 
-											uniform int resolution_x;
-											uniform int resolution_y;
+uniform int resolution_x;
+uniform int resolution_y;
 											
-											uniform vec2 texture_size;
-											uniform float texture_rotation;
+uniform vec2 texture_size;
+uniform float texture_rotation;
 
-											vec4 count_light(vec4 color_in, vec3 normal_in, vec2 texCoord){
-												vec4 result_light = vec4(vec3(0.0), 1.0);
-												float dx;
-												float dy;
-												float dist;
+vec4 count_light(vec4 color_in, vec3 normal_in, vec2 texCoord){
+	vec4 result_light = vec4(vec3(0.0), 1.0);
+	float dx;
+	float dy;
+	float dist;
 
-												vec3 LightDir = vec3(light_position.xy - texCoord.xy, light_position.z);
-												// For rot mult by sin and cos
-												LightDir.x = LightDir.x / texture_size.x;
-												LightDir.y = LightDir.y / texture_size.y;
-												float D = length(LightDir);
-												vec3 N = normalize(normal_in.rgb / (1.0 + light_position.z));
-												vec3 L = normalize(LightDir);
-												vec3 Diffuse = (light_colors.rgb * light_colors.a) * max(dot(N, L), 0.0);
-												vec3 Falloff = vec3(0.4, 3, 20);
-												float Attenuation = 1.0 / ( Falloff.x + (Falloff.y*D) + (Falloff.z*D*D) );
-												vec3 Intensity = Diffuse * Attenuation;
-												vec3 FinalColor = color_in.rgb * Intensity;
-												result_light += vec4(FinalColor, 0.0);
+	vec3 LightDir = vec3(light_position.xy - texCoord.xy, light_position.z);
+	// For rot mult by sin and cos
+	LightDir.x = LightDir.x / texture_size.x;
+	LightDir.y = LightDir.y / texture_size.y;
+	float D = length(LightDir);
+	vec3 N = normalize(normal_in.rgb / (1.0 + light_position.z));
+	vec3 L = normalize(LightDir);
+	vec3 Diffuse = (light_colors.rgb * light_colors.a) * max(dot(N, L), 0.0);
+	vec3 Falloff = vec3(0.4, 3, 20);
+	float Attenuation = 1.0 / ( Falloff.x + (Falloff.y*D) + (Falloff.z*D*D) );
+	vec3 Intensity = Diffuse * Attenuation;
+	vec3 FinalColor = color_in.rgb * Intensity;
+	result_light += vec4(FinalColor, 0.0);
 												
-												result_light.a = color_in.a;
-												return result_light;
-											}
+	result_light.a = color_in.a;
+	return result_light;
+}
 
 
-											void main(){
-											  ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
-											  vec2 texCoord = vec2(pixel_coords.x / float(resolution_x), pixel_coords.y / float(resolution_y));
-											  vec3 nm_color = texture(normal_map, texCoord).rgb * 2.0 - 1.0;
+void main(){
+	ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
+	vec2 texCoord = vec2(pixel_coords.x / float(resolution_x), pixel_coords.y / float(resolution_y));
+	vec3 nm_color = texture(normal_map, texCoord).rgb * 2.0 - 1.0;
 
-											  imageStore(light_map, pixel_coords, count_light(vec4(1.0), nm_color, texCoord) + imageLoad(light_map, pixel_coords));
-											}";
-		internal static string tm_light_gen = @"#version 430
-											layout(local_size_x = 1, local_size_y = 1) in;
-											layout(rgba32f, location = 0) uniform image2D light_map;
-											uniform sampler2D normal_map;
-											uniform vec4 light_colors;
-											uniform vec4 light_position;
+	imageStore(light_map, pixel_coords, count_light(vec4(1.0), nm_color, texCoord) + imageLoad(light_map, pixel_coords));
+}";
+		internal static string tm_light_gen = @"
+#version 430
+layout(local_size_x = 1, local_size_y = 1) in;
+layout(rgba32f, location = 0) uniform image2D light_map;
+uniform sampler2D normal_map;
+uniform vec4 light_colors;
+uniform vec4 light_position;
 
-											uniform int resolution_x;
-											uniform int resolution_y;
+uniform int resolution_x;
+uniform int resolution_y;
 
-											uniform int[10000] map_array;
-											uniform int height;
-											uniform int width;
-											uniform int texture_length;
-											uniform int texture_width;
+uniform int[10000] map_array;
+uniform int height;
+uniform int width;
+uniform int texture_length;
+uniform int texture_width;
 
-											uniform vec2 texture_size;
-											uniform float texture_rotation;
+uniform vec2 texture_size;
+uniform float texture_rotation;
 
-											vec4 count_light(vec4 color_in, vec3 normal_in, vec2 texCoord){
-												vec4 result_light = vec4(vec3(0.0), 1.0);
-												float dx;
-												float dy;
-												float dist;
+vec4 count_light(vec4 color_in, vec3 normal_in, vec2 texCoord){
+	vec4 result_light = vec4(vec3(0.0), 1.0);
+	float dx;
+	float dy;
+	float dist;
 
-												vec3 LightDir = vec3(light_position.xy - texCoord.xy, light_position.z);
-												// For rot mult by sin and cos
-												LightDir.x = LightDir.x / texture_size.x;
-												LightDir.y = LightDir.y / texture_size.y;
-												float D = length(LightDir);
-												vec3 N = normalize(normal_in.rgb / (1.0 + light_position.z));
-												vec3 L = normalize(LightDir);
-												vec3 Diffuse = (light_colors.rgb * light_colors.a) * max(dot(N, L), 0.0);
-												vec3 Falloff = vec3(0.4, 3, 20);
-												float Attenuation = 1.0 / ( Falloff.x + (Falloff.y*D) + (Falloff.z*D*D) );
-												vec3 Intensity = Diffuse * Attenuation;
-												vec3 FinalColor = color_in.rgb * Intensity;
-												result_light += vec4(FinalColor, 0.0);
+	vec3 LightDir = vec3(light_position.xy - texCoord.xy, light_position.z);
+	// For rot mult by sin and cos
+	LightDir.x = LightDir.x / texture_size.x;
+	LightDir.y = LightDir.y / texture_size.y;
+	float D = length(LightDir);
+	vec3 N = normalize(normal_in.rgb / (1.0 + light_position.z));
+	vec3 L = normalize(LightDir);
+	vec3 Diffuse = (light_colors.rgb * light_colors.a) * max(dot(N, L), 0.0);
+	vec3 Falloff = vec3(0.4, 3, 20);
+	float Attenuation = 1.0 / ( Falloff.x + (Falloff.y*D) + (Falloff.z*D*D) );
+	vec3 Intensity = Diffuse * Attenuation;
+	vec3 FinalColor = color_in.rgb * Intensity;
+	result_light += vec4(FinalColor, 0.0);
 												
-												result_light.a = color_in.a;
-												return result_light;
-											}
+	result_light.a = color_in.a;
+	return result_light;
+}
 
 
-											void main(){
-											  ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
-											  vec2 texCoord = vec2(pixel_coords.x / float(resolution_x), pixel_coords.y / float(resolution_y));
+void main(){
+	ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
+	vec2 texCoord = vec2(pixel_coords.x / float(resolution_x), pixel_coords.y / float(resolution_y));
 											  
-											  int type = map_array[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
-											  vec2 newTexCoord = vec2(texCoord.x * width, texCoord.y * height);
-												newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
-												newTexCoord.y = fract((texture_length - type / texture_length + fract(newTexCoord.y) - 1) / texture_width);
+	int type = map_array[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
+	vec2 newTexCoord = vec2(texCoord.x * width, texCoord.y * height);
+	newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
+	newTexCoord.y = fract((texture_length - type / texture_length + fract(newTexCoord.y) - 1) / texture_width);
 
-											  vec3 nm_color = texture(normal_map, newTexCoord).rgb * 2.0 - 1.0;
+	vec3 nm_color = texture(normal_map, newTexCoord).rgb * 2.0 - 1.0;
 
-											  imageStore(light_map, pixel_coords, count_light(vec4(1.0), nm_color, texCoord) + imageLoad(light_map, pixel_coords));
-											}";
+	imageStore(light_map, pixel_coords, count_light(vec4(1.0), nm_color, texCoord) + imageLoad(light_map, pixel_coords));
+}";
 		private static string standart_vert = @"#version 330 core
                                         layout(location = 0) in vec3 aPosition;
                                         layout(location = 1) in vec2 aTexCoord;

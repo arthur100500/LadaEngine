@@ -14,7 +14,7 @@ namespace LadaEngine
         /// </summary>
         public static CoordinateMode coordinate_mode = CoordinateMode.NonGLBased;
 
-        public static bool full_debug = true;
+        public static bool full_debug = false;
     }
 
 
