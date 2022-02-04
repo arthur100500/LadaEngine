@@ -33,8 +33,8 @@ namespace LadaEngine
                 Misc.Log("\n\n--- Baked light counting (TileMap) ---");
             light_generator.Use();
 
-            light_map.Use(TextureUnit.Texture0);
-
+            //light_map.Use(TextureUnit.Texture0);
+            GL.BindImageTexture(0, light_map.Handle, 0, false, 0, TextureAccess.ReadWrite, SizedInternalFormat.Rgba32f);
 
             light_generator.SetInt("light_map", 0);
             light_generator.SetInt("normal_map", 1);
@@ -77,7 +77,8 @@ namespace LadaEngine
             if (GlobalOptions.full_debug)
                 Misc.Log("\n\n--- Baked light counting (Sprite) ---");
             light_generator.Use();
-            light_map.Use(TextureUnit.Texture0);
+            //light_map.Use(TextureUnit.Texture0);
+            GL.BindImageTexture(0, light_map.Handle, 0, false, 0, TextureAccess.ReadWrite, SizedInternalFormat.Rgba32f);
             light_generator.SetInt("light_map", 0);
 
             light_generator.SetInt("normal_map", 1);
