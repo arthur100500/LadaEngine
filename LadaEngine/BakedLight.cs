@@ -1,5 +1,6 @@
 ﻿using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +27,14 @@ namespace LadaEngine
         /// <param name="colors"></param>
         public void AddLightTM(float[] positions, float[] colors, Tilemap t)
         {
+            
+
             if (GlobalOptions.full_debug)
                 Misc.Log("\n\n--- Baked light counting (TileMap) ---");
+            light_generator.Use();
 
             light_map.Use(TextureUnit.Texture0);
-            light_generator.Use();
+
 
             light_generator.SetInt("light_map", 0);
             light_generator.SetInt("normal_map", 1);
@@ -51,7 +55,11 @@ namespace LadaEngine
             //GL.Uniform1(unilocs["texture_rotation"], t.rotation);
             if (GlobalOptions.full_debug)
                 Misc.Log("Shader + " + Convert.ToString(light_generator) + " computed");
+
+
+            light_map.Use(TextureUnit.Texture0);
             GL.DispatchCompute(resolution.X, resolution.Y, 1);
+
             GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
 
             if (GlobalOptions.full_debug)
@@ -64,12 +72,14 @@ namespace LadaEngine
         /// <param name="colors"></param>
         public void AddLight(float[] positions, float[] colors, Sprite s)
         {
+            
+
             if (GlobalOptions.full_debug)
                 Misc.Log("\n\n--- Baked light counting (Sprite) ---");
-            light_map.Use(TextureUnit.Texture0);
             light_generator.Use();
-
+            light_map.Use(TextureUnit.Texture0);
             light_generator.SetInt("light_map", 0);
+
             light_generator.SetInt("normal_map", 1);
             light_generator.SetInt("resolution_x", resolution.X);
             light_generator.SetInt("resolution_y", resolution.Y);

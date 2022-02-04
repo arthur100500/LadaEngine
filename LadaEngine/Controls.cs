@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK.Input;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace LadaEngine
 {
     public class Controls
     {
-        private static List<Key> keys_pressed = new List<Key>();
+        private static List<Keys> keys_pressed = new List<Keys>();
         private static List<MouseButton> mouse_pressed = new List<MouseButton>();
 
         /// <summary>
@@ -37,7 +32,7 @@ namespace LadaEngine
         /// </summary>
         /// <param name="key"></param>
         /// <returns>If button was pressed once</returns>
-        public static bool ButtonPressedOnce(Key key)
+        public static bool ButtonPressedOnce(Keys key)
         {
             // first time
             if (!keys_pressed.Contains(key) && keyboard.IsKeyDown(key))

@@ -1,9 +1,6 @@
 ﻿using OpenTK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenTK.Mathematics;
+using OpenTK.Graphics.OpenGL4;
 
 namespace LadaEngine
 {
@@ -79,7 +76,7 @@ namespace LadaEngine
             if (GlobalOptions.full_debug)
                 Misc.Log("\n\n --- Sprite render begin ---");
             if (lightManager != null)
-                lightManager.light_map.Use(OpenTK.Graphics.OpenGL.TextureUnit.Texture2);
+                lightManager.light_map.Use(TextureUnit.Texture2);
 
             quad.Render();
             if (GlobalOptions.full_debug)
@@ -99,6 +96,7 @@ namespace LadaEngine
         /// </summary>
         public void AddStaticLight(LightSource light)
         {
+            normal_map.Use(TextureUnit.Texture1);
             lightManager.AddLight(new float[] { light.X, light.Y, light.Z, light.Density }, light.Color, this);
         }
         /// <summary>
@@ -106,6 +104,7 @@ namespace LadaEngine
         /// </summary>
         public void AddStaticLight(float[] positions, float[]colors)
         {
+            normal_map.Use(TextureUnit.Texture1);
             lightManager.AddLight(positions, colors, this);
         }
         /// <summary>

@@ -4,6 +4,8 @@ using System.IO;
 using System.Text;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK;
+using OpenTK.Mathematics;
+
 
 namespace LadaEngine
 {
@@ -116,7 +118,7 @@ namespace LadaEngine
                 Misc.Log("\n\n --- Tilemap render begin ---");
             if (lightManager != null)
             {
-                lightManager.light_map.Use(OpenTK.Graphics.OpenGL.TextureUnit.Texture2);
+                lightManager.light_map.Use(TextureUnit.Texture2);
             }
             quad.Render();
             if (GlobalOptions.full_debug)
@@ -127,6 +129,7 @@ namespace LadaEngine
         /// </summary>
         public void AddStaticLight(LightSource light)
         {
+            normalMap.Use(TextureUnit.Texture1);
             lightManager.AddLightTM(new float[] { light.X, light.Y, light.Z, light.Density }, light.Color, this);
         }
         /// <summary>
@@ -134,6 +137,7 @@ namespace LadaEngine
         /// </summary>
         public void AddStaticLight(float[] positions, float[] colors)
         {
+            normalMap.Use(TextureUnit.Texture1);
             lightManager.AddLightTM(positions, colors, this);
         }
         public void SetLightSources(float[] positions, float[] colors)

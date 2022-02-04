@@ -11,7 +11,7 @@ namespace LadaEngine
 
 		internal static string light_gen = @"#version 430
 											layout(local_size_x = 1, local_size_y = 1) in;
-											layout(rgba32f, location = 0, binding = 0) uniform image2D light_map;
+											layout(rgba32f, location = 0) uniform image2D light_map;
 											uniform sampler2D normal_map;
 											uniform vec4 light_colors;
 											uniform vec4 light_position;
@@ -56,7 +56,7 @@ namespace LadaEngine
 											}";
 		internal static string tm_light_gen = @"#version 430
 											layout(local_size_x = 1, local_size_y = 1) in;
-											layout(rgba32f, location = 0, binding = 0) uniform image2D light_map;
+											layout(rgba32f, location = 0) uniform image2D light_map;
 											uniform sampler2D normal_map;
 											uniform vec4 light_colors;
 											uniform vec4 light_position;

@@ -1,12 +1,10 @@
-﻿using OpenTK.Graphics.OpenGL;
-using OpenTK;
-using OpenTK.Graphics;
-using System;
-using System.Collections.Generic;
-using OpenTK.Input;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading;
+﻿using OpenTK.Windowing.Desktop;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Graphics.OpenGL4;
+using GL = OpenTK.Graphics.OpenGL4.GL;
+
 
 namespace LadaEngine
 {
@@ -36,24 +34,38 @@ namespace LadaEngine
         /// <param name="width">Width of the window</param>
         /// <param name="height">Height of the window</param>
         /// <param name="title">Window title</param>
-        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
+        public static Window Create(int width, int height, string title)
         {
-            GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.AlphaTest);
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            var nativeWindowSettings = new NativeWindowSettings()
+            {
+                Size = new Vector2i(width, height),
+                Title = title,
+                // This is needed to run on macos
+                Flags = ContextFlags.ForwardCompatible,
+            };
 
-            Misc.window = this;
+            Window wnd = new Window(GameWindowSettings.Default, nativeWindowSettings);
+
+            Misc.window = wnd;
+            return wnd;
         }
 
-        protected override void OnLoad(EventArgs e)
+        public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        {
+            GL.Enable(EnableCap.Texture2D);
+            //GL.Enable(EnableCap.AlphaTest);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+        }
+
+        protected override void OnLoad()
         {
             GL.ClearColor(0.3f, 0.2f, 0.2f, 0.0f);
 
             // Load Delegate
             Load?.Invoke();
 
-            base.OnLoad(e);
+            base.OnLoad();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -69,16 +81,16 @@ namespace LadaEngine
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            Controls.mouse = Mouse.GetCursorState();
-            Controls.keyboard = Keyboard.GetState();
+            Controls.mouse = MouseState;
+            Controls.keyboard = KeyboardState;
 
-            Controls.cursor_position.X = 2 * (-Location.X + Controls.mouse.X - 8) / (float)Misc.window.Width;
-            Controls.cursor_position.Y = 2 * (-Location.Y + Controls.mouse.Y - 30) / (float)Misc.window.Height;
+            Controls.cursor_position.X = 2 * (-Location.X + Controls.mouse.X - 8) / (float)Misc.window.Size.X;
+            Controls.cursor_position.Y = 2 * (-Location.Y + Controls.mouse.Y - 30) / (float)Misc.window.Size.Y;
 
-            Controls.control_direction.X = (Controls.keyboard.IsKeyDown(Key.D) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Key.A) ? 1 : 0);
-            Controls.control_direction.Y = (Controls.keyboard.IsKeyDown(Key.W) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Key.S) ? 1 : 0);
+            Controls.control_direction.X = (Controls.keyboard.IsKeyDown(Keys.D) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Keys.A) ? 1 : 0);
+            Controls.control_direction.Y = (Controls.keyboard.IsKeyDown(Keys.W) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Keys.S) ? 1 : 0);
 
-            if (Controls.keyboard.IsKeyDown(Key.F11))
+            if (Controls.keyboard.IsKeyDown(Keys.F11))
             {
                 if (this.WindowBorder != WindowBorder.Hidden)
                 {
@@ -98,11 +110,11 @@ namespace LadaEngine
             base.OnUpdateFrame(e);
         }
 
-        protected override void OnResize(EventArgs e)
+        protected override void OnResize(ResizeEventArgs e)
         {
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Size.X, Size.Y);
 
-            Misc.screen_ratio = Height / (float)Width;
+            Misc.screen_ratio = Size.X / (float)Size.Y;
 
             // Resize delegate
             Resize?.Invoke();

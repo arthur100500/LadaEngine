@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace LadaEngine
 {
@@ -166,8 +166,8 @@ namespace LadaEngine
         public float[] GetRelativeCursorPosition(Window window, int x, int y)
         {
             //position relative to window
-            float xpos = -1 + (-window.Location.X + x - 8) / (float)window.Width * 2;
-            float ypos = 1 - (-window.Location.Y + y - 30) / (float)window.Height * 2;
+            float xpos = -1 + (-window.Location.X + x - 8) / (float)window.Size.X * 2;
+            float ypos = 1 - (-window.Location.Y + y - 30) / (float)window.Size.Y * 2;
             //position relative toQuad
             //zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
             xpos = 1f - (_vertices[0] - xpos) / (_vertices[0] - _vertices[15]);
@@ -177,8 +177,8 @@ namespace LadaEngine
 
         public float[] GetZoomRelativeCursorPosition(Window window, int x, int y)
         {
-            float xpos = -1 + (-window.Location.X + x - 8) / (float)window.Width * 2;
-            float ypos = 1 - (-window.Location.Y + y - 30) / (float)window.Height * 2;
+            float xpos = -1 + (-window.Location.X + x - 8) / (float)window.Size.X * 2;
+            float ypos = 1 - (-window.Location.Y + y - 30) / (float)window.Size.Y * 2;
             xpos = 1f - (_vertices[0] - xpos) / (_vertices[0] - _vertices[15]);
             xpos = _vertices[13] - xpos * (_vertices[13] - _vertices[3]);
             ypos = 1f - (_vertices[1] - ypos) / (_vertices[1] - _vertices[6]);
