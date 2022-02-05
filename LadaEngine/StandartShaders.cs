@@ -28,11 +28,14 @@ vec4 count_light(vec4 color_in, vec3 normal_in, vec2 texCoord){
 	float dx;
 	float dy;
 	float dist;
+	
 
 	vec3 LightDir = vec3(light_position.xy - texCoord.xy, light_position.z);
+
 	// For rot mult by sin and cos
-	LightDir.x = LightDir.x / texture_size.x;
-	LightDir.y = LightDir.y / texture_size.y;
+	LightDir.x = LightDir.x * texture_size.x;
+	LightDir.y = LightDir.y * texture_size.y;
+
 	float D = length(LightDir);
 	vec3 N = normalize(normal_in.rgb / (1.0 + light_position.z));
 	vec3 L = normalize(LightDir);
@@ -52,6 +55,9 @@ void main(){
 	ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
 	vec2 texCoord = vec2(pixel_coords.x / float(resolution_x), pixel_coords.y / float(resolution_y));
 	vec3 nm_color = texture(normal_map, texCoord).rgb * 2.0 - 1.0;
+	
+	if(resolution_x == -1)
+		imageStore(light_map, pixel_coords, vec4(vec3(0.0), 1.0));
 
 	imageStore(light_map, pixel_coords, count_light(vec4(1.0), nm_color, texCoord) + imageLoad(light_map, pixel_coords));
 }";
@@ -82,9 +88,11 @@ vec4 count_light(vec4 color_in, vec3 normal_in, vec2 texCoord){
 	float dist;
 
 	vec3 LightDir = vec3(light_position.xy - texCoord.xy, light_position.z);
+	
 	// For rot mult by sin and cos
-	LightDir.x = LightDir.x / texture_size.x;
-	LightDir.y = LightDir.y / texture_size.y;
+	LightDir.x = LightDir.x * texture_size.x;
+	LightDir.y = LightDir.y * texture_size.y;
+
 	float D = length(LightDir);
 	vec3 N = normalize(normal_in.rgb / (1.0 + light_position.z));
 	vec3 L = normalize(LightDir);
@@ -110,6 +118,8 @@ void main(){
 	newTexCoord.y = fract((texture_length - type / texture_length + fract(newTexCoord.y) - 1) / texture_width);
 
 	vec3 nm_color = texture(normal_map, newTexCoord).rgb * 2.0 - 1.0;
+	if(resolution_x == -1)
+		imageStore(light_map, pixel_coords, vec4(vec3(0.0), 1.0));
 
 	imageStore(light_map, pixel_coords, count_light(vec4(1.0), nm_color, texCoord) + imageLoad(light_map, pixel_coords));
 }";

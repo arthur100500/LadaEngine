@@ -94,11 +94,20 @@ namespace LadaEngine
             return new FPos(obj1.X + obj2.X, obj1.Y + obj2.Y);
         }
 
+        public static FPos operator -(FPos obj1, FPos obj2)
+        {
+            return new FPos(obj1.X - obj2.X, obj1.Y - obj2.Y);
+        }
+
         public static FPos operator *(FPos obj1, float another)
         {
             return new FPos(obj1.X * another, obj1.Y * another);
         }
 
+        public static FPos operator *(float another, FPos obj1)
+        {
+            return new FPos(obj1.X * another, obj1.Y * another);
+        }
 
         public string ToString()
         {

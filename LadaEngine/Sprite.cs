@@ -82,6 +82,18 @@ namespace LadaEngine
             if (GlobalOptions.full_debug)
                 Misc.Log("--- Sprite render end --- \n\n");
         }
+
+        public override void Render(FPos cam)
+        {
+            if (GlobalOptions.full_debug)
+                Misc.Log("\n\n --- Sprite render begin ---");
+            if (lightManager != null)
+                lightManager.light_map.Use(TextureUnit.Texture2);
+
+            quad.Render(cam);
+            if (GlobalOptions.full_debug)
+                Misc.Log("--- Sprite render end --- \n\n");
+        }
         /// <summary>
         /// Free the resources
         /// </summary>
@@ -97,7 +109,23 @@ namespace LadaEngine
         public void AddStaticLight(LightSource light)
         {
             normal_map.Use(TextureUnit.Texture1);
+            light.X -= centre.X;
+            light.Y -= centre.Y;
+
+            light.X /= width;
+            light.Y /= height;
+
+            light.X = (light.X + 1) / 2;
+            light.Y = (light.Y + 1) / 2;
             lightManager.AddLight(new float[] { light.X, light.Y, light.Z, light.Density }, light.Color, this);
+            light.X = (light.X * 2) - 1;
+            light.Y = (light.Y * 2) - 1;
+
+            light.X *= width;
+            light.Y *= height;
+
+            light.X += centre.X;
+            light.Y += centre.Y;
         }
         /// <summary>
         /// Adds static light to a pre-rendered texture
@@ -105,15 +133,29 @@ namespace LadaEngine
         public void AddStaticLight(float[] positions, float[]colors)
         {
             normal_map.Use(TextureUnit.Texture1);
+            // Transforming
+            positions[0] -= centre.X;
+            positions[1] -= centre.Y;
+
+            positions[0] /= width;
+            positions[1] /= height;
+
+            positions[0] = (positions[0] + 1) / 2;
+            positions[1] = (positions[1] + 1) / 2;
             lightManager.AddLight(positions, colors, this);
+            // Restoring to original transformation
+            positions[0] = (positions[0] * 2) - 1;
+            positions[1] = (positions[1] * 2) - 1;
+
+            positions[0] *= width;
+            positions[1] *= height;
+
+            positions[0] += centre.X;
+            positions[1] += centre.Y;
         }
         /// <summary>
         /// Adds dynamic light (should be done once per frame)
         /// </summary>
-        public void AddDynamicLight(float[] positions, float[] colors)
-        {
-            quad.SetLightSources(positions, colors);
-        }
         /// <summary>
         /// Deletes all the light sources rendered to a sprite
         /// </summary>
@@ -124,6 +166,10 @@ namespace LadaEngine
         public void SetAmbient(float[] color)
         {
             quad._shader.SetVector4("ambient", new Vector4(color[0], color[1], color[2], color[3]));
+        }
+        public void SetLightSources(float[] positions, float[] colors)
+        {
+            quad.SetLightSources(positions, colors);
         }
         public override void ReshapeVertexArray(FPos camera_position)
         {

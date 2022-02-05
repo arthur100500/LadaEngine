@@ -19,13 +19,13 @@ namespace LadaEngine
         Dictionary<string, int> unilocs = new Dictionary<string, int>();
 
         // WARNING: This variable should not be very high, I am unsire if GPU can handle enourmous variables
-        Pos resolution = new Pos(512, 512);
+        public Pos resolution = new Pos(512, 512);
         /// <summary>
         /// Adds light to a texture (for tilemaps)
         /// </summary>
         /// <param name="positions"></param>
         /// <param name="colors"></param>
-        public void AddLightTM(float[] positions, float[] colors, Tilemap t)
+        public void AddLight(float[] positions, float[] colors, Tilemap t)
         {
             
 
@@ -33,7 +33,6 @@ namespace LadaEngine
                 Misc.Log("\n\n--- Baked light counting (TileMap) ---");
             light_generator.Use();
 
-            //light_map.Use(TextureUnit.Texture0);
             GL.BindImageTexture(0, light_map.Handle, 0, false, 0, TextureAccess.ReadWrite, SizedInternalFormat.Rgba32f);
 
             light_generator.SetInt("light_map", 0);
@@ -77,7 +76,6 @@ namespace LadaEngine
             if (GlobalOptions.full_debug)
                 Misc.Log("\n\n--- Baked light counting (Sprite) ---");
             light_generator.Use();
-            //light_map.Use(TextureUnit.Texture0);
             GL.BindImageTexture(0, light_map.Handle, 0, false, 0, TextureAccess.ReadWrite, SizedInternalFormat.Rgba32f);
             light_generator.SetInt("light_map", 0);
 
@@ -99,14 +97,13 @@ namespace LadaEngine
 
         public void ClearLights()
         {
-            light_map.Use(TextureUnit.Texture2);
             light_generator.Use();
-
+            GL.BindImageTexture(0, light_map.Handle, 0, false, 0, TextureAccess.ReadWrite, SizedInternalFormat.Rgba32f);
             light_generator.SetInt("light_map", 0);
             light_generator.SetInt("normal_map", 1);
             // This parameter triggers condition in a shader
             light_generator.SetInt("resolution_x", -1);
-            light_generator.SetInt("resolution_x", -1);
+            light_generator.SetInt("resolution_y", -1);
 
             GL.DispatchCompute(resolution.X, resolution.Y, 1);
             GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);

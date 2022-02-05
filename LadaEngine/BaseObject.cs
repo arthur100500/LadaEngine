@@ -28,5 +28,6 @@ namespace LadaEngine
         // To be implemented in any other child
         public abstract void ReshapeVertexArray(FPos camera_position);
         public abstract void Render();
+        public abstract void Render(FPos cam);
     }
 }

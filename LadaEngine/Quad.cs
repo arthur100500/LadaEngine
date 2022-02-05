@@ -103,6 +103,36 @@ namespace LadaEngine
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
         }
 
+        public void Render(FPos cam)
+        {
+            // Uninitialized quad has unpredictible render
+            if (!is_initialised)
+            {
+                is_initialised = true;
+                Misc.Log("QUAD " + Convert.ToString(_texture.Handle) + " WAS NOT INITALISED");
+            }
+            for(int i = 0; i < 4; i++)
+            {
+                _vertices[5 * i + 1] = _vertices[5 * i + 1] - cam.Y;
+                _vertices[5 * i] = _vertices[5 * i] - cam.X;
+            }
+
+            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices,
+                BufferUsageHint.DynamicDraw);
+
+            if (supportsNormalMap)
+                _normal_map.Use(TextureUnit.Texture1);
+            _texture.Use(TextureUnit.Texture0);
+
+            _shader.Use();
+            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+
+            for (int i = 0; i < 4; i++)
+            {
+                _vertices[5 * i + 1] = _vertices[5 * i + 1] + cam.Y;
+                _vertices[5 * i] = _vertices[5 * i] + cam.X;
+            }
+        }
 
         public void Load()
         {
@@ -351,15 +381,14 @@ namespace LadaEngine
             _shader.SetVector4Group(_shader.GetUniformLocation("light_sources_colors[0]"), colors.Length, colors);
             _shader.SetVector4Group(_shader.GetUniformLocation("light_sources[0]"), positions.Length, positions);
         }
-
         public void ReshapeVertexArray(BaseObject obj, FPos cam)
         {
             centre = obj.centre;
 
             rad = (float)Math.Sqrt(obj.width * obj.width + obj.height * obj.height);
 
-            FPos AB = new FPos(obj.width, obj.height);
-            FPos AC = new FPos(obj.width, -obj.height);
+            FPos AB = new FPos(obj.height, obj.width);
+            FPos AC = new FPos(obj.height, -obj.width);
             this.rel_angles[0] = (float)Math.Atan2(AB.X, AB.Y);
             this.rel_angles[1] = (float)Math.Atan2(AC.X, AC.Y);
             this.rel_angles[2] = (float)Math.Atan2(AB.X, AB.Y) + (float)Math.PI;

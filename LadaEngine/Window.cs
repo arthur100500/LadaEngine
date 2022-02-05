@@ -90,6 +90,9 @@ namespace LadaEngine
             Controls.control_direction.X = (Controls.keyboard.IsKeyDown(Keys.D) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Keys.A) ? 1 : 0);
             Controls.control_direction.Y = (Controls.keyboard.IsKeyDown(Keys.W) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Keys.S) ? 1 : 0);
 
+            Controls.control_direction_f.X = (Controls.keyboard.IsKeyDown(Keys.D) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Keys.A) ? 1 : 0);
+            Controls.control_direction_f.Y = (Controls.keyboard.IsKeyDown(Keys.W) ? 1 : 0) - (Controls.keyboard.IsKeyDown(Keys.S) ? 1 : 0);
+
             if (Controls.keyboard.IsKeyDown(Keys.F11))
             {
                 if (this.WindowBorder != WindowBorder.Hidden)

@@ -28,6 +28,11 @@ namespace LadaEngine
         public static Pos control_direction = new Pos(0, 0);
 
         /// <summary>
+        /// Vector of player movement tracked with WASD keys (but in float)
+        /// </summary>
+        public static FPos control_direction_f = new FPos(0, 0);
+
+        /// <summary>
         /// Check if the button was only pressed once
         /// </summary>
         /// <param name="key"></param>
