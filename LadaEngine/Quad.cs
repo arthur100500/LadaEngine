@@ -16,9 +16,7 @@ namespace LadaEngine
         private int _elementBufferObject;
         private int _vertexBufferObject;
 
-        public float[] zoom_info;
-        public float zoom_coeff = 0.2f;
-        public float[] zoom_coord;
+
         private float[] _vertices { get; set; }
         public Shader _shader;
         public Texture _texture;
@@ -26,7 +24,6 @@ namespace LadaEngine
         public Texture _normal_map = null;
 
         public int textureloc = -1;
-        public bool zoomable = true;
 
         private float[] rel_angles = new float[] { 0f, (float)Math.PI / 2, (float)Math.PI, 3 * (float)Math.PI / 2 };
         private float rotation_angle = 0;
@@ -44,7 +41,6 @@ namespace LadaEngine
             _vertices = coordinates;
             _shader = shader;
             _texture = texture;
-            zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
             ReshapeWithCoords(-coordinates[0], coordinates[1], -coordinates[10], coordinates[11]);
         }
 
@@ -55,7 +51,6 @@ namespace LadaEngine
             _texture = texture;
             _normal_map = normalMap;
             supportsNormalMap = true;
-            zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
             ReshapeWithCoords(-coordinates[0], coordinates[1], -coordinates[10], coordinates[11]);
         }
         public void ReshapeWithCoords(float top_x, float top_y, float bottom_x, float bottom_y)
@@ -76,12 +71,11 @@ namespace LadaEngine
             // AC (bottom x bottom y) - centre
             // vector starting from (0,0) presented with a pos
             FPos AC = new FPos(bottom_x - centre.X, bottom_y - centre.Y);
-            this.rel_angles[0] = (float)Math.Atan2(AB.X, AB.Y);
-            this.rel_angles[1] = (float)Math.Atan2(AC.X, AC.Y);
-            this.rel_angles[2] = (float)Math.Atan2(AB.X, AB.Y) + (float)Math.PI;
-            this.rel_angles[3] = (float)Math.Atan2(AC.X, AC.Y) + (float)Math.PI;
+            rel_angles[0] = (float)Math.Atan2(AB.X, AB.Y);
+            rel_angles[1] = (float)Math.Atan2(AC.X, AC.Y);
+            rel_angles[2] = (float)Math.Atan2(AB.X, AB.Y) + (float)Math.PI;
+            rel_angles[3] = (float)Math.Atan2(AC.X, AC.Y) + (float)Math.PI;
 
-            zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
         }
 
         public void Render()
@@ -185,16 +179,6 @@ namespace LadaEngine
             GL.DeleteBuffer(_vertexBufferObject);
             GL.DeleteBuffer(_elementBufferObject);
             GL.DeleteVertexArray(_vertexArrayObject);
-
-            GL.DeleteProgram(_shader.Handle);
-            if (textureloc < 0)
-            {
-                GL.DeleteTexture(_texture.Handle);
-            }
-            else
-            {
-                GL.DeleteTexture(textureloc);
-            }
         }
 
         public float[] GetRelativeCursorPosition(Window window, int x, int y)
@@ -202,21 +186,10 @@ namespace LadaEngine
             //position relative to window
             float xpos = -1 + (-window.Location.X + x - 8) / (float)window.Size.X * 2;
             float ypos = 1 - (-window.Location.Y + y - 30) / (float)window.Size.Y * 2;
-            //position relative toQuad
-            //zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
-            xpos = 1f - (_vertices[0] - xpos) / (_vertices[0] - _vertices[15]);
-            ypos = 1f - (_vertices[1] - ypos) / (_vertices[1] - _vertices[6]);
-            return new float[] { xpos, ypos };
-        }
 
-        public float[] GetZoomRelativeCursorPosition(Window window, int x, int y)
-        {
-            float xpos = -1 + (-window.Location.X + x - 8) / (float)window.Size.X * 2;
-            float ypos = 1 - (-window.Location.Y + y - 30) / (float)window.Size.Y * 2;
+            //position relative to Quad
             xpos = 1f - (_vertices[0] - xpos) / (_vertices[0] - _vertices[15]);
-            xpos = _vertices[13] - xpos * (_vertices[13] - _vertices[3]);
             ypos = 1f - (_vertices[1] - ypos) / (_vertices[1] - _vertices[6]);
-            ypos = _vertices[9] - ypos * (_vertices[9] - _vertices[4]);
             return new float[] { xpos, ypos };
         }
 
@@ -237,91 +210,6 @@ namespace LadaEngine
             centre.Y += y_amount;
         }
 
-        public void ZoomIn(float[] cursor_coords)
-        {
-            zoom_coeff *= 0.99f;
-            _vertices = new float[]
-            {
-                _vertices[0], _vertices[1], _vertices[2],
-                Zoom_Normalize((_vertices[3] + cursor_coords[0] * zoom_coeff) / (1f + zoom_coeff)),
-                Zoom_Normalize((_vertices[4] + cursor_coords[1] * zoom_coeff) / (1f + zoom_coeff)),
-                _vertices[5], _vertices[6], _vertices[7],
-                Zoom_Normalize((_vertices[8] + cursor_coords[0] * zoom_coeff) / (1f + zoom_coeff)),
-                Zoom_Normalize((_vertices[9] + cursor_coords[1] * zoom_coeff) / (1f + zoom_coeff)),
-                _vertices[10], _vertices[11], _vertices[12],
-                Zoom_Normalize((_vertices[13] + cursor_coords[0] * zoom_coeff) / (1f + zoom_coeff)),
-                Zoom_Normalize((_vertices[14] + cursor_coords[1] * zoom_coeff) / (1f + zoom_coeff)),
-                _vertices[15], _vertices[16], _vertices[17],
-                Zoom_Normalize((_vertices[18] + cursor_coords[0] * zoom_coeff) / (1f + zoom_coeff)),
-                Zoom_Normalize((_vertices[19] + cursor_coords[1] * zoom_coeff) / (1f + zoom_coeff))
-            };
-            zoom_info = new float[]
-            {
-                (zoom_info[0] + cursor_coords[0] * zoom_coeff) / (1f + zoom_coeff),
-                (zoom_info[1] + cursor_coords[0] * zoom_coeff) / (1f + zoom_coeff), zoom_info[2], zoom_info[3]
-            };
-        }
-
-        public void ZoomOut(float[] cursor_coords)
-        {
-            zoom_coeff /= 0.99f;
-            _vertices = new float[]
-            {
-                _vertices[0], _vertices[1], _vertices[2],
-                Zoom_Normalize((_vertices[3] - cursor_coords[0] * zoom_coeff) / (1f - zoom_coeff)),
-                Zoom_Normalize((_vertices[4] - cursor_coords[1] * zoom_coeff) / (1f - zoom_coeff)),
-                _vertices[5], _vertices[6], _vertices[7],
-                Zoom_Normalize((_vertices[8] - cursor_coords[0] * zoom_coeff) / (1f - zoom_coeff)),
-                Zoom_Normalize((_vertices[9] - cursor_coords[1] * zoom_coeff) / (1f - zoom_coeff)),
-                _vertices[10], _vertices[11], _vertices[12],
-                Zoom_Normalize((_vertices[13] - cursor_coords[0] * zoom_coeff) / (1f - zoom_coeff)),
-                Zoom_Normalize((_vertices[14] - cursor_coords[1] * zoom_coeff) / (1f - zoom_coeff)),
-                _vertices[15], _vertices[16], _vertices[17],
-                Zoom_Normalize((_vertices[18] - cursor_coords[0] * zoom_coeff) / (1f - zoom_coeff)),
-                Zoom_Normalize((_vertices[19] - cursor_coords[1] * zoom_coeff) / (1f - zoom_coeff))
-            };
-            zoom_info = new float[]
-            {
-                (zoom_info[0] + cursor_coords[0] * zoom_coeff) / (1f + zoom_coeff),
-                (zoom_info[1] + cursor_coords[0] * zoom_coeff) / (1f + zoom_coeff), zoom_info[2], zoom_info[3]
-            };
-        }
-
-        public void ZoomReset()
-        {
-            zoom_coeff = 0.2f;
-            _vertices = new float[]
-            {
-                _vertices[0], _vertices[1], _vertices[2], 1f, 1f,
-                _vertices[5], _vertices[6], _vertices[7], 1f, 0f,
-                _vertices[10], _vertices[11], _vertices[12], 0f, 0f,
-                _vertices[15], _vertices[16], _vertices[17], 0f, 1f
-            };
-            zoom_info = new float[] { _vertices[0], _vertices[15], _vertices[1], _vertices[6] };
-        }
-
-        public void ZoomDrag(float[] cursor_coords1, float[] cursor_coords2)
-        {
-            float[] diff = new float[] { cursor_coords2[0] - cursor_coords1[0], cursor_coords2[1] - cursor_coords1[1] };
-            if (IB10(_vertices[3] + diff[0]) && IB10(_vertices[8] + diff[0]) && IB10(_vertices[13] + diff[0]) &&
-                IB10(_vertices[18] + diff[0]))
-                _vertices = new float[]
-                {
-                    _vertices[0], _vertices[1], _vertices[2], _vertices[3] + diff[0], _vertices[4],
-                    _vertices[5], _vertices[6], _vertices[7], _vertices[8] + diff[0], _vertices[9],
-                    _vertices[10], _vertices[11], _vertices[12], _vertices[13] + diff[0], _vertices[14],
-                    _vertices[15], _vertices[16], _vertices[17], _vertices[18] + diff[0], _vertices[19]
-                };
-            if (IB10(_vertices[4] + diff[0]) && IB10(_vertices[9] + diff[0]) && IB10(_vertices[14] + diff[0]) &&
-                IB10(_vertices[19] + diff[0]))
-                _vertices = new float[]
-                {
-                    _vertices[0], _vertices[1], _vertices[2], _vertices[3], _vertices[4] + diff[1],
-                    _vertices[5], _vertices[6], _vertices[7], _vertices[8], _vertices[9] + diff[1],
-                    _vertices[10], _vertices[11], _vertices[12], _vertices[13], _vertices[14] + diff[1],
-                    _vertices[15], _vertices[16], _vertices[17], _vertices[18], _vertices[19] + diff[1]
-                };
-        }
         public void rotate(float angle)
         {
             angle = (float)Math.PI - angle;
@@ -334,39 +222,8 @@ namespace LadaEngine
             _vertices[15] = centre.X + rad * (float)Math.Cos(angle + rel_angles[3]);
             _vertices[16] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[3]);
 
-
-            //_vertices[1] /= Misc.screen_ratio;
-            //_vertices[6] /= Misc.screen_ratio;
-            //_vertices[11] /= Misc.screen_ratio;
-            //_vertices[16] /= Misc.screen_ratio;
-
             rotation_angle = angle;
         }
-
-        public void rotate_nc(float angle)
-        {
-            _vertices[0] = centre.X + rad * (float)Math.Cos(angle + rel_angles[0]);
-            _vertices[1] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[0]);
-            _vertices[5] = centre.X + rad * (float)Math.Cos(angle + rel_angles[1]);
-            _vertices[6] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[1]);
-            _vertices[10] = centre.X + rad * (float)Math.Cos(angle + rel_angles[3]);
-            _vertices[11] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[3]);
-            _vertices[15] = centre.X + rad * (float)Math.Cos(angle + rel_angles[2]);
-            _vertices[16] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[2]);
-
-
-            rotation_angle = angle;
-        }
-        private float Zoom_Normalize(float number)
-        {
-            return Math.Min(Math.Max(0f, number), 1f);
-        }
-
-        private bool IB10(float n)
-        {
-            return (n <= 1.0f && n >= 0.0f);
-        }
-
         public void SetLightSources(float[] positions, float[] colors)
         {
             for (int i = 0; i < positions.Length; i += 4)
