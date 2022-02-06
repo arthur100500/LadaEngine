@@ -99,10 +99,15 @@ namespace LadaEngine
         /// <param name="unit"></param>
         public void Use(TextureUnit unit)
         {
-            GL.ActiveTexture(unit);
-            GL.BindTexture(TextureTarget.Texture2D, Handle);
-            if (GlobalOptions.full_debug)
-                Misc.Log("Texture " + Convert.ToString(Handle) + " loaded to slot " + Convert.ToString((int)unit - 33984));
+            if (Handle != GlobalOptions.lastTextureUsed[unit - TextureUnit.Texture0])
+            {
+                GL.ActiveTexture(unit);
+                GL.BindTexture(TextureTarget.Texture2D, Handle);
+                if (GlobalOptions.full_debug)
+                    Misc.Log("Texture " + Convert.ToString(Handle) + " loaded to slot " + Convert.ToString((int)unit - 33984));
+
+                GlobalOptions.lastTextureUsed[unit - TextureUnit.Texture0] = Handle;
+            }
 ;        }
 
         public void Dispose()

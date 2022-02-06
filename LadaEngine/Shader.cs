@@ -187,11 +187,13 @@ namespace LadaEngine
         /// </summary>
         public void Use()
         {
-            if (GlobalOptions.full_debug)
+            if (Handle != GlobalOptions.lastShaderUsed)
             {
-                Misc.Log("Shader '" + Convert.ToString(Handle) + "' used");
+                if (GlobalOptions.full_debug)
+                    Misc.Log("Shader '" + Convert.ToString(Handle) + "' used");
+                GL.UseProgram(Handle);
+                GlobalOptions.lastShaderUsed =  Handle;
             }
-            GL.UseProgram(Handle);
         }
 
 
@@ -209,7 +211,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.Uniform1(_uniformLocations[name], data);
                 if (GlobalOptions.full_debug)
                     Misc.Log("Shader '" + Convert.ToString(Handle) + "' set int '" + name + "' to " + Convert.ToString(data));
@@ -229,7 +231,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.Uniform1(_uniformLocations[name], count, data);
                 if (GlobalOptions.full_debug)
                     Misc.Log("Shader '" + Convert.ToString(Handle) + "' set int[] '" + name + "' to " + Convert.ToString(data));
@@ -251,7 +253,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.Uniform1(location, count, data);
                 if (GlobalOptions.full_debug)
                     Misc.Log("Shader '" + Convert.ToString(Handle) + "' set int loc(" + Convert.ToString(location) + ") to " + Convert.ToString(data));
@@ -271,7 +273,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.Uniform1(_uniformLocations[name], data);
                 if (GlobalOptions.full_debug)
                     Misc.Log("Shader '" + Convert.ToString(Handle) + "' set float '" + name + "' to " + Convert.ToString(data));
@@ -296,7 +298,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.UniformMatrix4(_uniformLocations[name], true, ref data);
             }
             catch (Exception e)
@@ -314,7 +316,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.Uniform3(_uniformLocations[name], data);
             }
             catch (Exception e)
@@ -333,7 +335,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.Uniform4(position, count, data);
                 if (GlobalOptions.full_debug)
                     Misc.Log("Shader '" + Convert.ToString(Handle) + "' set vec4[] loc(" + Convert.ToString(position) + ")");
@@ -353,7 +355,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.Uniform2(_uniformLocations[name], data);
                 if (GlobalOptions.full_debug)
                     Misc.Log("Shader '" + Convert.ToString(Handle) + "' set vec2 '" + name + "' to vec2(" + Convert.ToString(data.X) + " " + Convert.ToString(data.Y) + ")");
@@ -373,7 +375,7 @@ namespace LadaEngine
         {
             try
             {
-                GL.UseProgram(Handle);
+                Use();
                 GL.Uniform4(_uniformLocations[name], data);
 
                 if (GlobalOptions.full_debug)

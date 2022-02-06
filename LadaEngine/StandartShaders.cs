@@ -415,8 +415,10 @@ void main()
 
 		public static Shader STANDART_SHADER = new Shader(standart_vert, standart_frag, 0);
 		public static Shader STANDART_SHADER_NM = new Shader(standart_vert, standart_nm, 0);
+		public static Shader STANDART_SHADER_NM_SL = new Shader(standart_vert, standart_nm_sl, 0);
 		public static Shader TILEMAP_SHADER = new Shader(standart_vert, tm_default, 0);
 		public static Shader TILEMAP_SHADER_NM = new Shader(standart_vert, tm_normal_frag, 0);
+		public static Shader TILEMAP_SHADER_NM_SL = new Shader(standart_vert, tm_nm_sl, 0);
 
 		public static Shader GenStandartShader() { return new Shader(standart_vert, standart_frag, 0); }
 		public static Shader GenStandartShaderNM() { return new Shader(standart_vert, standart_nm, 0); }

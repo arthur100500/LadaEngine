@@ -14,7 +14,15 @@ namespace LadaEngine
         /// </summary>
         public static CoordinateMode coordinate_mode = CoordinateMode.NonGLBased;
 
-        public static bool full_debug = false;
+        // These are used for optimisation in order to minimize the state changes
+        internal static int lastShaderUsed = -1;
+        internal static int[] lastTextureUsed = new int[] {
+            -1, -1, -1, -1,
+            -1, -1, -1, -1,
+            -1, -1, -1, -1,
+            -1, -1, -1, -1 };
+
+        public static bool full_debug = true;
     }
 
 
