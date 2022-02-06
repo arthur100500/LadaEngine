@@ -70,8 +70,8 @@ namespace LadaEngine
             // Rotation constants
             centre = new FPos((bottom_x + top_x) / 2, (bottom_y + top_y) / 2);
             rad = Misc.Len(centre, new FPos(bottom_x, bottom_y)); // This Rad should match all other rads because plane is rectangle shaped
-                                                                 // AB (bottom x top y) - centre
-                                                                 // vector starting from (0,0) presented with a pos
+                                                                  // AB (bottom x top y) - centre
+                                                                  // vector starting from (0,0) presented with a pos
             FPos AB = new FPos(bottom_x - centre.X, top_y - centre.Y);
             // AC (bottom x bottom y) - centre
             // vector starting from (0,0) presented with a pos
@@ -92,40 +92,44 @@ namespace LadaEngine
                 is_initialised = true;
                 Misc.Log("QUAD " + Convert.ToString(_texture.Handle) + " WAS NOT INITALISED");
             }
+            // No render if quad is off screen
+            if (!CheckBounds())
+                return;
+
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices,
                 BufferUsageHint.DynamicDraw);
 
             if (supportsNormalMap)
                 _normal_map.Use(TextureUnit.Texture1);
             _texture.Use(TextureUnit.Texture0);
-
             _shader.Use();
+
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+        }
+
+        private bool CheckBounds()
+        {
+            if (_vertices[0] < -1 && _vertices[10] < -1)
+                return false;
+            if (_vertices[0] > 1 && _vertices[10] > 1)
+                return false;
+            if (_vertices[1] < -1 && _vertices[11] < -1)
+                return false;
+            if (_vertices[1] > 1 && _vertices[11] > 1)
+                return false;
+            return true;
         }
 
         public void Render(FPos cam)
         {
-            // Uninitialized quad has unpredictible render
-            if (!is_initialised)
-            {
-                is_initialised = true;
-                Misc.Log("QUAD " + Convert.ToString(_texture.Handle) + " WAS NOT INITALISED");
-            }
-            for(int i = 0; i < 4; i++)
+
+            for (int i = 0; i < 4; i++)
             {
                 _vertices[5 * i + 1] = _vertices[5 * i + 1] - cam.Y;
                 _vertices[5 * i] = _vertices[5 * i] - cam.X;
             }
 
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices,
-                BufferUsageHint.DynamicDraw);
-
-            if (supportsNormalMap)
-                _normal_map.Use(TextureUnit.Texture1);
-            _texture.Use(TextureUnit.Texture0);
-
-            _shader.Use();
-            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            Render();
 
             for (int i = 0; i < 4; i++)
             {
