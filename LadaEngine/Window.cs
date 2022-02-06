@@ -15,6 +15,10 @@ namespace LadaEngine
         public delegate void UpdateFrameDelegate();
         public event UpdateFrameDelegate Update;
 
+        // Fixed Update event
+        public delegate void FixedUpdateFrameDelegate();
+        public event UpdateFrameDelegate FixedUpdate;
+
         // Render event
         public delegate void RenderFrameDelegate();
         public event RenderFrameDelegate Render;
@@ -53,7 +57,6 @@ namespace LadaEngine
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
         {
             GL.Enable(EnableCap.Texture2D);
-            //GL.Enable(EnableCap.AlphaTest);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         }
@@ -65,6 +68,14 @@ namespace LadaEngine
             // Load Delegate
             Load?.Invoke();
 
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    FixedUpdate?.Invoke();
+                    Thread.Sleep(13);
+                }
+            }).Start();
             base.OnLoad();
         }
 
