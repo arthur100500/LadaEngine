@@ -22,7 +22,7 @@ namespace LadaEngine
             -1, -1, -1, -1,
             -1, -1, -1, -1 };
 
-        public static bool full_debug = true;
+        public static bool full_debug = false;
     }
 
 

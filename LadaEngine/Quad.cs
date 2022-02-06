@@ -78,6 +78,25 @@ namespace LadaEngine
 
         }
 
+        internal bool CheckBounds(FPos cam)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                _vertices[5 * i + 1] = _vertices[5 * i + 1] - cam.Y;
+                _vertices[5 * i] = _vertices[5 * i] - cam.X;
+            }
+
+            bool to_return = CheckBounds();
+
+            for (int i = 0; i < 4; i++)
+            {
+                _vertices[5 * i + 1] = _vertices[5 * i + 1] + cam.Y;
+                _vertices[5 * i] = _vertices[5 * i] + cam.X;
+            }
+
+            return to_return;
+        }
+
         public void Render()
         {
             // Uninitialized quad has unpredictible render
@@ -101,15 +120,15 @@ namespace LadaEngine
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
         }
 
-        private bool CheckBounds()
+        internal bool CheckBounds()
         {
-            if (_vertices[0] < -1 && _vertices[10] < -1)
+            if (_vertices[0] < -1 && _vertices[10] < -1 && _vertices[5] < -1 && _vertices[15] < -1)
                 return false;
-            if (_vertices[0] > 1 && _vertices[10] > 1)
+            if (_vertices[0] > 1 && _vertices[10] > 1 && _vertices[5] > 1 && _vertices[15] > 1)
                 return false;
-            if (_vertices[1] < -1 && _vertices[11] < -1)
+            if (_vertices[1] < -1 && _vertices[11] < -1 && _vertices[6] < -1 && _vertices[16] < -1)
                 return false;
-            if (_vertices[1] > 1 && _vertices[11] > 1)
+            if (_vertices[1] > 1 && _vertices[11] > 1 && _vertices[6] > 1 && _vertices[16] > 1)
                 return false;
             return true;
         }
@@ -250,10 +269,10 @@ namespace LadaEngine
 
             FPos AB = new FPos(obj.height, obj.width);
             FPos AC = new FPos(obj.height, -obj.width);
-            this.rel_angles[0] = (float)Math.Atan2(AB.X, AB.Y);
-            this.rel_angles[1] = (float)Math.Atan2(AC.X, AC.Y);
-            this.rel_angles[2] = (float)Math.Atan2(AB.X, AB.Y) + (float)Math.PI;
-            this.rel_angles[3] = (float)Math.Atan2(AC.X, AC.Y) + (float)Math.PI;
+            rel_angles[0] = (float)Math.Atan2(AB.X, AB.Y);
+            rel_angles[1] = (float)Math.Atan2(AC.X, AC.Y);
+            rel_angles[2] = (float)Math.Atan2(AB.X, AB.Y) + (float)Math.PI;
+            rel_angles[3] = (float)Math.Atan2(AC.X, AC.Y) + (float)Math.PI;
 
             rotate(rotation_angle);
         }

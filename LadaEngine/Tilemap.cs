@@ -119,8 +119,8 @@ namespace LadaEngine
         public override void Render()
         {
             if (GlobalOptions.full_debug)
-                Misc.Log("\n\n --- Tilemap render begin ---");
-            if (lightManager != null)
+                Misc.Log("--- Tilemap render begin ---");
+            if (lightManager != null && quad.CheckBounds())
             {
                 lightManager.light_map.Use(TextureUnit.Texture2);
             }
@@ -133,8 +133,8 @@ namespace LadaEngine
         public override void Render(FPos cam)
         {
             if (GlobalOptions.full_debug)
-                Misc.Log("\n\n --- Tilemap render begin ---");
-            if (lightManager != null)
+                Misc.Log("--- Tilemap render begin ---");
+            if (lightManager != null && quad.CheckBounds(cam))
             {
                 lightManager.light_map.Use(TextureUnit.Texture2);
             }

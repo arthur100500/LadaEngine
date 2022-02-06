@@ -70,12 +70,16 @@ namespace LadaEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            if (GlobalOptions.full_debug)
+                Misc.Log("---- Frame begin ----");
             GL.Clear(ClearBufferMask.ColorBufferBit);
             // Render delegate
             Render?.Invoke();
 
             SwapBuffers();
             base.OnRenderFrame(e);
+            if (GlobalOptions.full_debug)
+                Misc.Log("---- Frame end ----");
         }
 
 
@@ -115,15 +119,13 @@ namespace LadaEngine
 
         protected override void OnResize(ResizeEventArgs e)
         {
+            base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
 
             Misc.screen_ratio = Size.X / (float)Size.Y;
 
             // Resize delegate
             Resize?.Invoke();
-
-
-            base.OnResize(e);
         }
     }
 }

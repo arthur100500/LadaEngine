@@ -74,25 +74,27 @@ namespace LadaEngine
         public override void Render()
         {
             if (GlobalOptions.full_debug)
-                Misc.Log("\n\n --- Sprite render begin ---");
-            if (lightManager != null)
+                Misc.Log("--- Sprite render begin ---");
+
+
+            if (lightManager != null && quad.CheckBounds())
                 lightManager.light_map.Use(TextureUnit.Texture2);
 
             quad.Render();
             if (GlobalOptions.full_debug)
-                Misc.Log("--- Sprite render end --- \n\n");
+                Misc.Log("--- Sprite render end ---");
         }
 
         public override void Render(FPos cam)
         {
             if (GlobalOptions.full_debug)
-                Misc.Log("\n\n --- Sprite render begin ---");
-            if (lightManager != null)
+                Misc.Log("--- Sprite render begin ---");
+            if (lightManager != null && quad.CheckBounds(cam))
                 lightManager.light_map.Use(TextureUnit.Texture2);
 
             quad.Render(cam);
             if (GlobalOptions.full_debug)
-                Misc.Log("--- Sprite render end --- \n\n");
+                Misc.Log("--- Sprite render end ---");
         }
         /// <summary>
         /// Free the resources
