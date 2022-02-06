@@ -76,11 +76,12 @@ namespace LadaEngine
             {
                 quad = new Quad(Misc.fullscreenverticies, shader, textures, normal_map);
                 quad.supportsNormalMap = true;
-            }
+            }   
             else{
                 quad = new Quad(Misc.fullscreenverticies, shader, textures);
             }
-            lightManager.Load(StandartShaders.tm_light_gen);
+            if (lightManager != null)
+                lightManager.Load(StandartShaders.tm_light_gen);
             quad.Load();
             UpdateMap();
 
