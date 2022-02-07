@@ -124,7 +124,7 @@ void main(){
 
 	imageStore(light_map, pixel_coords, count_light(vec4(1.0), nm_color, texCoord) + imageLoad(light_map, pixel_coords));
 }";
-		private static string standart_vert = @"#version 330 core
+		public static readonly string standart_vert = @"#version 330 core
                                         layout(location = 0) in vec3 aPosition;
                                         layout(location = 1) in vec2 aTexCoord;
                                         out vec2 texCoord;
@@ -135,7 +135,7 @@ void main(){
 
                                             gl_Position = vec4(aPosition, 1.0);
                                         }";
-		private static string standart_frag = @"#version 330
+		public static readonly string standart_frag = @"#version 330
                                         out vec4 outputColor;
                                         in vec2 texCoord;
                                         uniform sampler2D texture0;
@@ -143,7 +143,7 @@ void main(){
                                         {
 	                                        outputColor = texture(texture0, texCoord);
                                         }";
-		private static string standart_nm = @"#version 330
+		public static readonly string standart_nm = @"#version 330
 
 											out vec4 outputColor;
 
@@ -202,7 +202,7 @@ void main(){
 	
 												outputColor = count_light(diffuse, normal);
 											}";
-		private static string standart_nm_sl = @"#version 330
+		public static readonly string standart_nm_sl = @"#version 330
 
 											out vec4 outputColor;
 
@@ -261,7 +261,7 @@ void main(){
 												outputColor = count_light(diffuse, normal);
 											}";
 		// ADD WIDTH HERE
-		private static string tm_normal_frag = @"#version 330
+		public static readonly string tm_normal_frag = @"#version 330
 
 out vec4 outputColor;
 
@@ -324,7 +324,7 @@ void main()
 	
 	outputColor = count_light(diffuse, normal);
 }";
-		private static string tm_default = @"#version 330
+		public static readonly string tm_default = @"#version 330
 
 									out vec4 outputColor;
 
@@ -352,7 +352,7 @@ void main()
 	
 										outputColor = texture(texture0, newTexCoord);
 									}";
-		private static string tm_nm_sl = @"#version 330
+		public static readonly string tm_nm_sl = @"#version 330
 											out vec4 outputColor;
 
 											in vec2 texCoord;

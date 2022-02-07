@@ -10,10 +10,10 @@ namespace LadaEngine
     public class Sprite : BaseObject
     {
         // Important
-        private Quad quad;
+        internal Quad quad;
         private Shader shader;
 
-        // Not so important
+        // Optional
         Texture texture = null;
         Texture normal_map = null;
 
@@ -31,6 +31,10 @@ namespace LadaEngine
             quad.Load();
         }
 
+        public void SetShader(Shader shader)
+        {
+            quad._shader = shader;
+        }
         /// <summary>
         /// Constructor for standart sprite, shader can be chosen
         /// </summary>

@@ -65,8 +65,7 @@ namespace LadaEngine
         {
             GL.ClearColor(0.3f, 0.2f, 0.2f, 0.0f);
 
-            // Load Delegate
-            Load?.Invoke();
+            PostProcessing.Load(new Pos(1920, 1080), StandartShaders.GenStandartShader());
 
             new Thread(() =>
             {
@@ -77,6 +76,9 @@ namespace LadaEngine
                 }
             }).Start();
             base.OnLoad();
+
+            // Load Delegate
+            Load?.Invoke();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -133,7 +135,12 @@ namespace LadaEngine
             base.OnResize(e);
             GL.Viewport(0, 0, Size.X, Size.Y);
 
+
             Misc.screen_ratio = Size.X / (float)Size.Y;
+
+            float x_dim = 2 * 1920 / (float)Size.X - 1;
+            float y_dim = 2 * 1080 / (float)Size.Y - 1;
+            PostProcessing.sprite.quad.ReshapeWithCoords(-x_dim, y_dim, 1, -1);
 
             // Resize delegate
             Resize?.Invoke();
