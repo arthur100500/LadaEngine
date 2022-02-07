@@ -260,7 +260,6 @@ void main(){
 	
 												outputColor = count_light(diffuse, normal);
 											}";
-		// ADD WIDTH HERE
 		public static readonly string tm_normal_frag = @"#version 330
 
 out vec4 outputColor;
@@ -420,6 +419,24 @@ void main()
 	
 												outputColor = count_light(diffuse, normal);
 											}";
+		public static readonly string animated_standart = @"
+									#version 330
+									out vec4 outputColor;
+									in vec2 texCoord;
+									uniform sampler2D texture0;
+
+									uniform int state;
+									uniform int texture_length;
+									uniform int texture_width;
+
+									void main()
+									{
+										vec2 newTexCoord = vec2(texCoord.x, texCoord.y);
+										newTexCoord.x = fract((state % texture_length + fract(newTexCoord.x)) / texture_length);
+										newTexCoord.y = fract((texture_length - state / texture_length + fract(newTexCoord.y) - 1) / texture_width);
+	
+										outputColor = texture(texture0, newTexCoord);
+									}";
 
 		public static Shader STANDART_SHADER = new Shader(standart_vert, standart_frag, 0);
 		public static Shader STANDART_SHADER_NM = new Shader(standart_vert, standart_nm, 0);
@@ -427,6 +444,7 @@ void main()
 		public static Shader TILEMAP_SHADER = new Shader(standart_vert, tm_default, 0);
 		public static Shader TILEMAP_SHADER_NM = new Shader(standart_vert, tm_normal_frag, 0);
 		public static Shader TILEMAP_SHADER_NM_SL = new Shader(standart_vert, tm_nm_sl, 0);
+		public static Shader ANIMATED_SHADER = new Shader(standart_vert, animated_standart, 0);
 		internal static Shader STANDART_BAKED_GEN = CreateShader(light_gen);
 		internal static Shader TM_BAKED_GEN = CreateShader(tm_light_gen);
 		public static Shader GenStandartShader() { return new Shader(standart_vert, standart_frag, 0); }
@@ -435,7 +453,7 @@ void main()
 		public static Shader GenTilemapShader() { return new Shader(standart_vert, tm_default, 0); }
 		public static Shader GenTilemapShaderNM() { return new Shader(standart_vert, tm_normal_frag, 0); }
 		public static Shader GenTilemapShaderNMSL() { return new Shader(standart_vert, tm_nm_sl, 0); }
-
+		public static Shader GenAnimatedShader() { return new Shader(standart_vert, animated_standart, 0); }
 		private static Shader CreateShader(string shader_origin)
 		{
 			int light_generator_id;
@@ -464,6 +482,5 @@ void main()
 
 			return to_return;
 		}
-
 	}
 }
