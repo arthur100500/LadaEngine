@@ -73,7 +73,7 @@ namespace LadaEngine
                 while (true)
                 {
                     FixedUpdate?.Invoke();
-                    Thread.Sleep(13);
+                    Thread.Sleep(4);
                 }
             }).Start();
             base.OnLoad();
