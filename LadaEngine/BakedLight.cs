@@ -16,7 +16,6 @@ namespace LadaEngine
     {
         public Texture light_map;
         Shader light_generator;
-        Dictionary<string, int> unilocs = new Dictionary<string, int>();
 
         // WARNING: This variable should not be very high, I am unsire if GPU can handle enourmous variables
         public Pos resolution = new Pos(512, 512);
@@ -114,7 +113,10 @@ namespace LadaEngine
         public void Load(string shader_origin)
         {
             CreateTexture();
-            CreateShader(shader_origin);
+            if (shader_origin == StandartShaders.light_gen)
+                light_generator = StandartShaders.STANDART_BAKED_GEN;
+            if (shader_origin == StandartShaders.tm_light_gen)
+                light_generator = StandartShaders.TM_BAKED_GEN;
         }
 
 
@@ -141,39 +143,6 @@ namespace LadaEngine
             light_map = new Texture(glHandle);
         }
 
-        private void CreateShader(string shader_origin)
-        {
-            int light_generator_id;
-            int light_generator_shader = GL.CreateShader(ShaderType.ComputeShader);
-            GL.ShaderSource(light_generator_shader, shader_origin);
 
-            GL.CompileShader(light_generator_shader);
-            GL.GetShader(light_generator_shader, ShaderParameter.CompileStatus, out var code);
-            if (code != (int)All.True)
-            {
-                var infoLog = GL.GetShaderInfoLog(light_generator_shader);
-                Misc.PrintShaderError(StandartShaders.light_gen, infoLog);
-                throw new Exception($"Error occurred whilst compiling Shader({light_generator_shader}).\n\n{infoLog}");
-            }
-
-            light_generator_id = GL.CreateProgram();
-            GL.AttachShader(light_generator_id, light_generator_shader);
-            GL.LinkProgram(light_generator_id);
-            GL.GetProgram(light_generator_id, GetProgramParameterName.LinkStatus, out var c2ode);
-            if (c2ode != (int)All.True) throw new Exception($"Error occurred whilst linking Program({light_generator_id})");
-            GL.GetProgram(light_generator_id, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
-
-            for (var i = 0; i < numberOfUniforms; i++)
-            {
-                var key = GL.GetActiveUniform(light_generator_id, i, out _, out _);
-                var location = GL.GetUniformLocation(light_generator_id, key);
-                unilocs.Add(key, location);
-            }
-
-            GL.DetachShader(light_generator_id, light_generator_shader);
-            GL.DeleteShader(light_generator_shader);
-
-            light_generator = new Shader(light_generator_id);
-        }
     }
 }

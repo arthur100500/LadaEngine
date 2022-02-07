@@ -20,7 +20,7 @@ namespace LadaEngine
         /// <summary>
         /// Dictionary of string uniforms
         /// </summary>
-        private readonly Dictionary<string, int> _uniformLocations;
+        public Dictionary<string, int> _uniformLocations { get; internal set; }
         internal Shader(int programHandle)
         {
             Handle = programHandle;

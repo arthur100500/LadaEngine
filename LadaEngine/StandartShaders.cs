@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK.Graphics.OpenGL4;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -419,13 +420,43 @@ void main()
 		public static Shader TILEMAP_SHADER = new Shader(standart_vert, tm_default, 0);
 		public static Shader TILEMAP_SHADER_NM = new Shader(standart_vert, tm_normal_frag, 0);
 		public static Shader TILEMAP_SHADER_NM_SL = new Shader(standart_vert, tm_nm_sl, 0);
-
+		internal static Shader STANDART_BAKED_GEN = CreateShader(light_gen);
+		internal static Shader TM_BAKED_GEN = CreateShader(tm_light_gen);
 		public static Shader GenStandartShader() { return new Shader(standart_vert, standart_frag, 0); }
 		public static Shader GenStandartShaderNM() { return new Shader(standart_vert, standart_nm, 0); }
 		public static Shader GenStandartShaderNMSL() { return new Shader(standart_vert, standart_nm_sl, 0); }
 		public static Shader GenTilemapShader() { return new Shader(standart_vert, tm_default, 0); }
 		public static Shader GenTilemapShaderNM() { return new Shader(standart_vert, tm_normal_frag, 0); }
 		public static Shader GenTilemapShaderNMSL() { return new Shader(standart_vert, tm_nm_sl, 0); }
+
+		private static Shader CreateShader(string shader_origin)
+		{
+			int light_generator_id;
+			int light_generator_shader = GL.CreateShader(ShaderType.ComputeShader);
+			GL.ShaderSource(light_generator_shader, shader_origin);
+
+			GL.CompileShader(light_generator_shader);
+			GL.GetShader(light_generator_shader, ShaderParameter.CompileStatus, out var code);
+			if (code != (int)All.True)
+			{
+				var infoLog = GL.GetShaderInfoLog(light_generator_shader);
+				Misc.PrintShaderError(light_gen, infoLog);
+				throw new Exception($"Error occurred whilst compiling Shader({light_generator_shader}).\n\n{infoLog}");
+			}
+
+			light_generator_id = GL.CreateProgram();
+			GL.AttachShader(light_generator_id, light_generator_shader);
+			GL.LinkProgram(light_generator_id);
+			GL.GetProgram(light_generator_id, GetProgramParameterName.LinkStatus, out var c2ode);
+			if (c2ode != (int)All.True) throw new Exception($"Error occurred whilst linking Program({light_generator_id})");
+
+			GL.DetachShader(light_generator_id, light_generator_shader);
+			GL.DeleteShader(light_generator_shader);
+
+			Shader to_return = new Shader(light_generator_id);
+
+			return to_return;
+		}
 
 	}
 }
