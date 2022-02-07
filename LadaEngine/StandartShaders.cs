@@ -332,7 +332,11 @@ void main()
 
 									uniform sampler2D texture0;
 
-									uniform int[10000] map_array;
+									layout(std430, binding = 1) buffer map_array
+									{
+										 int data_SSBO[];
+									};
+
 									uniform int height;
 									uniform int width;
 									uniform int texture_length;
@@ -341,7 +345,7 @@ void main()
 									void main()
 									{
 
-										int type = map_array[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
+										int type = data_SSBO[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
 										vec2 newTexCoord = vec2(texCoord.x * width, texCoord.y * height);
 												newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
 												newTexCoord.y = fract((texture_length - type / texture_length + fract(newTexCoord.y) - 1) / texture_width);
@@ -360,7 +364,10 @@ void main()
 											uniform vec4[200] light_sources;
 											uniform vec4[200] light_sources_colors; 
 
-											uniform int[10000] map_array;
+											layout(std430, binding = 1) buffer map_array
+											{
+											    int data_SSBO[];
+											};
 
 											uniform int height;
 											uniform int width;
@@ -402,7 +409,7 @@ void main()
 
 											void main()
 											{
-												int type = map_array[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
+												int type = data_SSBO[width * int((1.0 - texCoord.y) * height) + int(texCoord.x * width)];
 												vec2 newTexCoord = vec2(texCoord.x * width, texCoord.y * height);
 												newTexCoord.x = fract((type % texture_length + fract(newTexCoord.x)) / texture_length);
 												newTexCoord.y = fract((texture_length - type / texture_length + fract(newTexCoord.y) - 1) / texture_width);

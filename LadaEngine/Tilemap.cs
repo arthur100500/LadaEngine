@@ -16,6 +16,8 @@ namespace LadaEngine
         public int tm_height;
         public int[] map;
 
+        private int SSBO;
+
         private Quad quad;
         public Shader shader;
         public Texture textures;
@@ -40,6 +42,8 @@ namespace LadaEngine
             grid_width = gridRowLength;
             textures = textureLocation;
 
+            SSBO = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, SSBO);
             Load();
         }
         public Tilemap(string textureLocation, int[] map, int height, int width, int gridLength, int gridRowLength)
@@ -53,6 +57,8 @@ namespace LadaEngine
             grid_width = gridRowLength;
             textures = Texture.LoadFromFile(textureLocation);
 
+            SSBO = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, SSBO);
             Load();
         }
         // With normal map
@@ -68,6 +74,9 @@ namespace LadaEngine
             textures = Texture.LoadFromFile(textureLocation);
             normal_map = Texture.LoadFromFile(normalMapLocation);
             lightManager = new BakedLight();
+
+            SSBO = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, SSBO);
             Load();
         }
         public void Load()
@@ -97,7 +106,9 @@ namespace LadaEngine
             // 50x50 max grid
             try
             {
-                shader.SetIntGroup(shader.GetUniformLocation("map_array[0]"), map.Length, map);
+                GL.BindBuffer(BufferTarget.ShaderStorageBuffer, SSBO);
+                GL.BufferData(BufferTarget.ShaderStorageBuffer, map.Length * 4, map, BufferUsageHint.DynamicDraw);
+                
                 shader.SetInt("width", tm_width);
                 shader.SetInt("height", tm_height);
                 shader.SetInt("texture_length", grid_length);
@@ -125,6 +136,8 @@ namespace LadaEngine
             {
                 lightManager.light_map.Use(TextureUnit.Texture2);
             }
+
+            GL.BindBufferBase(BufferRangeTarget.ShaderStorageBuffer, 1, SSBO);
             quad.Render();
             if (GlobalOptions.full_debug)
                 Misc.Log(" --- Tilemap render end ---");
@@ -139,6 +152,7 @@ namespace LadaEngine
             {
                 lightManager.light_map.Use(TextureUnit.Texture2);
             }
+            GL.BindBufferBase(BufferRangeTarget.ShaderStorageBuffer, 1, SSBO);
             quad.Render(cam);
             if (GlobalOptions.full_debug)
                 Misc.Log(" --- Tilemap render end ---");
