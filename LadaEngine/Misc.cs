@@ -12,6 +12,11 @@ namespace LadaEngine
         public static Window window;
 
         /// <summary>
+        /// Width and height of framebuffer to be rendered
+        /// </summary>
+        public static FPos fbo_sprite_coords = new FPos(1.0f, 1.0f);
+
+        /// <summary>
         /// Screen ratio
         /// </summary>
         public static float screen_ratio = 0.6f / 0.8f;
@@ -50,6 +55,8 @@ namespace LadaEngine
         {
             return Convert.ToString(arg);
         }
+
+        
 
         public static float normalize(float x)
         {

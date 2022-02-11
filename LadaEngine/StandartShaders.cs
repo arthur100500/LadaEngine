@@ -440,19 +440,15 @@ void main()
 
 		public static Shader STANDART_SHADER = new Shader(standart_vert, standart_frag, 0);
 		public static Shader STANDART_SHADER_NM = new Shader(standart_vert, standart_nm, 0);
-		public static Shader STANDART_SHADER_NM_SL = new Shader(standart_vert, standart_nm_sl, 0);
 		public static Shader TILEMAP_SHADER = new Shader(standart_vert, tm_default, 0);
 		public static Shader TILEMAP_SHADER_NM = new Shader(standart_vert, tm_normal_frag, 0);
-		public static Shader TILEMAP_SHADER_NM_SL = new Shader(standart_vert, tm_nm_sl, 0);
 		public static Shader ANIMATED_SHADER = new Shader(standart_vert, animated_standart, 0);
 		internal static Shader STANDART_BAKED_GEN = CreateShader(light_gen);
 		internal static Shader TM_BAKED_GEN = CreateShader(tm_light_gen);
 		public static Shader GenStandartShader() { return new Shader(standart_vert, standart_frag, 0); }
 		public static Shader GenStandartShaderNM() { return new Shader(standart_vert, standart_nm, 0); }
-		public static Shader GenStandartShaderNMSL() { return new Shader(standart_vert, standart_nm_sl, 0); }
 		public static Shader GenTilemapShader() { return new Shader(standart_vert, tm_default, 0); }
 		public static Shader GenTilemapShaderNM() { return new Shader(standart_vert, tm_normal_frag, 0); }
-		public static Shader GenTilemapShaderNMSL() { return new Shader(standart_vert, tm_nm_sl, 0); }
 		public static Shader GenAnimatedShader() { return new Shader(standart_vert, animated_standart, 0); }
 		private static Shader CreateShader(string shader_origin)
 		{

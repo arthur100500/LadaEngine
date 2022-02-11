@@ -2,6 +2,6 @@
 {
     public interface IRenderable
     {
-        void Render();
+        void Render(FPos camera);
     }
 }

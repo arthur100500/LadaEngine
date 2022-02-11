@@ -16,14 +16,9 @@ namespace LadaEngine
         private int _elementBufferObject;
         private int _vertexBufferObject;
 
-
         private float[] _vertices { get; set; }
-        public Shader _shader;
-        public Texture _texture;
-        public bool supportsNormalMap = false;
-        public Texture _normal_map = null;
-
-        public int textureloc = -1;
+        public Shader shader;
+        public Texture texture;
 
         private float[] rel_angles = new float[] { 0f, (float)Math.PI / 2, (float)Math.PI, 3 * (float)Math.PI / 2 };
         private float rotation_angle = 0;
@@ -39,18 +34,8 @@ namespace LadaEngine
         public Quad(float[] coordinates, Shader shader, Texture texture)
         {
             _vertices = coordinates;
-            _shader = shader;
-            _texture = texture;
-            ReshapeWithCoords(-coordinates[0], coordinates[1], -coordinates[10], coordinates[11]);
-        }
-
-        public Quad(float[] coordinates, Shader shader, Texture texture, Texture normalMap)
-        {
-            _vertices = coordinates;
-            _shader = shader;
-            _texture = texture;
-            _normal_map = normalMap;
-            supportsNormalMap = true;
+            this.shader = shader;
+            this.texture = texture;
             ReshapeWithCoords(-coordinates[0], coordinates[1], -coordinates[10], coordinates[11]);
         }
         public void ReshapeWithCoords(float top_x, float top_y, float bottom_x, float bottom_y)
@@ -103,7 +88,7 @@ namespace LadaEngine
             if (!is_initialised)
             {
                 is_initialised = true;
-                Misc.Log("QUAD " + Convert.ToString(_texture.Handle) + " WAS NOT INITALISED");
+                Misc.Log("QUAD " + Convert.ToString(texture.Handle) + " WAS NOT INITALISED");
             }
             // No render if quad is off screen
             if (!CheckBounds())
@@ -112,10 +97,8 @@ namespace LadaEngine
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices,
                 BufferUsageHint.DynamicDraw);
 
-            if (supportsNormalMap)
-                _normal_map.Use(TextureUnit.Texture1);
-            _texture.Use(TextureUnit.Texture0);
-            _shader.Use();
+            texture.Use(TextureUnit.Texture0);
+            shader.Use();
 
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
         }
@@ -168,25 +151,16 @@ namespace LadaEngine
             GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices,
                 BufferUsageHint.StaticDraw);
 
-            _shader.Use();
-            _shader.SetInt("texture0", 0);
-            if (supportsNormalMap)
-                _shader.SetInt("texture1", 1);
-            var vertexLocation = _shader.GetAttribLocation("aPosition");
+            shader.Use();
+            var vertexLocation = shader.GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertexLocation);
             GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
 
-            var texCoordLocation = _shader.GetAttribLocation("aTexCoord");
+            var texCoordLocation = shader.GetAttribLocation("aTexCoord");
             GL.EnableVertexAttribArray(texCoordLocation);
             GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float),
                 3 * sizeof(float));
-            if (textureloc < 0)
-                _texture.Use(TextureUnit.Texture0);
-            else
-            {
-                GL.ActiveTexture(TextureUnit.Texture0);
-                GL.BindTexture(TextureTarget.Texture2D, textureloc);
-            }
+            texture.Use(TextureUnit.Texture0);
         }
 
         public void Unload()
@@ -211,24 +185,6 @@ namespace LadaEngine
             ypos = 1f - (_vertices[1] - ypos) / (_vertices[1] - _vertices[6]);
             return new float[] { xpos, ypos };
         }
-
-        // Moves Quad directly via coordinates
-        public void Move(float x_amount, float y_amount)
-        {
-            _vertices[0] += x_amount;
-            _vertices[5] += x_amount;
-            _vertices[10] += x_amount;
-            _vertices[15] += x_amount;
-
-            _vertices[1] += y_amount;
-            _vertices[6] += y_amount;
-            _vertices[11] += y_amount;
-            _vertices[16] += y_amount;
-
-            centre.X += x_amount;
-            centre.Y += y_amount;
-        }
-
         public void rotate(float angle)
         {
             angle = (float)Math.PI - angle;
@@ -242,24 +198,6 @@ namespace LadaEngine
             _vertices[16] = centre.Y + rad * (float)Math.Sin(angle + rel_angles[3]);
 
             rotation_angle = angle;
-        }
-        public void SetLightSources(float[] positions, float[] colors)
-        {
-            for (int i = 0; i < positions.Length; i += 4)
-            {
-                FPos corrected_centre = new FPos((centre.X + 1) / 2, (centre.Y + 1) / 2);
-                float dist = Misc.Len(corrected_centre, new FPos(positions[i + 0], positions[i + 1]));
-                float angle = (float)Math.Atan((corrected_centre.X - positions[i + 0]) / (corrected_centre.Y - positions[i + 1]));
-                if (corrected_centre.Y < positions[i + 1])
-                    angle = 3.1415926535f + angle;
-                angle += rotation_angle;
-                angle = (float)Math.PI - angle;
-
-                positions[i + 0] = (float)Math.Sin(angle) * dist + corrected_centre.X;
-                positions[i + 1] = 1 - ((float)Math.Cos(angle) * dist + corrected_centre.Y);
-            }
-            _shader.SetVector4Group(_shader.GetUniformLocation("light_sources_colors[0]"), colors.Length, colors);
-            _shader.SetVector4Group(_shader.GetUniformLocation("light_sources[0]"), positions.Length, positions);
         }
         public void ReshapeVertexArray(BaseObject obj, FPos cam)
         {

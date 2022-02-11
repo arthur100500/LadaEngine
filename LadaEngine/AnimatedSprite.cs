@@ -39,41 +39,20 @@ namespace LadaEngine
             if (GlobalOptions.full_debug)
                 Misc.Log("Tilemap loaded");
         }
-
-        public override void Render()
-        {
-            if (GlobalOptions.full_debug)
-                Misc.Log("--- Tilemap render begin ---");
-
-            shader.SetInt("texture_length", grid_length);
-            shader.SetInt("texture_width", grid_width);
-            shader.SetInt("state", state);
-            quad.Render();
-            if (GlobalOptions.full_debug)
-                Misc.Log(" --- Tilemap render end ---");
-        }
-
-
         public override void Render(FPos cam)
         {
             if (GlobalOptions.full_debug)
-                Misc.Log("--- Tilemap render begin ---");
+                Misc.Log("--- Anim render begin ---");
 
+            quad.texture = textures;
             shader.SetInt("texture_length", grid_length);
             shader.SetInt("texture_width", grid_width);
             shader.SetInt("state", state);
             quad.Render(cam);
             if (GlobalOptions.full_debug)
-                Misc.Log(" --- Tilemap render end ---");
+                Misc.Log(" --- Anim render end ---");
         }
-        public void SetLightSources(float[] positions, float[] colors)
-        {
-            quad.SetLightSources(positions, colors);
-        }
-        public void SetAmbient(float[] color)
-        {
-            quad._shader.SetVector4("ambient", new Vector4(color[0], color[1], color[2], color[3]));
-        }
+
         public override void ReshapeVertexArray(FPos camera_position)
         {
             quad.ReshapeVertexArray(this, camera_position);

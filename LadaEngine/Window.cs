@@ -63,9 +63,7 @@ namespace LadaEngine
 
         protected override void OnLoad()
         {
-            GL.ClearColor(0.3f, 0.2f, 0.2f, 0.0f);
-
-            PostProcessing.Load(new Pos(1920, 1080), StandartShaders.GenStandartShader());
+            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
             new Thread(() =>
             {
@@ -140,7 +138,8 @@ namespace LadaEngine
 
             float x_dim = 2 * 1920 / (float)Size.X - 1;
             float y_dim = 2 * 1080 / (float)Size.Y - 1;
-            PostProcessing.sprite.quad.ReshapeWithCoords(-x_dim, y_dim, 1, -1);
+            Misc.fbo_sprite_coords = new FPos(x_dim, y_dim);
+            
 
             // Resize delegate
             Resize?.Invoke();

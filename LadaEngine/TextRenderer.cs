@@ -30,9 +30,9 @@ namespace LadaEngine
             tm.map = map;
             tm.UpdateMap();
         }
-        public void Render()
+        public void Render(FPos camera)
         {
-            tm.Render();
+            tm.Render(camera);
         }
     }
 }
