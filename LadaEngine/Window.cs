@@ -3,8 +3,6 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Graphics.OpenGL4;
-using GL = OpenTK.Graphics.OpenGL4.GL;
-
 
 namespace LadaEngine
 {
@@ -31,7 +29,9 @@ namespace LadaEngine
         public delegate void OnResizeDelegate();
         public event OnResizeDelegate Resize;
 
-
+        private double dt = 0;
+        // Refresh rate of FixedUpdate func (every N ms) (Standart 250hz)
+        public double fixed_time_update_rate = 0.004;
         /// <summary>
         /// Window constructer
         /// </summary>
@@ -63,17 +63,8 @@ namespace LadaEngine
 
         protected override void OnLoad()
         {
-            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-            new Thread(() =>
-            {
-                while (true)
-                {
-                    FixedUpdate?.Invoke();
-                    Thread.Sleep(4);
-                }
-            }).Start();
             base.OnLoad();
+            GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
             // Load Delegate
             Load?.Invoke();
@@ -81,14 +72,22 @@ namespace LadaEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            base.OnRenderFrame(e);
             if (GlobalOptions.full_debug)
                 Misc.Log("---- Frame begin ----");
             GL.Clear(ClearBufferMask.ColorBufferBit);
             // Render delegate
             Render?.Invoke();
 
+            dt += e.Time;
+            while (dt > fixed_time_update_rate) 
+            {
+                FixedUpdate?.Invoke();
+                dt -= fixed_time_update_rate;
+            }
+
             SwapBuffers();
-            base.OnRenderFrame(e);
+            
             if (GlobalOptions.full_debug)
                 Misc.Log("---- Frame end ----");
         }
@@ -96,6 +95,8 @@ namespace LadaEngine
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            base.OnUpdateFrame(e);
+
             Controls.mouse = MouseState;
             Controls.keyboard = KeyboardState;
 
@@ -124,8 +125,6 @@ namespace LadaEngine
 
             // Update Frame delegate
             Update?.Invoke();
-
-            base.OnUpdateFrame(e);
         }
 
         protected override void OnResize(ResizeEventArgs e)
