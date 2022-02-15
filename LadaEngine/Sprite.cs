@@ -86,9 +86,18 @@ namespace LadaEngine
             if (quad != null)
                 quad.Unload();
         }
-        public override void ReshapeVertexArray(FPos camera_position)
+        public override void ReshapeVertexArray()
         {
-            quad.ReshapeVertexArray(this, camera_position);
+            quad.ReshapeVertexArray(this);
+        }
+
+        public void FlipX()
+        {
+            quad.FlipX();
+        }
+        public void FlipY()
+        {
+            quad.FlipY();
         }
     }
 }

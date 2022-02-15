@@ -199,7 +199,19 @@ namespace LadaEngine
 
             rotation_angle = angle;
         }
-        public void ReshapeVertexArray(BaseObject obj, FPos cam)
+        public void FlipY()
+        {
+            for (int i = 0; i < 4; i++)
+                _vertices[i * 5 + 3] = 1 - _vertices[i * 5 + 3];
+        }
+
+        public void FlipX()
+        {
+            for (int i = 0; i < 4; i++)
+                _vertices[i * 5 + 4] = 1 - _vertices[i * 5 + 4];
+        }
+
+        public void ReshapeVertexArray(BaseObject obj)
         {
             centre = obj.centre;
 

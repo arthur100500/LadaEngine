@@ -84,14 +84,22 @@ namespace LadaEngine
             if (GlobalOptions.full_debug)
                 Misc.Log(" --- Tilemap render end ---");
         }
-        public override void ReshapeVertexArray(FPos camera_position)
+        public override void ReshapeVertexArray()
         {
-            quad.ReshapeVertexArray(this, camera_position);
+            quad.ReshapeVertexArray(this);
         }
         public void Rotate(float angle)
         {
             rotation = angle;
             quad.rotate(angle);
+        }
+        public void FlipX()
+        {
+            quad.FlipX();
+        }
+        public void FlipY()
+        {
+            quad.FlipY();
         }
     }
 }
