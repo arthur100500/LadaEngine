@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/57834711/152866833-465b3c15-59c4-4ba1-877d-c7ecc8e2bfc4.png)
+![image](https://media.discordapp.net/attachments/952637214574141540/994476470036611122/IMG20220501143811_01.jpg?width=507&height=676)
 
 # LadaEngine
 Library for easier low level game development
