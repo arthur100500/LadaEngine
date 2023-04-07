@@ -4,19 +4,11 @@ using MovingImage;
 
 namespace MovingImage;
 
-    internal class Program
+internal class Program
+{
+    private static void Main(string[] args)
     {
-        private static void Main(string[] args)
-        {
-            try
-            {
-                var game = new Game();
-                game.Run();
-            }
-            catch (Exception ex)
-            {
-                File.WriteAllText("Error.txt", ex.ToString());
-                Console.WriteLine(ex.ToString());
-            }
-        }
+        var game = new Game();
+        game.Run();
     }
+}
