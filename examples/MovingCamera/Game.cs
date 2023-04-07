@@ -24,12 +24,13 @@ namespace MovingCamera
 
         private void LoadEvent()
         {
-            // Camera
+            // Camera creation
             _camera = new();
             
             // Create velocity vector
             Random random = new();
-
+            
+            // Create the world
             _world = new();
         }
         
@@ -41,6 +42,7 @@ namespace MovingCamera
 
         private void FixedUpdateEvent()
         {
+            // Move the camera with WASD keys
             _camera.Position += Controls.control_direction_f * 0.01f;
         }
 
