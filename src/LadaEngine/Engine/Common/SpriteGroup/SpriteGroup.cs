@@ -19,9 +19,20 @@ public class SpriteGroup
         Renderer = new SpriteGroupRenderer(textureAtlas, this);
     }
 
+    public void Update(Camera cam)
+    {
+        Renderer.UpdateVerts(cam);
+        Renderer.UpdateBuffers();
+    }
+
     public void Render(Camera cam)
     {
         Renderer.Render(cam);
+    }
+
+    public void AddSprite(Sprite sprite)
+    {
+        tiles.Add(sprite);
     }
 
     public static SpriteGroup FromFile(string fileName, ITextureAtlas atlas)
