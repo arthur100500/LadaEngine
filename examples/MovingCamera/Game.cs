@@ -13,7 +13,7 @@ namespace MovingCamera
         {
             _window = Window.Create(800, 800, "");
             
-            _window.Title = "Moving Image";
+            _window.Title = "Moving Camera";
             
             _window.Render += RenderEvent;
             _window.Load += LoadEvent;
