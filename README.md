@@ -1,11 +1,11 @@
 ![image](https://media.discordapp.net/attachments/952637214574141540/994476470036611122/IMG20220501143811_01.jpg?width=507&height=676)
 
 # LadaEngine
-Lada Engine os a small library that allows basic game creation.
+Lada Engine is a small library that allows basic game creation.
 It works with OpenGL via OpenTK 4 library.
 
 # Usefulness
-The project is hardly useful, it is easier and better to learn other libs. But I did this library with love so there will always be one user (me) to enjoy it.
+The project is hardly useful, it is easier and better to learn other libs. But I did this library with love, so there will always be one user (me) to enjoy it.
 
 # Examples
 There are `Pong` and `MovingImage` examples, I am too bored to do more
@@ -17,11 +17,11 @@ There is an image, it is loaded and rendered, also it is moved and bounces off t
 You know what pong is. To move left platform use `W` `S`, to move right one use `I` `K`, to respawn a ball use `R` key.
 
 ### [World Example](https://github.com/arthur100500/LadaEngine/tree/main/examples/MovingCamera)
-You can control a camera with `W` `A` `S` `D` keys to move around. There is a world with 100.000 objects.
-This example is done to demonstrate that you have to be careful about `Update` method on sprite group as it is can be very expensive operation.
+You can control a camera with `W` `A` `S` `D` keys to move around. There is a world with 100000 objects.
+This example is done to demonstrate that you have to be careful about `Update` method on sprite group as it can be very expensive operation.
 
 # How to use LadaEngine
-To use LadaEngine create a class that has event handlers for `Render`, `FixedUpdate` and `Load`. Also you can add `Resize` and `Update` handlers.
+To use LadaEngine create a class that has event handlers for `Render`, `FixedUpdate` and `Load`.  Also you can add `Resize` and `Update` handlers.
 
 The basic game class looks something like this
 ```csharp
@@ -47,11 +47,11 @@ public class Game
 }
 ```
 
-In your `Main` method create an instance of this class and run it.
+In your `Main` method, create an instance of this class and run it.
 Now once the app loads, `LoadEvent` method will be called, once there is a new frame `RenderEvent` will be called and `FixedUpdateEvent` will be called 240 times a second.
 
 # Rendering basic images
-To render an image you will have to
+To render an image, you will have to
 - Create the `TextureAtlas` with the image within
 - Create `SpriteGroup` to contain the image
 - Create `Sprite` object, that will be the actual object
@@ -63,19 +63,19 @@ See the example [Moving Image Example](https://github.com/arthur100500/LadaEngin
 
 # SpriteGroup
 ### What is it
-SpriteGroup is a class made to contain a large quantity of sprites that will change rarely, for example the world.
+SpriteGroup is a class made to contain a large quantity of sprites that will rarely change, for example the world.
 There is an example for using it for large quantity of objects, see [World Example](https://github.com/arthur100500/LadaEngine/tree/main/examples/MovingCamera)
 There are several methods, but main ones are `AddSprite`, `Render` and `Update`.
-- `Render` is used to render all the sprites on screen. It requires camera and uses it's zoom and position to move and zoom. (It is done via shader uniforms, so it is only done once for all objects and is quite effective)
-- `Update` is used to create vertices. It should usually be called vare rarely, for example if something moved or changed size. 
+- `Render` is used to render all the sprites on screen. It requires a camera and uses it's zoom and position to move and zoom. (It is done via shader uniforms, so it is only done once for all objects and is quite effective)
+- `Update` is used to create vertices. It should usually be called very rarely, for example if something moved or changed size. 
 - `AddSprite` is used to add sprite to its inner list by reference.
 
 ### Intended usage
-You use `SpriteGroup` for a group of sprite that either never moves, like world, or things that move quite often like entities. The more sprites are there in the `SpriteGroup`, the more costly is the Update operation.
+You use `SpriteGroup` for a group of sprite that either never moves, like world, or things that move quite often, like entities. The more sprites are there in the `SpriteGroup`, the more costly is the Update operation.
 
 # Controls
 ### Overview
-The `Controls` class contains the basic input things for PC like `mouse` and `keyboard`. These are standart [OpenTK](https://opentk.net/) objects so you can find how to use them there.
+The `Controls` class contains the basic input things for PC like `mouse` and `keyboard`. These are standard [OpenTK](https://opentk.net/) objects, so you can find how to use them there.
 Brief list of methods I used (with examples):
 - `Controls.keyboard.IsKeyPressed(..)` - to see if key was pressed during this exact frame
 - `Controls.keyboard.IsKeyDown(..)` - check if key is down
@@ -106,4 +106,4 @@ _player.Position += Controls.control_direction_f * speed;
 ```
 
 # Good luck
-Idk I think thats enough info for you to write the game of your dream
+IDK I think that's enough info for you to write the game of your dream
