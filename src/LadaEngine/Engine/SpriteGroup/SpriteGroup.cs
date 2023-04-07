@@ -28,9 +28,9 @@ public class SpriteGroup : IRenderable
         _lvl.tiles.Add(t);
     }
 
-    public void Update(Camera camera)
+    public void Update()
     {
-        _lvl.Renderer.UpdateVerts(camera);
+        _lvl.Renderer.UpdateVerts();
         _lvl.Renderer.UpdateBuffers();
     }
 

@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovingImage", "examples\Mov
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pong", "examples\Pong\Pong.csproj", "{8A9B8EA9-523B-4902-ACEE-50FC6775E9F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovingCamera", "examples\MovingCamera\MovingCamera.csproj", "{53820F88-DB86-46EA-8E50-C9E340F50FA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{8A9B8EA9-523B-4902-ACEE-50FC6775E9F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A9B8EA9-523B-4902-ACEE-50FC6775E9F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A9B8EA9-523B-4902-ACEE-50FC6775E9F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53820F88-DB86-46EA-8E50-C9E340F50FA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53820F88-DB86-46EA-8E50-C9E340F50FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53820F88-DB86-46EA-8E50-C9E340F50FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53820F88-DB86-46EA-8E50-C9E340F50FA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -82,10 +82,10 @@ public sealed class SpriteGroupRenderer
             BufferUsageHint.StaticDraw);
     }
 
-    public void Render(Camera camera, bool updateVerts = true)
+    public void Render(Camera camera, bool updateVerts = false)
     {
         if (updateVerts)
-            UpdateVerts(camera);
+            UpdateVerts();
 
         GL.BindVertexArray(_vao);
 
@@ -99,10 +99,10 @@ public sealed class SpriteGroupRenderer
         GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
     }
 
-    public void UpdateVerts(Camera camera)
+    public void UpdateVerts()
     {
         _verts.Clear();
-        foreach (var tile in SpriteGroup.tiles) tile.AddToVerts(_verts, camera);
+        foreach (var tile in SpriteGroup.tiles) tile.AddToVerts(_verts);
 
         var objectCount = _verts.Count / 20;
         _indices = new int[6 * objectCount];

@@ -19,9 +19,9 @@ public class SpriteGroup
         Renderer = new SpriteGroupRenderer(textureAtlas, this);
     }
 
-    public void Update(Camera cam)
+    public void Update()
     {
-        Renderer.UpdateVerts(cam);
+        Renderer.UpdateVerts();
         Renderer.UpdateBuffers();
     }
 

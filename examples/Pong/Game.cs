@@ -59,7 +59,7 @@ namespace Pong
             
             // Recalculate vertices of world. If the world is big and has a lot of sprites, this operation will be costly.
             // It is recommended to update it not often, and better give the coordinates via camera position to shader
-            _world.Update(_camera);
+            _world.Update();
             
             // If player pressed R place ball in the center
             if (Controls.keyboard.IsKeyPressed(Keys.R))

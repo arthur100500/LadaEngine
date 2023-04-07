@@ -16,10 +16,10 @@ public class Sprite : GameObject
         this.textureName = textureName;
     }
 
-    public virtual void AddToVerts(List<float> verticies, Camera camera)
+    public virtual void AddToVerts(List<float> verticies)
     {
         InitializeVerts();
-        RotateVerts(Rotation, camera);
+        RotateVerts(Rotation);
         verticies.AddRange(_verts);
     }
 
@@ -65,9 +65,9 @@ public class Sprite : GameObject
         return true;
     }
 
-    private void RotateVerts(float angle, Camera camera)
+    private void RotateVerts(float angle)
     {
-        var rad = MathF.Sqrt(Width * Width + Height * Height) / camera.Zoom / 2;
+        var rad = MathF.Sqrt(Width * Width + Height * Height) / 2;
         var AB = new Pos(Height, Width);
         var AC = new Pos(Height, -Width);
 
@@ -76,7 +76,8 @@ public class Sprite : GameObject
         relAngles[2] = (float)Math.Atan2(AB.X, AB.Y) + (float)Math.PI;
         relAngles[3] = (float)Math.Atan2(AC.X, AC.Y) + (float)Math.PI;
 
-        var transposed = (Position - camera.Position) * (1 / camera.Zoom);
+        var transposed = Position;
+        
         angle = MathF.PI - angle;
         _verts[0] = transposed.X + rad * (float)Math.Cos(angle + relAngles[2]);
         _verts[1] = transposed.Y + rad * (float)Math.Sin(angle + relAngles[2]);
