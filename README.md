@@ -8,8 +8,6 @@ It works with OpenGL via OpenTK 4 library.
 The project is hardly useful, it is easier and better to learn other libs. But I did this library with love, so there will always be one user (me) to enjoy it.
 
 # Examples
-There are `Pong` and `MovingImage` examples, I am too bored to do more
-
 ### [Moving Image Example](https://github.com/arthur100500/LadaEngine/tree/main/examples/MovingImage)
 There is an image, it is loaded and rendered, also it is moved and bounces off the edges
 
