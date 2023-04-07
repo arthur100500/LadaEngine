@@ -1,9 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31912.275
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LadaEngine", "LadaEngine\LadaEngine.csproj", "{F06AD8B7-567E-4E88-888B-48F26F4A50F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LadaEngine", "src\LadaEngine\LadaEngine.csproj", "{B06858D8-181C-4B0A-833A-D263E384E679}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovingImage", "examples\MovingImage\MovingImage.csproj", "{B3582794-BFEE-49F7-97B2-E464F319B14E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F06AD8B7-567E-4E88-888B-48F26F4A50F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F06AD8B7-567E-4E88-888B-48F26F4A50F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F06AD8B7-567E-4E88-888B-48F26F4A50F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F06AD8B7-567E-4E88-888B-48F26F4A50F3}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8781F9F6-0068-429C-ACF6-96674CBA883C}
+		{B06858D8-181C-4B0A-833A-D263E384E679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B06858D8-181C-4B0A-833A-D263E384E679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B06858D8-181C-4B0A-833A-D263E384E679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B06858D8-181C-4B0A-833A-D263E384E679}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3582794-BFEE-49F7-97B2-E464F319B14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3582794-BFEE-49F7-97B2-E464F319B14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3582794-BFEE-49F7-97B2-E464F319B14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3582794-BFEE-49F7-97B2-E464F319B14E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
