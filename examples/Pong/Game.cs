@@ -26,7 +26,7 @@ namespace Pong
         {
             _window = Window.Create(800, 800, "");
             
-            _window.Title = "Moving Image";
+            _window.Title = "Bad Pong";
             
             _window.Render += RenderEvent;
             _window.Load += LoadEvent;
