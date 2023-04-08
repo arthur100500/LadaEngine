@@ -5,13 +5,22 @@
 /// </summary>
 public class IntPos
 {
+    /// <summary>
+    /// X coordinate of the IntPos
+    /// </summary>
     public int X;
+    /// <summary>
+    /// Y coordinate of the IntPos
+    /// </summary>
     public int Y;
-
-    public IntPos(int X, int Y)
+    
+    /// <summary>
+    /// Constructor of IntPos
+    /// </summary>
+    public IntPos(int x, int y)
     {
-        this.X = X;
-        this.Y = Y;
+        this.X = x;
+        this.Y = y;
     }
 
     public static bool operator ==(IntPos obj1, IntPos obj2)
