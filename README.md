@@ -103,5 +103,10 @@ Using `control_direction_f` for the player
 _player.Position += Controls.control_direction_f * speed;
 ```
 
+# Cats
+Want more cats like one above??
+
+Open the `cats` folder or follow this [link](https://github.com/arthur100500/LadaEngine/tree/main/cats)
+
 # Good luck
 IDK I think that's enough info for you to write the game of your dream
