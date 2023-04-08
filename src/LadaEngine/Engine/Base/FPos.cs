@@ -1,4 +1,6 @@
-﻿namespace LadaEngine.Engine.Base;
+﻿using System.Globalization;
+
+namespace LadaEngine.Engine.Base;
 
 /// <summary>
 ///     Class for storing 2d integer position
@@ -8,22 +10,22 @@ public class IntPos
     /// <summary>
     /// X coordinate of the IntPos
     /// </summary>
-    public int X;
+    public readonly int X;
     /// <summary>
     /// Y coordinate of the IntPos
     /// </summary>
-    public int Y;
+    public readonly int Y;
     
     /// <summary>
     /// Constructor of IntPos
     /// </summary>
     public IntPos(int x, int y)
     {
-        this.X = x;
-        this.Y = y;
+        X = x;
+        Y = y;
     }
 
-    public static bool operator ==(IntPos obj1, IntPos obj2)
+    public static bool operator ==(IntPos? obj1, IntPos? obj2)
     {
         if (obj1 is null || obj2 is null)
             return false;
@@ -45,7 +47,7 @@ public class IntPos
         return new IntPos(obj1.X - obj2.X, obj1.Y - obj2.Y);
     }
 
-    public static IntPos operator *(IntPos obj1, int another)
+    public static IntPos? operator *(IntPos? obj1, int another)
     {
         if (obj1 is null)
             return null;
@@ -73,7 +75,7 @@ public class IntPos
         return new IntPos((int)Math.Floor(v.X), (int)Math.Floor(v.Y));
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj)) return true;
 
@@ -95,32 +97,50 @@ public class IntPos
 /// </summary>
 public class Pos
 {
+    /// <summary>
+    /// X coordinate of the Pos
+    /// </summary>
     public float X;
+    /// <summary>
+    /// Y coordinate of the Pos
+    /// </summary>
     public float Y;
+    
+    /// <summary>
+    /// Get new Pos instance with representing (0, 0) vector
+    /// </summary>
+    public static Pos Zero => new Pos(0, 0);
 
-    public static Pos Zero 
-    { 
-        get
-        {
-            return new Pos(0, 0);
-        }
-    }
-
-public Pos(float X, float Y)
+    /// <summary>
+    /// Creates Pos from 2 floats
+    /// </summary>
+    public Pos(float x, float y)
     {
-        this.X = X;
-        this.Y = Y;
+        this.X = x;
+        this.Y = y;
     }
-
+    
+    /// <summary>
+    /// Creates Pos from IntPos
+    /// </summary>
     public Pos(IntPos pos)
     {
         X = pos.X;
         Y = pos.Y;
     }
+    
+    /// <summary>
+    /// Creates Pos from 2 doubles
+    /// </summary>
+    public Pos(double x, double y)
+    {
+        X = (float)x;
+        Y = (float)y;
+    }
 
     public static bool operator ==(Pos obj1, Pos obj2)
     {
-        return obj1.X == obj2.X && obj1.Y == obj2.Y;
+        return Math.Abs(obj1.X - obj2.X) < float.Epsilon && Math.Abs(obj1.Y - obj2.Y) < float.Epsilon;
     }
 
     public static bool operator !=(Pos obj1, Pos obj2)
@@ -160,7 +180,7 @@ public Pos(float X, float Y)
 
     public override string ToString()
     {
-        return Convert.ToString(X) + " " + Convert.ToString(Y);
+        return Convert.ToString(X, CultureInfo.InvariantCulture) + " " + Convert.ToString(Y, CultureInfo.InvariantCulture);
     }
 
     public Pos Copy()
@@ -174,7 +194,7 @@ public Pos(float X, float Y)
         Y += another.Y;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj)) return true;
 
@@ -182,11 +202,13 @@ public Pos(float X, float Y)
 
         if (obj.GetType() != typeof(Pos)) return false;
 
-        return ((Pos)obj).X == X && ((Pos)obj).Y == Y;
+
+        return Math.Abs(((Pos)obj).X - X) < float.Epsilon && Math.Abs(((Pos)obj).Y - Y) < float.Epsilon;
     }
 
     public override int GetHashCode()
     {
+        // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
         return base.GetHashCode();
     }
 }
