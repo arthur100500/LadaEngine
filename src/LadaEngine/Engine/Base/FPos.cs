@@ -10,11 +10,11 @@ public class IntPos
     /// <summary>
     /// X coordinate of the IntPos
     /// </summary>
-    public readonly int X;
+    public int X;
     /// <summary>
     /// Y coordinate of the IntPos
     /// </summary>
-    public readonly int Y;
+    public int Y;
     
     /// <summary>
     /// Constructor of IntPos
