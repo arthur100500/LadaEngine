@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace LadaEngine.Engine.Base;
 
-public class Texture : IDisposable
+public class Texture
 {
     /// <summary>
     ///     Create texture from GL Handle
@@ -15,13 +15,11 @@ public class Texture : IDisposable
             Misc.Log("Texture " + Convert.ToString(Handle) + " created");
         Handle = glHandle;
     }
-
+    
+    /// <summary>
+    /// OpenGL Handle of a texture
+    /// </summary>
     public int Handle { get; set; }
-
-    public void Dispose()
-    {
-        // To be implemented
-    }
 
     /// <summary>
     ///     Create new Texture from bitmap class
@@ -105,7 +103,11 @@ public class Texture : IDisposable
         return new Texture(handle);
     }
 
-
+    /// <summary>
+    /// Updates data in a texture
+    /// Maybe it doesn't work
+    /// </summary>
+    /// <param name="bmp">Image to set new texture to</param>
     public void UpdateData(Image<Rgba32> bmp)
     {
         GL.ActiveTexture(TextureUnit.Texture0);

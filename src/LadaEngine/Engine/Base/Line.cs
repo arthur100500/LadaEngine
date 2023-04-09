@@ -1,26 +1,57 @@
 namespace LadaEngine.Engine.Base;
 
+/// <summary>
+/// Class Representing Line segment
+/// </summary>
 public class Line
 {
+    /// <summary>
+    /// First point of the segment
+    /// </summary>
     public Pos First;
+    
+    /// <summary>
+    /// Second point of the segment
+    /// </summary>
     public Pos Second;
 
+    /// <summary>
+    /// Creates line from point fst to snd
+    /// </summary>
+    /// <param name="fst">First point</param>
+    /// <param name="snd">Second point</param>
     public Line(Pos fst, Pos snd)
     {
         First = fst;
         Second = snd;
     }
 
-    public static Line LineCP(Pos fst, Pos snd)
+    /// <summary>
+    /// Make Line from two points and copy them in the process
+    /// </summary>
+    /// <param name="fst"></param>
+    /// <param name="snd"></param>
+    /// <returns></returns>
+    public static Line LineCp(Pos fst, Pos snd)
     {
         return new Line(fst.Copy(), snd.Copy());
     }
-
+    
+    /// <summary>
+    /// Returns string representation of the object in the format:
+    /// Segment: A(First), B(Second)
+    /// </summary>
+    /// <returns>string representation</returns>
     public override string ToString()
     {
         return "Segment: A(" + First + "), B(" + Second + ")";
     }
-
+    
+    /// <summary>
+    /// Gets Point of intersection between two segments or null if there is none
+    /// </summary>
+    /// <param name="other">Line to check intersection with</param>
+    /// <returns>Pos intersection or null</returns>
     public Pos GetIntersection(Line other)
     {
         double deltaACy = First.Y - other.First.Y;

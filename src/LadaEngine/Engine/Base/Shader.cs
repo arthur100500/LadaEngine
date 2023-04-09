@@ -4,15 +4,21 @@ using OpenTK.Mathematics;
 
 namespace LadaEngine.Engine.Base;
 
-// A simple class meant to help create shaders.
+/// <summary>
+/// OpenGL Shader class
+/// </summary>
 public class Shader
 {
     /// <summary>
-    ///     GL Handle for the shader
-    ///     <summary>
+    /// GL Handle for the shader
+    /// </summary>
     public readonly int Handle;
 
-    internal Shader(int programHandle)
+    /// <summary>
+    /// Creates a shader which uses Handle given
+    /// </summary>
+    /// <param name="programHandle">Handle of new shader</param>
+    public Shader(int programHandle)
     {
         Handle = programHandle;
 
@@ -26,19 +32,12 @@ public class Shader
             var location = GL.GetUniformLocation(Handle, key);
             _uniformLocations.Add(key, location);
         }
-
-        if (GlobalOptions.full_debug)
-        {
-            Misc.Log("Shader '" + Convert.ToString(Handle) + "' created(from int)");
-            Misc.Log("Uniforms");
-            PrintUniformLocations();
-        }
     }
 
     /// <summary>
-    ///     Shader constructor from file strings
+    /// Shader constructor from file strings
     /// </summary>
-    /// <param name="vertPath">Path to the vertext shader file</param>
+    /// <param name="vertPath">Path to the vertex shader file</param>
     /// <param name="fragPath">Path to the fragment shader file</param>
     public Shader(string vertPath, string fragPath)
     {
@@ -88,7 +87,7 @@ public class Shader
     }
 
     /// <summary>
-    ///     Shader constructor from code strings
+    /// Shader constructor from code strings
     /// </summary>
     /// <param name="shaderSourceVert">Code for vertex shader</param>
     /// <param name="shaderSourceFrag">Code for fragment shader</param>
@@ -139,7 +138,7 @@ public class Shader
     }
 
     /// <summary>
-    ///     Dictionary of string uniforms
+    /// Dictionary of string uniforms
     /// </summary>
     public Dictionary<string, int> _uniformLocations { get; internal set; }
 
@@ -156,6 +155,11 @@ public class Shader
         }
     }
 
+    /// <summary>
+    /// Gets OpenGL uniform location (int)
+    /// </summary>
+    /// <param name="name">Name of the uniform</param>
+    /// <returns>The location if found or -1 if not</returns>
     internal int GetUniformLocation(string name)
     {
         try
@@ -177,7 +181,7 @@ public class Shader
     }
 
     /// <summary>
-    ///     Uses the shader program
+    /// Uses the shader program
     /// </summary>
     public void Use()
     {
@@ -190,14 +194,18 @@ public class Shader
         }
     }
 
-
+    /// <summary>
+    /// Get location of an attribute
+    /// </summary>
+    /// <param name="attribName">name of the attribute</param>
+    /// <returns>location of the attribute</returns>
     public int GetAttribLocation(string attribName)
     {
         return GL.GetAttribLocation(Handle, attribName);
     }
 
     /// <summary>
-    ///     Set a uniform int on this shader.
+    /// Set a uniform int on this shader.
     /// </summary>
     /// <param name="name">The name of the uniform</param>
     /// <param name="data">The data to set</param>
@@ -390,7 +398,7 @@ public class Shader
     }
 
     /// <summary>
-    ///     Get all uniform locations
+    ///     Log all uniform locations to stdout
     /// </summary>
     public void PrintUniformLocations()
     {
