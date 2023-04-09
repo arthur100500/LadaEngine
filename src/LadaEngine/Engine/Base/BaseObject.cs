@@ -2,6 +2,9 @@
 
 namespace LadaEngine.Engine.Base;
 
+/// <summary>
+/// Basic object type that has position, height, width and rotation
+/// </summary>
 public abstract class BaseObject
 {
     /// <summary>
