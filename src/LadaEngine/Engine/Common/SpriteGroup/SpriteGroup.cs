@@ -2,6 +2,7 @@
 using LadaEngine.Engine.Base;
 using LadaEngine.Engine.Renderables;
 using LadaEngine.Engine.Renderables.GroupRendering;
+using OpenTK.Mathematics;
 
 namespace LadaEngine.Engine.Common.SpriteGroup;
 
@@ -57,6 +58,8 @@ public class SpriteGroup
     /// <param name="cam">Camera</param>
     public void Render(Camera cam)
     {
+        Renderer.Shader.SetVector2("position",
+            new Vector2(cam.Position.X / cam.Zoom, cam.Position.Y / cam.Zoom));
         Renderer.Render(cam);
     }
 

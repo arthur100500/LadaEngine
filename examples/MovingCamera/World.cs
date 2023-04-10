@@ -3,7 +3,6 @@ using LadaEngine.Engine.Common;
 using LadaEngine.Engine.Common.SpriteGroup;
 using LadaEngine.Engine.Renderables;
 using LadaEngine.Engine.Renderables.GroupRendering;
-using SpriteGroup = LadaEngine.Engine.SpriteGroup.SpriteGroup;
 
 namespace MovingCamera;
 
