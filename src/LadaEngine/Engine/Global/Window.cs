@@ -7,29 +7,49 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace LadaEngine.Engine.Global;
 
+/// <summary>
+/// Game window class
+/// </summary>
 public class Window : GameWindow
 {
-    // Fixed Update event
+    /// <summary>
+    /// Delegate to be called on fixed update
+    /// </summary>
     public delegate void FixedUpdateFrameDelegate();
 
-    // Load event
+    /// <summary>
+    /// Delegate to be called on load 
+    /// </summary>
     public delegate void OnLoadDelegate();
 
-    // Resize event
+    /// <summary>
+    /// Delegate to be called on resize 
+    /// </summary>
     public delegate void OnResizeDelegate();
 
-    // Render event
+    /// <summary>
+    /// Delegate to be called on render 
+    /// </summary>
     public delegate void RenderFrameDelegate();
-
-    // Events
-    // Update event
+    
+    /// <summary>
+    /// Delegate to be called on frame update
+    /// </summary>
     public delegate void UpdateFrameDelegate();
 
-    private double dt;
+    
+    private double _dt;
 
-    // Refresh rate of FixedUpdate func (every N ms) (Standart 250hz)
-    public double fixed_time_update_rate = 0.004;
+    /// <summary>
+    /// Refresh rate of FixedUpdate (currently 250hz)
+    /// </summary>
+    private readonly double _fixedTimeUpdateRate = 0.004;
 
+    /// <summary>
+    /// Creates new window instance
+    /// </summary>
+    /// <param name="gameWindowSettings"></param>
+    /// <param name="nativeWindowSettings"></param>
     public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(
         gameWindowSettings, nativeWindowSettings)
     {
@@ -38,10 +58,29 @@ public class Window : GameWindow
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
     }
 
+    /// <summary>
+    /// Event to be invoked on frame update
+    /// </summary>
     public event UpdateFrameDelegate Update;
+    
+    /// <summary>
+    /// Event to be invoked on fixed update
+    /// </summary>
     public event UpdateFrameDelegate FixedUpdate;
+    
+    /// <summary>
+    /// Event to be invoked on redner
+    /// </summary>
     public event RenderFrameDelegate Render;
+    
+    /// <summary>
+    /// Event to be invoked on load
+    /// </summary>
     public new event OnLoadDelegate Load;
+    
+    /// <summary>
+    /// Event to be invoked on resize
+    /// </summary>
     public new event OnResizeDelegate Resize;
 
     /// <summary>
@@ -78,24 +117,24 @@ public class Window : GameWindow
     protected override void OnRenderFrame(FrameEventArgs e)
     {
         base.OnRenderFrame(e);
-        if (GlobalOptions.full_debug)
+        if (GlobalOptions.FullDebug)
             Misc.Log("---- Frame begin ----");
         GL.Clear(ClearBufferMask.ColorBufferBit);
         // Render delegate
         Render?.Invoke();
 
-        dt += e.Time;
-        while (dt > fixed_time_update_rate)
+        _dt += e.Time;
+        while (_dt > _fixedTimeUpdateRate)
         {
             FixedUpdate?.Invoke();
-            dt -= fixed_time_update_rate;
-            if (dt > 30)
-                dt = 0;
+            _dt -= _fixedTimeUpdateRate;
+            if (_dt > 30)
+                _dt = 0;
         }
 
         SwapBuffers();
 
-        if (GlobalOptions.full_debug)
+        if (GlobalOptions.FullDebug)
             Misc.Log("---- Frame end ----");
     }
 
@@ -104,29 +143,23 @@ public class Window : GameWindow
     {
         base.OnUpdateFrame(e);
 
-        if (Misc.window is null)
-        {
-            Update?.Invoke();
-            return;
-        }
+        Controls.Mouse = MouseState;
+        Controls.Keyboard = KeyboardState;
 
-        Controls.mouse = MouseState;
-        Controls.keyboard = KeyboardState;
+        Controls.CursorPosition.X = 2 * Controls.Mouse.X / Misc.window.Size.X;
+        Controls.CursorPosition.Y = 2 * Controls.Mouse.Y / Misc.window.Size.Y;
 
-        Controls.cursor_position.X = 2 * Controls.mouse.X / Misc.window.Size.X;
-        Controls.cursor_position.Y = 2 * Controls.mouse.Y / Misc.window.Size.Y;
+        Controls.ControlDirection.X = (Controls.Keyboard.IsKeyDown(Keys.D) ? 1 : 0) -
+                                       (Controls.Keyboard.IsKeyDown(Keys.A) ? 1 : 0);
+        Controls.ControlDirection.Y = (Controls.Keyboard.IsKeyDown(Keys.W) ? 1 : 0) -
+                                       (Controls.Keyboard.IsKeyDown(Keys.S) ? 1 : 0);
 
-        Controls.control_direction.X = (Controls.keyboard.IsKeyDown(Keys.D) ? 1 : 0) -
-                                       (Controls.keyboard.IsKeyDown(Keys.A) ? 1 : 0);
-        Controls.control_direction.Y = (Controls.keyboard.IsKeyDown(Keys.W) ? 1 : 0) -
-                                       (Controls.keyboard.IsKeyDown(Keys.S) ? 1 : 0);
+        Controls.ControlDirectionF.X = (Controls.Keyboard.IsKeyDown(Keys.D) ? 1 : 0) -
+                                         (Controls.Keyboard.IsKeyDown(Keys.A) ? 1 : 0);
+        Controls.ControlDirectionF.Y = (Controls.Keyboard.IsKeyDown(Keys.W) ? 1 : 0) -
+                                         (Controls.Keyboard.IsKeyDown(Keys.S) ? 1 : 0);
 
-        Controls.control_direction_f.X = (Controls.keyboard.IsKeyDown(Keys.D) ? 1 : 0) -
-                                         (Controls.keyboard.IsKeyDown(Keys.A) ? 1 : 0);
-        Controls.control_direction_f.Y = (Controls.keyboard.IsKeyDown(Keys.W) ? 1 : 0) -
-                                         (Controls.keyboard.IsKeyDown(Keys.S) ? 1 : 0);
-
-        if (Controls.keyboard.IsKeyPressed(Keys.F11))
+        if (Controls.Keyboard.IsKeyPressed(Keys.F11))
         {
             if (WindowBorder != WindowBorder.Hidden)
             {
@@ -150,11 +183,11 @@ public class Window : GameWindow
         GL.Viewport(0, 0, Size.X, Size.Y);
 
 
-        Misc.screen_ratio = Size.X / (float)Size.Y;
+        Misc.ScreenRatio = Size.X / (float)Size.Y;
 
-        var x_dim = 2 * 1920 / (float)Size.X - 1;
-        var y_dim = 2 * 1080 / (float)Size.Y - 1;
-        Misc.fbo_sprite_coords = new Pos(x_dim, y_dim);
+        var xDim = 2 * 1920 / (float)Size.X - 1;
+        var yDim = 2 * 1080 / (float)Size.Y - 1;
+        Misc.FboSpriteCoords = new Pos(xDim, yDim);
 
 
         // Resize delegate

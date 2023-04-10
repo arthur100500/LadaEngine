@@ -62,7 +62,7 @@ namespace Pong
             _world.Update();
             
             // If player pressed R place ball in the center
-            if (Controls.keyboard.IsKeyPressed(Keys.R))
+            if (Controls.Keyboard.IsKeyPressed(Keys.R))
                 _ball.SetPosition(Pos.Zero);
         }
 

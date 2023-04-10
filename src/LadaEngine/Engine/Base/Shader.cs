@@ -78,7 +78,7 @@ public class Shader
         }
 
 
-        if (GlobalOptions.full_debug)
+        if (GlobalOptions.FullDebug)
         {
             Misc.Log("Shader '" + Convert.ToString(Handle) + "' created");
             Misc.Log("Uniforms");
@@ -129,7 +129,7 @@ public class Shader
             _uniformLocations.Add(key, location);
         }
 
-        if (GlobalOptions.full_debug)
+        if (GlobalOptions.FullDebug)
         {
             Misc.Log("Shader '" + Convert.ToString(Handle) + "' created");
             Misc.Log("Uniforms");
@@ -185,12 +185,12 @@ public class Shader
     /// </summary>
     public void Use()
     {
-        if (Handle != GlobalOptions.lastShaderUsed)
+        if (Handle != GlobalOptions.LastShaderUsed)
         {
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Shader '" + Convert.ToString(Handle) + "' used");
             GL.UseProgram(Handle);
-            GlobalOptions.lastShaderUsed = Handle;
+            GlobalOptions.LastShaderUsed = Handle;
         }
     }
 
@@ -215,7 +215,7 @@ public class Shader
         {
             Use();
             GL.Uniform1(_uniformLocations[name], data);
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Shader '" + Convert.ToString(Handle) + "' set int '" + name + "' to " +
                          Convert.ToString(data));
         }
@@ -237,7 +237,7 @@ public class Shader
         {
             Use();
             GL.Uniform1(_uniformLocations[name], count, data);
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Shader '" + Convert.ToString(Handle) + "' set int[] '" + name + "' to " +
                          Convert.ToString(data));
         }
@@ -259,7 +259,7 @@ public class Shader
         {
             Use();
             GL.Uniform1(location, count, data);
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Shader '" + Convert.ToString(Handle) + "' set int loc(" + Convert.ToString(location) +
                          ") to " + Convert.ToString(data));
         }
@@ -280,7 +280,7 @@ public class Shader
         {
             Use();
             GL.Uniform1(_uniformLocations[name], data);
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Shader '" + Convert.ToString(Handle) + "' set float '" + name + "' to " +
                          Convert.ToString(data));
         }
@@ -343,7 +343,7 @@ public class Shader
         {
             Use();
             GL.Uniform4(position, count, data);
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Shader '" + Convert.ToString(Handle) + "' set vec4[] loc(" + Convert.ToString(position) +
                          ")");
         }
@@ -364,7 +364,7 @@ public class Shader
         {
             Use();
             GL.Uniform2(_uniformLocations[name], data);
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Shader '" + Convert.ToString(Handle) + "' set vec2 '" + name + "' to vec2(" +
                          Convert.ToString(data.X) + " " + Convert.ToString(data.Y) + ")");
         }
@@ -386,7 +386,7 @@ public class Shader
             Use();
             GL.Uniform4(_uniformLocations[name], data);
 
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Shader '" + Convert.ToString(Handle) + "' set vec4 '" + name + "' to vec4(" +
                          Convert.ToString(data.X) + " " + Convert.ToString(data.Y) + " " +
                          Convert.ToString(data.Z) + " " + Convert.ToString(data.W) + ")");

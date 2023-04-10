@@ -2,6 +2,9 @@
 
 namespace LadaEngine.Engine.Global;
 
+/// <summary>
+/// Class for some miscellaneous things and methods
+/// </summary>
 public static class Misc
 {
     /// <summary>
@@ -12,12 +15,12 @@ public static class Misc
     /// <summary>
     ///     Width and height of framebuffer to be rendered
     /// </summary>
-    public static Pos fbo_sprite_coords = new(1.0f, 1.0f);
+    public static Pos FboSpriteCoords = new(1.0f, 1.0f);
 
     /// <summary>
     ///     Screen ratio
     /// </summary>
-    public static float screen_ratio = 0.6f / 0.8f;
+    public static float ScreenRatio = 0.6f / 0.8f;
 
     /// <summary>
     ///     Vertecies for fullscreen Quad
@@ -52,14 +55,13 @@ public static class Misc
     {
         return (float)Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
     }
-
-    public static string str(object arg)
-    {
-        return Convert.ToString(arg);
-    }
-
-
-    public static float normalize(float x)
+    
+    /// <summary>
+    /// Makes a value between 0 and 1 by cropping it
+    /// </summary>
+    /// <param name="x">value to normalize</param>
+    /// <returns>Normalized value</returns>
+    public static float Normalize(float x)
     {
         if (x < 0.0f) return 0f;
         if (x > 1.0f) return 1.0f;
@@ -75,7 +77,7 @@ public static class Misc
         Console.WriteLine(message);
     }
 
-    private static bool isdigit(char x)
+    private static bool Isdigit(char x)
     {
         if (x == '1' || x == '2' || x == '3' || x == '4' || x == '5' || x == '6' || x == '7' || x == '8' ||
             x == '9' || x == '0') return true;
@@ -102,7 +104,7 @@ public static class Misc
                 if (s[0] == 'E' && s[1] == 'R' && s[2] == 'R' && s[3] == 'O' && s[4] == 'R' && s[5] == ':')
                 {
                     for (var i = 9; i < 100; i++)
-                        if (isdigit(s[i]))
+                        if (Isdigit(s[i]))
                             buffer += s[i];
                         else
                             break;
@@ -118,7 +120,7 @@ public static class Misc
                 Console.ForegroundColor = ConsoleColor.Red;
             else
                 Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine(str(i + 1) + " " + splitted[i]);
+            Console.WriteLine(Convert.ToString(i + 1) + " " + splitted[i]);
         }
 
         Console.ForegroundColor = ConsoleColor.Blue;

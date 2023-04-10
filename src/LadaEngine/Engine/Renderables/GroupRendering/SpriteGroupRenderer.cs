@@ -1,15 +1,13 @@
 ﻿using LadaEngine.Engine.Base;
 using LadaEngine.Engine.Common;
 using LadaEngine.Engine.Global;
-using LadaEngine.Engine.Renderables;
 using OpenTK.Graphics.OpenGL4;
-using SpriteGroup = LadaEngine.Engine.Common.SpriteGroup;
 
-namespace LadaEngine.Engine.Common.Renderables.GroupRendering;
+namespace LadaEngine.Engine.Renderables.GroupRendering;
 
 public sealed class SpriteGroupRenderer
 {
-    private static readonly string standart_vert = @"#version 330 core
+    private static readonly string StandartVert = @"#version 330 core
                                         layout(location = 0) in vec3 aPosition;
                                         layout(location = 1) in vec2 aTexCoord;
 
@@ -23,7 +21,7 @@ public sealed class SpriteGroupRenderer
                                             gl_Position = vec4(aPosition.xy - position.xy, aPosition.z + 0.1, 1.0);
                                         }";
 
-    private static readonly string StandartFrag = StandartShaders.standart_frag;
+    private static readonly string StandartFrag = StandartShaders.StandartFrag;
     private readonly ITextureAtlas _atlas;
     private readonly int _ebo;
 
@@ -36,13 +34,13 @@ public sealed class SpriteGroupRenderer
 
     public Shader Shader;
 
-    public SpriteGroupRenderer(ITextureAtlas atlas, SpriteGroup.SpriteGroup self)
+    public SpriteGroupRenderer(ITextureAtlas atlas, Common.SpriteGroup.SpriteGroup self)
     {
         SpriteGroup = self;
         _atlas = atlas;
         _verts = new List<float>();
-        _indices = new int[0];
-        Shader = new Shader(standart_vert, StandartFrag, 0);
+        _indices = Array.Empty<int>();
+        Shader = new Shader(StandartVert, StandartFrag, 0);
 
 
         _vao = GL.GenVertexArray();

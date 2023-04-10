@@ -36,10 +36,10 @@ public class Board
     {
         Collider.Position = _sprite.Position;
 
-        if (Controls.keyboard.IsKeyDown(_up))
+        if (Controls.Keyboard.IsKeyDown(_up))
             _sprite.Position.Y += 0.004f;
         
-        if (Controls.keyboard.IsKeyDown(_down))
+        if (Controls.Keyboard.IsKeyDown(_down))
             _sprite.Position.Y -= 0.004f;
     }
 }

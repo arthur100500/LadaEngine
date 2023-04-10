@@ -5,11 +5,11 @@ namespace LadaEngine.Engine.Renderables.GroupRendering;
 
 public class TextureAtlas : ITextureAtlas
 {
-    private readonly Dictionary<string, float[]> imgCoords;
+    private readonly Dictionary<string, float[]> _imgCoords;
 
     public TextureAtlas(List<string> fileNames)
     {
-        imgCoords = new Dictionary<string, float[]>();
+        _imgCoords = new Dictionary<string, float[]>();
         var atlas = GenImage(fileNames);
 
         Width = 0;
@@ -41,21 +41,21 @@ public class TextureAtlas : ITextureAtlas
 
     public void Use(TextureUnit unit)
     {
-        if (Handle != GlobalOptions.lastTextureUsed[unit - TextureUnit.Texture0])
+        if (Handle != GlobalOptions.LastTextureUsed[unit - TextureUnit.Texture0])
         {
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
-            if (GlobalOptions.full_debug)
+            if (GlobalOptions.FullDebug)
                 Misc.Log("Texture " + Convert.ToString(Handle) + " loaded to slot " +
                          Convert.ToString((int)unit - 33984));
 
-            GlobalOptions.lastTextureUsed[unit - TextureUnit.Texture0] = Handle;
+            GlobalOptions.LastTextureUsed[unit - TextureUnit.Texture0] = Handle;
         }
     }
 
     public float[] GetCoords(string name)
     {
-        return imgCoords[name];
+        return _imgCoords[name];
     }
 
     private Image<Rgba32> GenImage(List<string> fns)
@@ -88,7 +88,7 @@ public class TextureAtlas : ITextureAtlas
                 result[y * width * 4 + (cp + x) * 4 + c] = t;
             }
 
-            imgCoords.Add(fns[imgindex++], new[]
+            _imgCoords.Add(fns[imgindex++], new[]
             {
                 ((float)cp + image.Width) / width, 0f,
                 ((float)cp + image.Width) / width, (float)image.Height / height,

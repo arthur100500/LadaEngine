@@ -1,5 +1,9 @@
 ﻿namespace LadaEngine.Engine.Global;
 
+/// <summary>
+/// Class for containing some global options.
+/// Usually it is never used outside debug
+/// </summary>
 public static class GlobalOptions
 {
     /// <summary>
@@ -8,14 +12,14 @@ public static class GlobalOptions
     ///     If NonGLBased is used, all objects will have some global coordinate, not bound to screen coordinate. Light will
     ///     automatically account for width, height, rotation and position of the object
     /// </summary>
-    public static CoordinateMode coordinate_mode = CoordinateMode.NonGLBased;
+    public static CoordinateMode CoordinateMode = CoordinateMode.NonGLBased;
 
     internal static int bfbo = 0;
 
     // These are used for optimisation in order to minimize the state changes
-    internal static int lastShaderUsed = -1;
+    internal static int LastShaderUsed = -1;
 
-    internal static int[] lastTextureUsed =
+    internal static readonly int[] LastTextureUsed =
     {
         -1, -1, -1, -1,
         -1, -1, -1, -1,
@@ -23,7 +27,7 @@ public static class GlobalOptions
         -1, -1, -1, -1
     };
 
-    public static bool full_debug = false;
+    public const bool FullDebug = false;
 }
 
 public enum CoordinateMode

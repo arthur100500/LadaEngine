@@ -4,37 +4,38 @@ using Window = LadaEngine.Engine.Global.Window;
 
 namespace LadaEngine.Engine.Global;
 
+/// <summary>
+/// Has all the controls, with available keyboard, mouse and some more features
+/// </summary>
 public class Controls
 {
-    private static readonly List<Keys> keys_pressed = new();
-    private static readonly List<MouseButton> mouse_pressed = new();
-
-    public static Window window;
-
+    private static readonly List<Keys> KeysPressed = new();
+    private static readonly List<MouseButton> MousePressed = new();
+    
     /// <summary>
     ///     Global object MouseState mouse
     /// </summary>
-    public static MouseState mouse;
+    public static MouseState Mouse;
 
     /// <summary>
     ///     Global object KeyboardState keyboard
     /// </summary>
-    public static KeyboardState keyboard;
+    public static KeyboardState Keyboard;
 
     /// <summary>
     ///     Position of cursor
     /// </summary>
-    public static Pos cursor_position = new(0, 0);
+    public static Pos CursorPosition = new(0, 0);
 
     /// <summary>
     ///     Vector of player movement tracked with WASD keys
     /// </summary>
-    public static IntPos control_direction = new(0, 0);
+    public static IntPos ControlDirection = new(0, 0);
 
     /// <summary>
     ///     Vector of player movement tracked with WASD keys (but in float)
     /// </summary>
-    public static Pos control_direction_f = new(0, 0);
+    public static Pos ControlDirectionF = new(0, 0);
 
     /// <summary>
     ///     Check if the button was only pressed once
@@ -43,36 +44,16 @@ public class Controls
     /// <returns>If button was pressed once</returns>
     public static bool ButtonPressedOnce(Keys key)
     {
-        // first time
-        if (!keys_pressed.Contains(key) && keyboard.IsKeyDown(key))
-        {
-            keys_pressed.Add(key);
-            return true;
-        }
-
-        if (keys_pressed.Contains(key) && !keyboard.IsKeyDown(key))
-            keys_pressed.Remove(key);
-
-        return false;
+        return Keyboard.IsKeyPressed(key); 
     }
 
     /// <summary>
     ///     Check if the button was only pressed once
     /// </summary>
-    /// <param name="key"></param>
+    /// <param name="btn"></param>
     /// <returns>If button was pressed once</returns>
     public static bool MouseButtonPressedOnce(MouseButton btn)
     {
-        // first time
-        if (!mouse_pressed.Contains(btn) && mouse.IsButtonDown(btn))
-        {
-            mouse_pressed.Add(btn);
-            return true;
-        }
-
-        if (mouse_pressed.Contains(btn) && !mouse.IsButtonDown(btn))
-            mouse_pressed.Remove(btn);
-
-        return false;
+        return Mouse.IsButtonPressed(btn);
     }
 }
