@@ -3,17 +3,22 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace LadaEngine.Engine.Renderables.GroupRendering;
 
+/// <summary>
+/// A texture atlas class
+/// </summary>
 public class TextureAtlas : ITextureAtlas
 {
     private readonly Dictionary<string, float[]> _imgCoords;
 
+    /// <summary>
+    /// Create texture atlas from path list
+    /// </summary>
+    /// <param name="fileNames">Paths to the images</param>
     public TextureAtlas(List<string> fileNames)
     {
         _imgCoords = new Dictionary<string, float[]>();
         var atlas = GenImage(fileNames);
 
-        Width = 0;
-        Height = 0;
         var handle = GL.GenTexture();
         GL.ActiveTexture(TextureUnit.Texture0);
         GL.BindTexture(TextureTarget.Texture2D, handle);
@@ -29,16 +34,18 @@ public class TextureAtlas : ITextureAtlas
         GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
         GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
-        Coordinates = new float[0 * 0 * 8];
-
         Handle = handle;
     }
-
-    public float[] Coordinates { get; }
+    
+    /// <summary>
+    /// OpenGL Texture handle
+    /// </summary>
     public int Handle { get; }
-    public int Height { get; set; }
-    public int Width { get; set; }
 
+    /// <summary>
+    /// Uses the texture placing it to the unit slot
+    /// </summary>
+    /// <param name="unit">OpenGL Texture unit to be loaded to</param>
     public void Use(TextureUnit unit)
     {
         if (Handle != GlobalOptions.LastTextureUsed[unit - TextureUnit.Texture0])
@@ -53,6 +60,11 @@ public class TextureAtlas : ITextureAtlas
         }
     }
 
+    /// <summary>
+    /// Get the vertex data for one image
+    /// </summary>
+    /// <param name="name">name of the image</param>
+    /// <returns>20 elements array with vertex data for a Sprite</returns>
     public float[] GetCoords(string name)
     {
         return _imgCoords[name];
@@ -99,13 +111,5 @@ public class TextureAtlas : ITextureAtlas
         }
 
         return Image.LoadPixelData<Rgba32>(result, width, height);
-    }
-
-    private void FlipImageX(byte[] pixelBytes, int x, int y)
-    {
-        for (var i = 0; i < y; i += 1)
-        for (var j = 0; j < x; j++)
-            (pixelBytes[i * x + j], pixelBytes[i * x + x - j - 1]) =
-                (pixelBytes[i * x + x - j - 1], pixelBytes[i * x + j]);
     }
 }

@@ -5,6 +5,11 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace LadaEngine.Engine.Renderables.GroupRendering;
 
+/// <summary>
+/// SpriteGroupRenderer class
+/// Does all the job rendering a SpriteGroup object.
+/// Supports camera position and zoom via shader by default
+/// </summary>
 public sealed class SpriteGroupRenderer
 {
     private static readonly string StandartVert = @"#version 330 core
@@ -32,8 +37,17 @@ public sealed class SpriteGroupRenderer
     private int[] _indices;
     private Common.SpriteGroup.SpriteGroup SpriteGroup;
 
+    /// <summary>
+    /// Shader for the all group
+    /// Recommended to use StandartVert shader for vertex one as it supports camera position and zoom
+    /// </summary>
     public Shader Shader;
 
+    /// <summary>
+    /// Create a SpriteGroupRenderer instance
+    /// </summary>
+    /// <param name="atlas">Texture atlas to be used</param>
+    /// <param name="self">SpriteGroup to be rendered</param>
     public SpriteGroupRenderer(ITextureAtlas atlas, Common.SpriteGroup.SpriteGroup self)
     {
         SpriteGroup = self;
@@ -67,6 +81,9 @@ public sealed class SpriteGroupRenderer
             3 * sizeof(float));
     }
 
+    /// <summary>
+    /// Refreshes information in GPU Buffers
+    /// </summary>
     public void UpdateBuffers()
     {
         GL.BindVertexArray(_vao);
@@ -80,6 +97,11 @@ public sealed class SpriteGroupRenderer
             BufferUsageHint.StaticDraw);
     }
 
+    /// <summary>
+    /// Render all sprites in the SpriteGroup
+    /// </summary>
+    /// <param name="camera">Unused param</param>
+    /// <param name="updateVerts">If set to true UpdateVerts will ve called</param>
     public void Render(Camera camera, bool updateVerts = false)
     {
         if (updateVerts)
@@ -97,6 +119,10 @@ public sealed class SpriteGroupRenderer
         GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
     }
 
+    /// <summary>
+    /// Refreshes the vertices of the sprites it has
+    /// !!! Can be costly for many sprites, use carefully!
+    /// </summary>
     public void UpdateVerts()
     {
         _verts.Clear();
