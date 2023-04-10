@@ -25,7 +25,7 @@ public class SpriteGroup : IRenderable
 
     public void AddSprite(Sprite t)
     {
-        _lvl.tiles.Add(t);
+        _lvl.Sprites.Add(t);
     }
 
     public void Update()
@@ -36,6 +36,6 @@ public class SpriteGroup : IRenderable
 
     public List<Sprite> GetList()
     {
-        return _lvl.tiles;
+        return _lvl.Sprites;
     }
 }

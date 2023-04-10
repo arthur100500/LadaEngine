@@ -17,7 +17,7 @@ public class Board
     public Board(SpriteGroup group, Pos initial, Keys up, Keys down)
     {
         // Create sprite
-        _sprite = new Sprite(new Pos(0, 0), group.textureAtlas, "Textures/board.png");
+        _sprite = new Sprite(new Pos(0, 0), group.TextureAtlas, "Textures/board.png");
         _sprite.Width = 0.06f;
         _sprite.Height = 0.3f;
         _sprite.Position = initial;

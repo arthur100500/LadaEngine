@@ -21,7 +21,7 @@ public class Ball
         this.rightBoard = rightBoard;
         
         // Create sprite
-        _sprite = new Sprite(new Pos(0, 0), group.textureAtlas, "Textures/ball.png");
+        _sprite = new Sprite(new Pos(0, 0), group.TextureAtlas, "Textures/ball.png");
         _sprite.Width = _sprite.Height = 0.1f;
         group.AddSprite(_sprite);
         

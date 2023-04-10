@@ -102,7 +102,7 @@ public sealed class SpriteGroupRenderer
     public void UpdateVerts()
     {
         _verts.Clear();
-        foreach (var tile in SpriteGroup.tiles) tile.AddToVerts(_verts);
+        foreach (var tile in SpriteGroup.Sprites) tile.AddToVerts(_verts);
 
         var objectCount = _verts.Count / 20;
         _indices = new int[6 * objectCount];
