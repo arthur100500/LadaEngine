@@ -3,24 +3,24 @@
 namespace LadaEngine.Engine.Common;
 
 /// <summary>
-/// Objects that has position and zoom properties
-/// Zoom and position are applied on SpriteGroup render
-/// (passed its via shader uniform)
+///     Objects that has position and zoom properties
+///     Zoom and position are applied on SpriteGroup render
+///     (passed its via shader uniform)
 /// </summary>
 public class Camera
 {
     /// <summary>
-    /// Position of the camera
+    ///     Position of the camera
     /// </summary>
     public Pos Position;
-    
+
     /// <summary>
-    /// Zoom of the camera
+    ///     Zoom of the camera
     /// </summary>
     public float Zoom;
 
     /// <summary>
-    /// Creates new camera object
+    ///     Creates new camera object
     /// </summary>
     /// <param name="position">Position of the camera</param>
     /// <param name="zoom">Zoom of the camera</param>
@@ -31,7 +31,7 @@ public class Camera
     }
 
     /// <summary>
-    /// Creates new camera object in (0, 0) and with zoom of 1
+    ///     Creates new camera object in (0, 0) and with zoom of 1
     /// </summary>
     public Camera()
     {

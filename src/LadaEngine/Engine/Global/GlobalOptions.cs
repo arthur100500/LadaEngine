@@ -1,11 +1,13 @@
 ﻿namespace LadaEngine.Engine.Global;
 
 /// <summary>
-/// Class for containing some global options.
-/// Usually it is never used outside debug
+///     Class for containing some global options.
+///     Usually it is never used outside debug
 /// </summary>
 public static class GlobalOptions
 {
+    public const bool FullDebug = false;
+
     /// <summary>
     ///     If GLBased is used, entire screen is based on (-1, -1, 1, 1) grid. Light sources should be counted individually and
     ///     passed to a target accounting it's width, height and position, but not rotation
@@ -26,8 +28,6 @@ public static class GlobalOptions
         -1, -1, -1, -1,
         -1, -1, -1, -1
     };
-
-    public const bool FullDebug = false;
 }
 
 public enum CoordinateMode

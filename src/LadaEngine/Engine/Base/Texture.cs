@@ -15,9 +15,9 @@ public class Texture
             Misc.Log("Texture " + Convert.ToString(Handle) + " created");
         Handle = glHandle;
     }
-    
+
     /// <summary>
-    /// OpenGL Handle of a texture
+    ///     OpenGL Handle of a texture
     /// </summary>
     public int Handle { get; set; }
 
@@ -104,8 +104,8 @@ public class Texture
     }
 
     /// <summary>
-    /// Updates data in a texture
-    /// Maybe it doesn't work
+    ///     Updates data in a texture
+    ///     Maybe it doesn't work
     /// </summary>
     /// <param name="bmp">Image to set new texture to</param>
     public void UpdateData(Image<Rgba32> bmp)

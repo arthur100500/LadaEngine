@@ -7,33 +7,33 @@ using OpenTK.Graphics.OpenGL4;
 namespace LadaEngine.Engine.Global.Framebuffer;
 
 /// <summary>
-/// Class that represents framebuffer
-/// You can draw stuff here instead of screen
-/// To do so, create a FB object and load it, then call Start.
-/// After that all you draw on screen will be drawn to the FBO texture.
-/// To finish this call stop method.
-/// Contents of framebuffer can be rendered to screen via Render method.
+///     Class that represents framebuffer
+///     You can draw stuff here instead of screen
+///     To do so, create a FB object and load it, then call Start.
+///     After that all you draw on screen will be drawn to the FBO texture.
+///     To finish this call stop method.
+///     Contents of framebuffer can be rendered to screen via Render method.
 /// </summary>
 public class FrameBuffer
 {
     private readonly Camera _blancCam = new();
     private int _fbo;
-    private Common.SpriteGroup.SpriteGroup _sg;
-    
+    private SpriteGroup _sg;
+
     /// <summary>
-    /// Sprite of the framebuffer.
-    /// Contained in it's private sprite group
+    ///     Sprite of the framebuffer.
+    ///     Contained in it's private sprite group
     /// </summary>
     public Sprite Sprite;
-    
+
     /// <summary>
-    /// Texture of the framebuffer.
-    /// Here stuff will be drawn.
+    ///     Texture of the framebuffer.
+    ///     Here stuff will be drawn.
     /// </summary>
     public Texture Texture;
 
     /// <summary>
-    /// Load framebuffer object
+    ///     Load framebuffer object
     /// </summary>
     /// <param name="screenResolution">resolution of the window</param>
     public void Load(IntPos screenResolution)
@@ -47,13 +47,13 @@ public class FrameBuffer
         GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0,
             TextureTarget.Texture2D, Texture.Handle, 0);
 
-        _sg = new Common.SpriteGroup.SpriteGroup(new SingleTextureAtlas(Texture));
+        _sg = new SpriteGroup(new SingleTextureAtlas(Texture));
 
         Sprite = new Sprite(new Pos(0, 0), _sg.TextureAtlas, "");
     }
-    
+
     /// <summary>
-    /// Start capture
+    ///     Start capture
     /// </summary>
     public void Start()
     {
@@ -67,7 +67,7 @@ public class FrameBuffer
     }
 
     /// <summary>
-    /// Stop capture
+    ///     Stop capture
     /// </summary>
     public void Stop()
     {
@@ -79,7 +79,7 @@ public class FrameBuffer
 
         GlobalOptions.bfbo = 0;
     }
-    
+
     private Texture CreateTexture(IntPos screenResolution)
     {
         // Generate handle
@@ -109,9 +109,9 @@ public class FrameBuffer
 
         return new Texture(handle);
     }
-    
+
     /// <summary>
-    /// Resizes framebuffer
+    ///     Resizes framebuffer
     /// </summary>
     /// <param name="screenResolution">New resolution</param>
     /// <exception cref="Exception"></exception>
@@ -133,7 +133,7 @@ public class FrameBuffer
     }
 
     /// <summary>
-    /// Draw framebuffer on screen
+    ///     Draw framebuffer on screen
     /// </summary>
     /// <exception cref="Exception"></exception>
     public void Render()

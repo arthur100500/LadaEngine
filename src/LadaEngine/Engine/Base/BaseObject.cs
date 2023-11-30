@@ -1,9 +1,7 @@
-﻿using LadaEngine.Engine.Common;
-
-namespace LadaEngine.Engine.Base;
+﻿namespace LadaEngine.Engine.Base;
 
 /// <summary>
-/// Basic object type that has position, height, width and rotation
+///     Basic object type that has position, height, width and rotation
 /// </summary>
 public abstract class BaseObject
 {

@@ -1,17 +1,16 @@
 ﻿using LadaEngine.Engine.Base;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using Window = LadaEngine.Engine.Global.Window;
 
 namespace LadaEngine.Engine.Global;
 
 /// <summary>
-/// Has all the controls, with available keyboard, mouse and some more features
+///     Has all the controls, with available keyboard, mouse and some more features
 /// </summary>
 public class Controls
 {
     private static readonly List<Keys> KeysPressed = new();
     private static readonly List<MouseButton> MousePressed = new();
-    
+
     /// <summary>
     ///     Global object MouseState mouse
     /// </summary>
@@ -44,7 +43,7 @@ public class Controls
     /// <returns>If button was pressed once</returns>
     public static bool ButtonPressedOnce(Keys key)
     {
-        return Keyboard.IsKeyPressed(key); 
+        return Keyboard.IsKeyPressed(key);
     }
 
     /// <summary>

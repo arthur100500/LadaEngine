@@ -1,10 +1,8 @@
-﻿using LadaEngine.Engine.Base;
-
-namespace LadaEngine.Engine.Global;
+﻿namespace LadaEngine.Engine.Global;
 
 /// <summary>
-/// Standart vertex and fragment shader holder.
-/// !!! Vertex shader does not support camera
+///     Standart vertex and fragment shader holder.
+///     !!! Vertex shader does not support camera
 /// </summary>
 public class StandartShaders
 {
@@ -28,5 +26,4 @@ public class StandartShaders
                                         {
 	                                        outputColor = texture(texture0, texCoord);
                                         }";
-    
 }

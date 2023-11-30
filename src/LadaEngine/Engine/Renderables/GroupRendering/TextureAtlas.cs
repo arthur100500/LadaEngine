@@ -4,14 +4,14 @@ using OpenTK.Graphics.OpenGL4;
 namespace LadaEngine.Engine.Renderables.GroupRendering;
 
 /// <summary>
-/// A texture atlas class
+///     A texture atlas class
 /// </summary>
 public class TextureAtlas : ITextureAtlas
 {
     private readonly Dictionary<string, float[]> _imgCoords;
 
     /// <summary>
-    /// Create texture atlas from path list
+    ///     Create texture atlas from path list
     /// </summary>
     /// <param name="fileNames">Paths to the images</param>
     public TextureAtlas(List<string> fileNames)
@@ -36,14 +36,14 @@ public class TextureAtlas : ITextureAtlas
 
         Handle = handle;
     }
-    
+
     /// <summary>
-    /// OpenGL Texture handle
+    ///     OpenGL Texture handle
     /// </summary>
     public int Handle { get; }
 
     /// <summary>
-    /// Uses the texture placing it to the unit slot
+    ///     Uses the texture placing it to the unit slot
     /// </summary>
     /// <param name="unit">OpenGL Texture unit to be loaded to</param>
     public void Use(TextureUnit unit)
@@ -61,7 +61,7 @@ public class TextureAtlas : ITextureAtlas
     }
 
     /// <summary>
-    /// Get the vertex data for one image
+    ///     Get the vertex data for one image
     /// </summary>
     /// <param name="name">name of the image</param>
     /// <returns>20 elements array with vertex data for a Sprite</returns>

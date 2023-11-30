@@ -1,14 +1,15 @@
 ﻿using LadaEngine.Engine.Base;
 using LadaEngine.Engine.Common;
+using LadaEngine.Engine.Common.SpriteGroup;
 using LadaEngine.Engine.Global;
 using OpenTK.Graphics.OpenGL4;
 
 namespace LadaEngine.Engine.Renderables.GroupRendering;
 
 /// <summary>
-/// SpriteGroupRenderer class
-/// Does all the job rendering a SpriteGroup object.
-/// Supports camera position and zoom via shader by default
+///     SpriteGroupRenderer class
+///     Does all the job rendering a SpriteGroup object.
+///     Supports camera position and zoom via shader by default
 /// </summary>
 public sealed class SpriteGroupRenderer
 {
@@ -16,14 +17,18 @@ public sealed class SpriteGroupRenderer
                                         layout(location = 0) in vec3 aPosition;
                                         layout(location = 1) in vec2 aTexCoord;
 
-										uniform vec2 position;
+                                        uniform vec2 position;
+                                        uniform float zoom;
+
                                         out vec2 texCoord;
 
                                         void main(void)
                                         {
                                             texCoord = aTexCoord;
 
-                                            gl_Position = vec4(aPosition.xy - position.xy, aPosition.z + 0.1, 1.0);
+                                            vec2 p = (aPosition.xy - position.xy) / zoom;
+
+                                            gl_Position = vec4(p, aPosition.z + 0.1, 1.0);
                                         }";
 
     private static readonly string StandartFrag = StandartShaders.StandartFrag;
@@ -35,20 +40,21 @@ public sealed class SpriteGroupRenderer
     private readonly List<float> _verts;
 
     private int[] _indices;
-    private Common.SpriteGroup.SpriteGroup SpriteGroup;
 
     /// <summary>
-    /// Shader for the all group
-    /// Recommended to use StandartVert shader for vertex one as it supports camera position and zoom
+    ///     Shader for the all group
+    ///     Recommended to use StandartVert shader for vertex one as it supports camera position and zoom
     /// </summary>
     public Shader Shader;
 
+    private readonly SpriteGroup SpriteGroup;
+
     /// <summary>
-    /// Create a SpriteGroupRenderer instance
+    ///     Create a SpriteGroupRenderer instance
     /// </summary>
     /// <param name="atlas">Texture atlas to be used</param>
     /// <param name="self">SpriteGroup to be rendered</param>
-    public SpriteGroupRenderer(ITextureAtlas atlas, Common.SpriteGroup.SpriteGroup self)
+    public SpriteGroupRenderer(ITextureAtlas atlas, SpriteGroup self)
     {
         SpriteGroup = self;
         _atlas = atlas;
@@ -82,7 +88,7 @@ public sealed class SpriteGroupRenderer
     }
 
     /// <summary>
-    /// Refreshes information in GPU Buffers
+    ///     Refreshes information in GPU Buffers
     /// </summary>
     public void UpdateBuffers()
     {
@@ -98,7 +104,7 @@ public sealed class SpriteGroupRenderer
     }
 
     /// <summary>
-    /// Render all sprites in the SpriteGroup
+    ///     Render all sprites in the SpriteGroup
     /// </summary>
     /// <param name="camera">Unused param</param>
     /// <param name="updateVerts">If set to true UpdateVerts will ve called</param>
@@ -120,8 +126,8 @@ public sealed class SpriteGroupRenderer
     }
 
     /// <summary>
-    /// Refreshes the vertices of the sprites it has
-    /// !!! Can be costly for many sprites, use carefully!
+    ///     Refreshes the vertices of the sprites it has
+    ///     !!! Can be costly for many sprites, use carefully!
     /// </summary>
     public void UpdateVerts()
     {

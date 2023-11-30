@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace LadaEngine.Engine.Base;
+﻿namespace LadaEngine.Engine.Base;
 
 /// <summary>
 ///     Class for storing 2d integer position
@@ -8,17 +6,17 @@ namespace LadaEngine.Engine.Base;
 public class IntPos
 {
     /// <summary>
-    /// X coordinate of the IntPos
+    ///     X coordinate of the IntPos
     /// </summary>
     public int X;
-    
+
     /// <summary>
-    /// Y coordinate of the IntPos
+    ///     Y coordinate of the IntPos
     /// </summary>
     public int Y;
-    
+
     /// <summary>
-    /// Constructor of IntPos
+    ///     Constructor of IntPos
     /// </summary>
     public IntPos(int x, int y)
     {
@@ -59,17 +57,18 @@ public class IntPos
     {
         return Convert.ToString(X) + " " + Convert.ToString(Y);
     }
+
     /// <summary>
-    /// Makes a copy of IntPos
+    ///     Makes a copy of IntPos
     /// </summary>
     /// <returns>New IntPos instance</returns>
     public IntPos Copy()
     {
         return new IntPos(X, Y);
     }
-    
+
     /// <summary>
-    /// Adds another to self, X to X and Y to Y
+    ///     Adds another to self, X to X and Y to Y
     /// </summary>
     /// <param name="another"></param>
     public void Add(IntPos another)

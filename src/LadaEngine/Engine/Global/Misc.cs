@@ -3,7 +3,7 @@
 namespace LadaEngine.Engine.Global;
 
 /// <summary>
-/// Class for some miscellaneous things and methods
+///     Class for some miscellaneous things and methods
 /// </summary>
 public static class Misc
 {
@@ -55,9 +55,9 @@ public static class Misc
     {
         return (float)Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
     }
-    
+
     /// <summary>
-    /// Makes a value between 0 and 1 by cropping it
+    ///     Makes a value between 0 and 1 by cropping it
     /// </summary>
     /// <param name="x">value to normalize</param>
     /// <returns>Normalized value</returns>

@@ -4,19 +4,18 @@ using LadaEngine.Engine.Common;
 namespace LadaEngine.Engine.Physics.Colliders;
 
 /// <summary>
-/// Represents box collider with set width and height and constant rotation
+///     Represents box collider with set width and height and constant rotation
 /// </summary>
 public class BoxCollider : GameObject
 {
     /// <summary>
-    /// Action to be called when collision happens
+    ///     Action to be called when collision happens
     /// </summary>
     public Action OnCollisionAction = () => { };
 
     /// <summary>
-    /// Creates new box collider
-    ///
-    /// !!! Copies the position
+    ///     Creates new box collider
+    ///     !!! Copies the position
     /// </summary>
     /// <param name="position">Position of collider (will be copied)</param>
     /// <param name="width">Width of collider</param>
@@ -26,12 +25,12 @@ public class BoxCollider : GameObject
     }
 
     /// <summary>
-    /// Is the object collidable?
+    ///     Is the object collidable?
     /// </summary>
     public bool IsNotCollidable { get; set; }
 
     /// <summary>
-    /// Checks for collision with other game object. 
+    ///     Checks for collision with other game object.
     /// </summary>
     /// <param name="other">Other game object to check collision with</param>
     /// <returns>true if collision happened and false if not</returns>
@@ -46,7 +45,7 @@ public class BoxCollider : GameObject
     }
 
     /// <summary>
-    /// On collision method
+    ///     On collision method
     /// </summary>
     /// <param name="other"></param>
     public void OnCollision(BoxCollider other)

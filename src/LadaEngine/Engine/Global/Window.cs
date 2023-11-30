@@ -8,45 +8,45 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 namespace LadaEngine.Engine.Global;
 
 /// <summary>
-/// Game window class
+///     Game window class
 /// </summary>
 public class Window : GameWindow
 {
     /// <summary>
-    /// Delegate to be called on fixed update
+    ///     Delegate to be called on fixed update
     /// </summary>
     public delegate void FixedUpdateFrameDelegate();
 
     /// <summary>
-    /// Delegate to be called on load 
+    ///     Delegate to be called on load
     /// </summary>
     public delegate void OnLoadDelegate();
 
     /// <summary>
-    /// Delegate to be called on resize 
+    ///     Delegate to be called on resize
     /// </summary>
     public delegate void OnResizeDelegate();
 
     /// <summary>
-    /// Delegate to be called on render 
+    ///     Delegate to be called on render
     /// </summary>
     public delegate void RenderFrameDelegate();
-    
+
     /// <summary>
-    /// Delegate to be called on frame update
+    ///     Delegate to be called on frame update
     /// </summary>
     public delegate void UpdateFrameDelegate();
 
-    
-    private double _dt;
-
     /// <summary>
-    /// Refresh rate of FixedUpdate (currently 250hz)
+    ///     Refresh rate of FixedUpdate (currently 250hz)
     /// </summary>
     private readonly double _fixedTimeUpdateRate = 0.004;
 
+
+    private double _dt;
+
     /// <summary>
-    /// Creates new window instance
+    ///     Creates new window instance
     /// </summary>
     /// <param name="gameWindowSettings"></param>
     /// <param name="nativeWindowSettings"></param>
@@ -59,27 +59,27 @@ public class Window : GameWindow
     }
 
     /// <summary>
-    /// Event to be invoked on frame update
+    ///     Event to be invoked on frame update
     /// </summary>
     public event UpdateFrameDelegate Update;
-    
+
     /// <summary>
-    /// Event to be invoked on fixed update
+    ///     Event to be invoked on fixed update
     /// </summary>
     public event UpdateFrameDelegate FixedUpdate;
-    
+
     /// <summary>
-    /// Event to be invoked on redner
+    ///     Event to be invoked on redner
     /// </summary>
     public event RenderFrameDelegate Render;
-    
+
     /// <summary>
-    /// Event to be invoked on load
+    ///     Event to be invoked on load
     /// </summary>
     public new event OnLoadDelegate Load;
-    
+
     /// <summary>
-    /// Event to be invoked on resize
+    ///     Event to be invoked on resize
     /// </summary>
     public new event OnResizeDelegate Resize;
 
@@ -150,14 +150,14 @@ public class Window : GameWindow
         Controls.CursorPosition.Y = 2 * Controls.Mouse.Y / Misc.window.Size.Y;
 
         Controls.ControlDirection.X = (Controls.Keyboard.IsKeyDown(Keys.D) ? 1 : 0) -
-                                       (Controls.Keyboard.IsKeyDown(Keys.A) ? 1 : 0);
+                                      (Controls.Keyboard.IsKeyDown(Keys.A) ? 1 : 0);
         Controls.ControlDirection.Y = (Controls.Keyboard.IsKeyDown(Keys.W) ? 1 : 0) -
-                                       (Controls.Keyboard.IsKeyDown(Keys.S) ? 1 : 0);
+                                      (Controls.Keyboard.IsKeyDown(Keys.S) ? 1 : 0);
 
         Controls.ControlDirectionF.X = (Controls.Keyboard.IsKeyDown(Keys.D) ? 1 : 0) -
-                                         (Controls.Keyboard.IsKeyDown(Keys.A) ? 1 : 0);
+                                       (Controls.Keyboard.IsKeyDown(Keys.A) ? 1 : 0);
         Controls.ControlDirectionF.Y = (Controls.Keyboard.IsKeyDown(Keys.W) ? 1 : 0) -
-                                         (Controls.Keyboard.IsKeyDown(Keys.S) ? 1 : 0);
+                                       (Controls.Keyboard.IsKeyDown(Keys.S) ? 1 : 0);
 
         if (Controls.Keyboard.IsKeyPressed(Keys.F11))
         {
@@ -180,7 +180,7 @@ public class Window : GameWindow
     protected override void OnResize(ResizeEventArgs e)
     {
         base.OnResize(e);
-        GL.Viewport(0, 0, Size.X, Size.Y);
+        GL.Viewport(0, -(Size.X - Size.Y) / 2, Size.X, Size.X);
 
 
         Misc.ScreenRatio = Size.X / (float)Size.Y;

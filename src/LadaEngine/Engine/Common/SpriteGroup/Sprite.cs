@@ -5,23 +5,23 @@ using LadaEngine.Engine.Renderables;
 namespace LadaEngine.Engine.Common.SpriteGroup;
 
 /// <summary>
-/// The object containing image
-/// Should be in a SpriteGroup to work properly
-/// An usage example: https://github.com/arthur100500/LadaEngine/tree/main/examples/MovingImage
+///     The object containing image
+///     Should be in a SpriteGroup to work properly
+///     An usage example: https://github.com/arthur100500/LadaEngine/tree/main/examples/MovingImage
 /// </summary>
-public sealed class Sprite : GameObject
+public class Sprite : GameObject
 {
     private readonly ITextureAtlas _atlas;
     private readonly float[] _relAngles = { 0f, (float)Math.PI / 2, (float)Math.PI, 3 * (float)Math.PI / 2 };
     private float[] _verts;
-    
-    /// <summary>
-    /// Name of the texture
-    /// </summary>
-    public readonly string TextureName;
 
     /// <summary>
-    /// Create a new sprite instance
+    ///     Name of the texture
+    /// </summary>
+    public string TextureName;
+
+    /// <summary>
+    ///     Create a new sprite instance
     /// </summary>
     /// <param name="position">Position of new sprite</param>
     /// <param name="textureAtlas">Texture atlas for texture source</param>
@@ -34,7 +34,7 @@ public sealed class Sprite : GameObject
     }
 
     /// <summary>
-    /// Adds coordinates of self to the vertices list via AddRange
+    ///     Adds coordinates of self to the vertices list via AddRange
     /// </summary>
     /// <param name="vertices"></param>
     public void AddToVerts(List<float> vertices)
@@ -65,7 +65,7 @@ public sealed class Sprite : GameObject
     }
 
     /// <summary>
-    /// Creates copy of a sprite
+    ///     Creates copy of a sprite
     /// </summary>
     /// <returns>New sprite identical to self</returns>
     public Sprite Copy()
@@ -104,7 +104,7 @@ public sealed class Sprite : GameObject
         _relAngles[3] = (float)Math.Atan2(ac.X, ac.Y) + (float)Math.PI;
 
         var transposed = Position;
-        
+
         angle = MathF.PI - angle;
         _verts[0] = transposed.X + rad * (float)Math.Cos(angle + _relAngles[2]);
         _verts[1] = transposed.Y + rad * (float)Math.Sin(angle + _relAngles[2]);

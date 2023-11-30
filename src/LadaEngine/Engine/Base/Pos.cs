@@ -2,38 +2,32 @@ using System.Globalization;
 
 namespace LadaEngine.Engine.Base;
 
-
 /// <summary>
 ///     Class for storing 2d float position
 /// </summary>
 public class Pos
 {
     /// <summary>
-    /// X coordinate of the Pos
+    ///     X coordinate of the Pos
     /// </summary>
     public float X;
 
     /// <summary>
-    /// Y coordinate of the Pos
+    ///     Y coordinate of the Pos
     /// </summary>
     public float Y;
 
     /// <summary>
-    /// Get new Pos instance with representing (0, 0) vector
-    /// </summary>
-    public static Pos Zero => new Pos(0, 0);
-
-    /// <summary>
-    /// Creates Pos from 2 floats
+    ///     Creates Pos from 2 floats
     /// </summary>
     public Pos(float x, float y)
     {
-        this.X = x;
-        this.Y = y;
+        X = x;
+        Y = y;
     }
 
     /// <summary>
-    /// Creates Pos from IntPos
+    ///     Creates Pos from IntPos
     /// </summary>
     public Pos(IntPos pos)
     {
@@ -42,13 +36,18 @@ public class Pos
     }
 
     /// <summary>
-    /// Creates Pos from 2 doubles
+    ///     Creates Pos from 2 doubles
     /// </summary>
     public Pos(double x, double y)
     {
         X = (float)x;
         Y = (float)y;
     }
+
+    /// <summary>
+    ///     Get new Pos instance with representing (0, 0) vector
+    /// </summary>
+    public static Pos Zero => new(0, 0);
 
     public static bool operator ==(Pos obj1, Pos obj2)
     {
@@ -95,8 +94,9 @@ public class Pos
         return Convert.ToString(X, CultureInfo.InvariantCulture) + " " +
                Convert.ToString(Y, CultureInfo.InvariantCulture);
     }
+
     /// <summary>
-    /// Creates a copy of the Pos
+    ///     Creates a copy of the Pos
     /// </summary>
     /// <returns>Pos which is identical to this</returns>
     public Pos Copy()
@@ -105,7 +105,7 @@ public class Pos
     }
 
     /// <summary>
-    /// Adds another to self, X to X and Y to Y
+    ///     Adds another to self, X to X and Y to Y
     /// </summary>
     /// <param name="another"></param>
     public void Add(Pos another)
