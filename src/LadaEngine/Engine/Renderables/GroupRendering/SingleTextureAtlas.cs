@@ -42,6 +42,12 @@ public class SingleTextureAtlas : ITextureAtlas
     /// <returns>{ 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 }</returns>
     public float[] GetCoords(string name)
     {
-        return new float[] { 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 };
+        return new float[]
+        {
+             1, 1,
+             1, 0,
+             0, 0,
+             0, 1
+        };
     }
 }

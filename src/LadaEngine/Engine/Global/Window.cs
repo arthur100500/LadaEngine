@@ -181,7 +181,7 @@ public class Window : GameWindow
     {
         base.OnResize(e);
         GL.Viewport(0, -(Size.X - Size.Y) / 2, Size.X, Size.X);
-
+        // GL.Viewport(0, 0, Size.X, Size.Y);
 
         Misc.ScreenRatio = Size.X / (float)Size.Y;
 

@@ -33,6 +33,15 @@ public class FrameBuffer
     public Texture Texture;
 
     /// <summary>
+    ///     Set shader of framebuffer
+    /// </summary>
+    /// <param name="shader">New shader</param>
+    public void SetShader(Shader shader)
+    {
+        _sg.Renderer.Shader = shader;
+    }
+
+    /// <summary>
     ///     Load framebuffer object
     /// </summary>
     /// <param name="screenResolution">resolution of the window</param>
@@ -50,6 +59,9 @@ public class FrameBuffer
         _sg = new SpriteGroup(new SingleTextureAtlas(Texture));
 
         Sprite = new Sprite(new Pos(0, 0), _sg.TextureAtlas, "");
+        Sprite.Width = Sprite.Height = 2;
+        
+        _sg.AddSprite(Sprite);
     }
 
     /// <summary>
