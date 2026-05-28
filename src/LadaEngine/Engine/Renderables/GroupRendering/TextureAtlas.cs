@@ -14,7 +14,7 @@ public class TextureAtlas : ITextureAtlas
     ///     Create texture atlas from path list
     /// </summary>
     /// <param name="fileNames">Paths to the images</param>
-    public TextureAtlas(List<string> fileNames)
+    public TextureAtlas(IEnumerable<string> fileNames)
     {
         _imgCoords = new Dictionary<string, float[]>();
         var atlas = GenImage(fileNames);
@@ -48,16 +48,15 @@ public class TextureAtlas : ITextureAtlas
     /// <param name="unit">OpenGL Texture unit to be loaded to</param>
     public void Use(TextureUnit unit)
     {
-        if (Handle != GlobalOptions.LastTextureUsed[unit - TextureUnit.Texture0])
-        {
-            GL.ActiveTexture(unit);
-            GL.BindTexture(TextureTarget.Texture2D, Handle);
-            if (GlobalOptions.FullDebug)
-                Misc.Log("Texture " + Convert.ToString(Handle) + " loaded to slot " +
-                         Convert.ToString((int)unit - 33984));
+        if (Handle == GlobalOptions.LastTextureUsed[unit - TextureUnit.Texture0])
+            return;
+        
+        GL.ActiveTexture(unit);
+        GL.BindTexture(TextureTarget.Texture2D, Handle);
+        if (GlobalOptions.FullDebug)
+            Misc.Log("Texture " + Convert.ToString(Handle) + " loaded to slot " + Convert.ToString((int)unit - 33984));
 
-            GlobalOptions.LastTextureUsed[unit - TextureUnit.Texture0] = Handle;
-        }
+        GlobalOptions.LastTextureUsed[unit - TextureUnit.Texture0] = Handle;
     }
 
     /// <summary>
@@ -70,12 +69,13 @@ public class TextureAtlas : ITextureAtlas
         return _imgCoords[name];
     }
 
-    private Image<Rgba32> GenImage(List<string> fns)
+    private Image<Rgba32> GenImage(IEnumerable<string> fns)
     {
         var images = new List<Image<Rgba32>>();
         var height = 0;
         var width = 0;
-        foreach (var fn in fns)
+        var enumerable = fns as string[] ?? fns.ToArray();
+        foreach (var fn in enumerable)
         {
             var i = Image.Load<Rgba32>(fn);
             images.Add(i);
@@ -100,13 +100,12 @@ public class TextureAtlas : ITextureAtlas
                 result[y * width * 4 + (cp + x) * 4 + c] = t;
             }
 
-            _imgCoords.Add(fns[imgindex++], new[]
-            {
+            _imgCoords.Add(enumerable[imgindex++], [
                 ((float)cp + image.Width) / width, 0f,
                 ((float)cp + image.Width) / width, (float)image.Height / height,
                 (float)cp / width, (float)image.Height / height,
                 (float)cp / width, 0f
-            });
+            ]);
             cp += image.Width;
         }
 

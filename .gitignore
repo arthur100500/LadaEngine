@@ -134,3 +134,5 @@ $RECYCLE.BIN/
 
 _NCrunch*
 .idea/.idea.LadaEngine/.idea/workspace.xml
+
+.DS_Store

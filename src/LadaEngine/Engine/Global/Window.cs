@@ -35,7 +35,7 @@ public class Window : GameWindow
     /// <summary>
     ///     Delegate to be called on frame update
     /// </summary>
-    public delegate void UpdateFrameDelegate();
+    public delegate void UpdateFrameDelegate(double dt);
 
     /// <summary>
     ///     Refresh rate of FixedUpdate (currently 250hz)
@@ -126,7 +126,7 @@ public class Window : GameWindow
         _dt += e.Time;
         while (_dt > _fixedTimeUpdateRate)
         {
-            FixedUpdate?.Invoke();
+            FixedUpdate?.Invoke(_dt);
             _dt -= _fixedTimeUpdateRate;
             if (_dt > 30)
                 _dt = 0;
@@ -174,22 +174,21 @@ public class Window : GameWindow
         }
 
         // Update Frame delegate
-        Update?.Invoke();
+        Update?.Invoke(e.Time);
     }
 
     protected override void OnResize(ResizeEventArgs e)
     {
         base.OnResize(e);
-        GL.Viewport(0, -(Size.X - Size.Y) / 2, Size.X, Size.X);
+        GL.Viewport(0, -(ClientSize.X - ClientSize.Y) / 2, ClientSize.X, ClientSize.X);
         // GL.Viewport(0, 0, Size.X, Size.Y);
 
         Misc.ScreenRatio = Size.X / (float)Size.Y;
 
-        var xDim = 2 * 1920 / (float)Size.X - 1;
-        var yDim = 2 * 1080 / (float)Size.Y - 1;
+        var xDim = 2 * ClientSize.X / (float)ClientSize.X - 1;
+        var yDim = 2 * ClientSize.Y / (float)ClientSize.Y - 1;
         Misc.FboSpriteCoords = new Pos(xDim, yDim);
-
-
+        
         // Resize delegate
         Resize?.Invoke();
     }

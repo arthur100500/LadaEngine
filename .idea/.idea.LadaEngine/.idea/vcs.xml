@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../1F" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../CreeperML" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../DMIslandClient" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../OCamlPro_game_C-" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cangjie_compiler" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cangjie_compiler/cmake-build-debug/third_party/flatbuffers-prefix/src/flatbuffers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cangjie_compiler/cmake-build-debug/utils_dep/third_party_llvm-project" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cangjie_compiler/third_party/boundscheck" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cangjie_runtime" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter temp/cmake-build-debug-docker/_deps/lief-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter temp/cmake-build-debug/_deps/lief-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug-docker/_deps/cxxopts-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug-docker/_deps/lief-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug-docker/_deps/loguru-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug/Release/_deps/cxxopts-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug/Release/_deps/lief-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug/Release/_deps/loguru-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug/_deps/cxxopts-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug/_deps/lief-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-interpreter/cmake-build-debug/_deps/loguru-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj/cjit-testing" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../cj2bc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../formal-lang/mse-fl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../fun/fuzzing/MemeVaultUI" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../fun/slime-king" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../java/ITMO_MSE_JAVA" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../logic/01-prop-arthur-alekseev-itmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../logic/02-nf-arthur-alekseev-itmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../logic/03-prop-calc-arthur-alekseev-itmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../logic/05-curry-howard-arthur-alekseev-itmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../logic/06-fol-arthur-alekseev-itmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../logic/07-fol-truth-arthur-alekseev-itmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../logic/09-prop-prog-arthur-alekseev-itmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../ocaml/db-hw2-airbnb-ocaml_pro" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../ocaml/melange-opam-template" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../ocaml/petra-sb" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../sd/architecture-styles-event-driven-bank-arthur-alekseev-itmo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tree-sitter-cangjie" vcs="Git" />
+  </component>
+</project>
