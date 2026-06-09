@@ -177,9 +177,8 @@ public class Window : GameWindow
         Update?.Invoke(e.Time);
     }
 
-    protected override void OnResize(ResizeEventArgs e)
+    private void ResizeAndNotify()
     {
-        base.OnResize(e);
         GL.Viewport(0, -(ClientSize.X - ClientSize.Y) / 2, ClientSize.X, ClientSize.X);
         // GL.Viewport(0, 0, Size.X, Size.Y);
 
@@ -191,5 +190,17 @@ public class Window : GameWindow
         
         // Resize delegate
         Resize?.Invoke();
+    }
+
+    protected override void OnResize(ResizeEventArgs e)
+    {
+        base.OnResize(e);
+        ResizeAndNotify();
+    }
+
+    protected override void OnMove(WindowPositionEventArgs e)
+    {
+        base.OnMove(e);
+        ResizeAndNotify();
     }
 }

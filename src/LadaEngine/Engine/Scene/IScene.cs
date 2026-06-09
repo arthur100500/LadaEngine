@@ -24,7 +24,7 @@ public interface IScene
     /// <summary>
     ///     Update Event for the scene for update logic
     /// </summary>
-    public void Update();
+    public void Update(float dt);
 
     /// <summary>
     ///     Fixed Update Event for the scene for fixed update logic
